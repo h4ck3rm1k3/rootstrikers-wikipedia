@@ -1,3 +1,4 @@
+# this data was retrieved from https://opendata.socrata.com/api/views/u2zt-jegr/rows.xml?accessType=DOWNLOAD
 #from lxml import etree
 import xml.etree.ElementTree as xml
 
