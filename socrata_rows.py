@@ -8,8 +8,14 @@ def parse_socrata_rows () :
     rows = rootElement.findall("row/row")
     for row in rows:
         name_middle=None
-#        print "\nROW\n"
-        #for data in row:
+
+        obj = {}
+
+        obj['_id']=row.get('id')
+        obj['_uuid']=row.get('_uuid')
+        obj['_position']=row.get('_position')
+        obj['_address']=row.get('_address')
+
         name_first= row[0].text
         if row[3].text :
             if( row[3].tag == "middlename"):
@@ -17,7 +23,12 @@ def parse_socrata_rows () :
 
         name_last = row[1].text 
 
+        for data in row:
+            obj[data.tag]=data.text
+
 #        print name_first, name_middle, name_last
+
+
         if( name_middle):
             name = " " .join([name_first, name_middle, name_last])
         else:
@@ -25,7 +36,13 @@ def parse_socrata_rows () :
         if row[2].get('url') :
             url= row[2].get('url')
 
-        res[name] = url
+        obj['url'] = url
+        obj['name'] = name
+        obj['name_'] = name
+
+        res[name] = obj
+        
+
         #print name
         
     return res

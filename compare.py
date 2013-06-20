@@ -8,3 +8,5 @@ for x in rep.keys():
     if x in soc1 :
         print rep[x]
         print soc1[x]
+    else:
+        print "Missing %s " % x
