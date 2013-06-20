@@ -3,7 +3,10 @@
 import xml.etree.ElementTree as xml
 
 def parse_socrata_rows () :
-    res = {}
+    res = {
+        'names': {},
+        'links': {},
+    }
     tree = xml.parse("socrata_rows.xml")
     rootElement = tree.getroot()
     rows = rootElement.findall("row/row")
@@ -41,7 +44,9 @@ def parse_socrata_rows () :
         obj['name'] = name
         obj['name_'] = name
 
-        res[name] = obj
+# index the obj
+        res['names'][name] = obj
+        res['links'][url] = obj
         
 
         #print name
