@@ -1,27 +1,38 @@
 import os
-import socrata_rows as soc
+#import socrata_rows as soc
 import Current_members_of_the_United_States_House_of_Representatives as reps
+import List_of_current_United_States_Senators as sens
 import cache 
+import legislators_current as leg
+
 from cStringIO import StringIO
 
-
-
 rep= cache.cache('reps',reps.parse_rep)
-soc1= cache.cache('sox',soc.parse_socrata_rows)
+sen= cache.cache('sen',sens.parse)
 
-for x in rep['links'].keys():
-    repobj =     rep['links'][x]
-    rep_name = repobj['name']
-    if x in soc1['links'] :
-        print "Found %s " % x
-        print repobj
-        print soc1['links'][x]
-    else:
-        if rep_name in soc1['names'] :
-            print "Found %s " % rep_name
-            print repobj
-            print soc1['names'][rep_name]
+congress = { 'wp' : rep['wp'].copy() }
+congress['wp'].update(sen)
+legs= leg.load()
+
+#print "REPS:",sorted(rep['wp'].keys())
+#print "SEN:",sorted(sen['wp'].keys())
+#print "TOTAL:",sorted(congress['wp'].keys())
+
+def compare(a,b) :
+#    print a['wp']
+    for x in sorted(a['wp'].keys()):
+        aobj = a['wp'][x]
+        if x in b['wp'] :
+#            print "Found %s " % x
+ #           print aobj
+            pass
         else:
             print "Missing %s " % x
-            print repobj
+ #           print aobj
 
+
+print "Wikipedia\n"
+compare(congress,legs)
+
+print "Legs\n"
+compare(legs,congress)

@@ -7,12 +7,17 @@ def loadlegis ():
     return legis
 
 def load():
-    data = {}
+    data = {
+        'wp' : {} 
+    }
     legis = cache.cache ( "legis",loadlegis)
     for l in legis:
         if 'wikipedia' in l['id'] :
             wp = l['id']['wikipedia']
-            data[wp]=l
+            wp = wp.replace(" ","_")
+#            wp = wp.decode("utf8")
+#            wp=wp.encode('ascii', 'ignore')
+            data['wp'][wp]=l
     return data
 
 #print legis

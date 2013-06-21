@@ -4,11 +4,12 @@ import urllib
 import os
 import re
 import cache
+# List_of_current_United_States_Senators
 """ 
 the results is a dictionary :
 names
 links
-
+wp
 """ 
 
 def parse_wiki_page_links(d,reps,obj):
@@ -26,27 +27,29 @@ def parse_wiki_page(x,reps,obj) :
     )
     parse_wiki_page_links(html,reps,obj)
     
-def parse_rep() :
+def parse() :
     reps = {
     'wp': {},
     'names': {},
     'links': {},
     }
-    d = cache.cachewp ('http://en.wikipedia.org/wiki/Current_members_of_the_United_States_House_of_Representatives?printable=yes')
+    d = cache.cachewp ('http://en.wikipedia.org/wiki/List_of_current_United_States_Senators?printable=yes')
     html = lxml.html.document_fromstring(  d  )
     tables = html.xpath("//table")
     table = tables[1]
     for r in table.xpath("//tr") :
         data= r.xpath("td")
-        if( len(data) == 10):
-            f_district = data[1]
-            f_image     = data[2]
-            f_name     = data[3]
-            (skip, skip , f_district_link, skip) =f_district.iterlinks().next()
+        if( len(data) > 7):
+            f_state = data[1]
+            f_class = data[2]
+            f_image = data[3]
+            f_name  = data[4]
+
             (f_name_element, skip , f_name_link, skip) =f_name.iterlinks().next()
             obj = {
                 'link' :   f_name_link,
-                'district' :  f_district_link,
+                'state' :   f_state.text,
+                'district' :  f_class.text,
                 'name' : f_name_element.text
             }
             reps['names'][f_name_element.text]= obj
