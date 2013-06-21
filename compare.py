@@ -11,12 +11,13 @@ rep= cache.cache('reps',reps.parse_rep)
 sen= cache.cache('sen',sens.parse)
 
 congress = { 'wp' : rep['wp'].copy() }
-congress['wp'].update(sen)
+congress['wp'].update(sen['wp'])
 legs= leg.load()
 
-#print "REPS:",sorted(rep['wp'].keys())
-#print "SEN:",sorted(sen['wp'].keys())
-#print "TOTAL:",sorted(congress['wp'].keys())
+print "REPS:",sorted(rep['wp'].keys())
+print "SEN:",sorted(sen['wp'].keys())
+print "TOTAL:",sorted(congress['wp'].keys())
+print "Legs:",sorted(legs['wp'].keys())
 
 def compare(a,b) :
 #    print a['wp']
