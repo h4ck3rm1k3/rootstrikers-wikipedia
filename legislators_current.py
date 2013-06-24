@@ -1,9 +1,13 @@
 import yaml
 import cache
-
+import encode
+import codecs
 
 def loadlegis ():
-    legis = yaml.load(file('congress-legislators/legislators-current.yaml', 'rb').read())
+    filename ='congress-legislators/legislators-current.yaml'
+    f = codecs.open(filename, "rb", "utf-8")
+    data = f.read()
+    legis = yaml.load(data)
     return legis
 
 def load():
@@ -15,8 +19,7 @@ def load():
         if 'wikipedia' in l['id'] :
             wp = l['id']['wikipedia']
             wp = wp.replace(" ","_")
-#            wp = wp.decode("utf8")
-#            wp=wp.encode('ascii', 'ignore')
+            wp = encode.decodeuc(wp)
             data['wp'][wp]=l
     return data
 

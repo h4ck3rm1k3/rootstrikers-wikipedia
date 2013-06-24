@@ -4,6 +4,7 @@ import urllib
 import os
 import re
 import cache
+import encode 
 # List_of_current_United_States_Senators
 """ 
 the results is a dictionary :
@@ -11,6 +12,7 @@ names
 links
 wp
 """ 
+
 
 def parse_wiki_page_links(d,reps,obj):
     for (f_name_element, attr , f_link, pos) in d.iterlinks():
@@ -56,11 +58,12 @@ def parse() :
 
             link = re.search("/([^\/]+)$",f_name_link).group(1)          
             link = urllib.unquote(link)
-#            link=link.encode('ascii', 'ignore')
+            link = encode.decode(link)
+
             reps['wp'][link]= obj
 
             """ we are going to collect all the links and point to the object """ 
-            parse_wiki_page(f_name_link,reps,obj)
+#            parse_wiki_page(f_name_link,reps,obj)
 
     return reps
 
