@@ -20,24 +20,34 @@ legs= leg.load()
 #print "TOTAL:",sorted(congress['wp'].keys())
 #print "Legs:",sorted(legs['wp'].keys())
 
+def check(aobj,bobj,name):
+
+    if name in bobj['id'] :
+        bval= str(bobj['id'][name])
+        if name in aobj['links'] :
+            aval = str(aobj['links'][name])
+            if aval != bval :
+#                print "aval " ,aval
+                print "Found " , name,  aval, "/", bval
+
+#        else:
+#            print 'in a no :' + name , aobj['links']
+    else:
+        if name in aobj['links'] :
+            print 'in b no ' + name ,  "IN A: ", name + ": " + str(aobj['links'][name]), bobj['id']
+#        else:
+#            print 'in b no ' + name ,   "not in a",bobj['id'],
+
 def compare(a,b) :
 
     for x in sorted(a['wp'].keys()):
         aobj = a['wp'][x]
         if x in b['wp'] :
-            legis_bio= b['wp'][x]['id']['bioguide']
+            bobj = b['wp'][x]
+
             if 'links' in aobj :
-                if 'congbio' in aobj['links'] :
-                     bio = aobj['links']['congbio']
-#                     print bio
-                     if bio != legis_bio :
-                         print "Found %s " % x
-                         print "Wikipedia:" + bio + "/" + legis_bio
-                         print aobj
-                         print b['wp'][x]                                                
-                else:
-                    print 'no congbio' 
-                    print aobj['links']
+                check(aobj,bobj,'bioguide')               
+                check(aobj,bobj,'votesmart')
             else:
                 print 'no links' 
                 print aobj                
@@ -51,6 +61,9 @@ print "Wikipedia\n"
 compare(congress,legs)
 #print "Legs\n"
 #compare(legs,congress)
-for x in sorted(legs['wp'].keys()):
-    if 'bioguide' not in legs['wp'][x]['id']:
-        print  " missing bioguide " + x 
+# for x in sorted(legs['wp'].keys()):
+#     if 'bioguide' not in legs['wp'][x]['id']:
+#         print  " missing bioguide " + x 
+
+#     if 'votesmart' not in legs['wp'][x]['id']:
+#         print  " missing votesmart " + x 
