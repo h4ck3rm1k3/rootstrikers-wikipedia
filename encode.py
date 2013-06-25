@@ -15,8 +15,5 @@ def decodeuc(link) :
 
 def strip(link) :
     b = link
-
     link = link.encode('ascii','ignore')
-    if (link  != b):
-        print "Before %s After %s:" % (b, link)
     return link
