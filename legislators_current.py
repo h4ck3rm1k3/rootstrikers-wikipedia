@@ -51,6 +51,12 @@ def apply(data):
             new = data['wp'][wp]
             l['id']=new['id']
 #            if ('ballot' in new['id']) :
-#                l['id']['ballot']=new['id']['ballot']
+
+# clean up the ballot
+            if 'ballot' in l['id']: 
+                b = l['id']['ballot']
+                del l['id']['ballot']
+                b=b.replace("_"," ")
+                l['id']['ballotpedia']=b
 
     return data
