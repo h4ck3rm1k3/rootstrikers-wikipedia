@@ -54,4 +54,3 @@ def parse(url) :
     return reps
 
 
-parse()
