@@ -4,7 +4,7 @@ import encode
 import codecs
 
 from yaml import CSafeLoader as Loader, CDumper as Dumper
-
+from collections import OrderedDict
 def construct_odict(load, node):
     omap = OrderedDict()
     yield omap
@@ -29,8 +29,6 @@ def loadlegis ():
     return legis
 
 def load():
-    
-
     legis = cache.cache ( "legis",loadlegis)
     data = {  'wp' : {},       'raw' : legis    }
     for l in legis:
@@ -41,7 +39,6 @@ def load():
             data['wp'][wp]=l
         else:
             print  "no wikipedia ", l 
-
     return data
 
 
@@ -51,7 +48,9 @@ def apply(data):
             wp = l['id']['wikipedia']
             wp = wp.replace(" ","_")
             wp = encode.decodeuc(wp)
-
             new = data['wp'][wp]
             l['id']=new['id']
+#            if ('ballot' in new['id']) :
+#                l['id']['ballot']=new['id']['ballot']
+
     return data
