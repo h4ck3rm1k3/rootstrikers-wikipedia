@@ -8,18 +8,25 @@ import encode
 import lxml.html
 import lxml
 
+
+
+def ballot (f_link,obj):
+    match= re.search("http:\/\/ballotpedia\.org\/wiki\/index\.php\/(.*)$", f_link)
+    if (match):
+        val = match.group(1)
+        obj['links']['ballot']=val
+
 def congbio (f_link,obj):
     match= re.search("http:\/\/bioguide.congress.gov\/scripts\/biodisplay\.pl\?index\=(.*)$", f_link)
     if (match):
-        congbio = match.group(1).upper()
-        obj['links']['bioguide']=congbio #= f_link
+        val = match.group(1).upper()
+        obj['links']['bioguide']=val
 
 def votesmart (f_link,obj):
     match= re.search("http:\/\/www.votesmart.org\/candidate\/(\d+)$", f_link)
     if (match):
         val = match.group(1)
         obj['links']['votesmart']=val
-#        print val
 
 def govhomepage(f_link,obj):
     if (re.search("http:.*gov/$", f_link)):
@@ -29,6 +36,7 @@ def govhomepage(f_link,obj):
 def parse_wiki_page_links(d,reps,obj):
     for (f_name_element, attr , f_link, pos) in d.iterlinks():
         if(attr == 'href'):
+            ballot(f_link,obj)
             congbio(f_link,obj)
             votesmart(f_link,obj)
             govhomepage(f_link,obj)
