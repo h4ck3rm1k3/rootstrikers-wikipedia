@@ -35,8 +35,8 @@ def check(aobj,bobj,name):
     else:
         if name in aobj['links'] :
             print 'in b no ' + name ,  "IN A: ", name + ": " + str(aobj['links'][name]), bobj['id']
-#        else:
-#            print 'in b no ' + name ,   "not in a",bobj['id'],
+        else:
+            print 'in b no ' + name ,   "not in a",bobj['id']
 
 def compare(a,b) :
 
