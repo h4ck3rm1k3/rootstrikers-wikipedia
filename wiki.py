@@ -7,7 +7,13 @@ import cache
 import encode
 import lxml.html
 import lxml
-
+def fec (f_link,obj):
+    match= re.search("http:\/\/herndon1\.sdrdc\.com\/cgi-bin\/can_detail\/(.*)$", f_link)
+    if (match):
+        val = match.group(1)
+#        print "extract fec" 
+        obj['links']['fec']=val
+    
 
 def cspan (f_link,obj):
     match= re.search("http:\/\/c-spanvideo\.org\/person\/(.*)$", f_link)
@@ -67,6 +73,7 @@ def parse_wiki_page_links(d,reps,obj):
             govhomepage(f_link,obj)
             wikipedia(f_link,obj)
             cspan(f_link,obj)
+            fec(f_link,obj)
     return obj
 
 def parse_wiki_page(x,reps,obj):

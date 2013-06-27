@@ -36,6 +36,46 @@ def check(aobj,bobj,name):
         else:
             pass
 
+
+def check_basic(aobj,bobj,name):
+    if name in bobj['id'] :
+        bval= str(bobj['id'][name])
+        if name in aobj['links'] :
+            aval = str(aobj['links'][name])
+            if aval != bval :
+                print "Found " , name,  aval, "/", bval
+            else:
+                pass
+    else:
+        if name in aobj['links'] :
+            val = str(aobj['links'][name])
+            print 'in b no ' + name ,  "IN A: ", name + ": " + val, bobj['id']
+            bobj['id'][name]=val
+        else:
+            print  "missing ", name, bobj
+            pass
+
+def check_basic_list(aobj,bobj,name):
+    if name in bobj['id'] :
+        bvals= bobj['id'][name]
+        match = 0
+        for bval in  bvals :
+            if name in aobj['links'] :
+                aval = str(aobj['links'][name])
+                if aval == bval :
+                    match = match +1 
+        
+#        if match 
+
+    else:
+        if name in aobj['links'] :
+            val = str(aobj['links'][name])
+            print 'in b no ' + name ,  "IN A: ", name + ": " + val, bobj['id']
+            bobj['id'][name]=val
+        else:
+            print  "missing ", name, bobj
+            pass
+
 def check_cspan(aobj,bobj):
     name='cspan'
     if name in bobj['id'] :
@@ -65,6 +105,14 @@ def compare(a,b) :
             if 'links' in aobj :
                 check(aobj,bobj,'bioguide')               
                 check(aobj,bobj,'votesmart')
+                check_basic(aobj,bobj,'bioguide')
+                check_basic(aobj,bobj,'thomas')
+#                check_basic(aobj,bobj,'lis')
+                check_basic_list(aobj,bobj,'fec')
+                check_basic(aobj,bobj,'govtrack')
+#                check_basic(aobj,bobj,'icpsr')
+#                checkbasic(aobj,bobj,'house_history')
+
                 check_cspan(aobj,bobj)
 #                a['wp'][x]=
 #                print a['wp'][x]['cspan']
