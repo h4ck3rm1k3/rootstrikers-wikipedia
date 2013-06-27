@@ -51,7 +51,7 @@ def parse_wiki_page_links(d,reps,obj):
     return obj
 
 def parse_wiki_page(x,reps,obj):
-    d = cache.cachewp ('http://en.wikipedia.org%s?printable=yes' % x)
+    d = cache.cachewp ('http://en.wikipedia.org%s?action=purge&printable=yes' % x)
     html = lxml.html.document_fromstring( d   )
     return parse_wiki_page_links(html,reps,obj)
 

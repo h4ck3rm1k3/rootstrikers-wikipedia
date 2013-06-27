@@ -30,14 +30,19 @@ def cachewp (url) :
 
 def cacheweb (url) :
 #    print url
-    hdr = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-       'Accept-Charset': 'utf-8',
-       'Accept-Language': 'en-US',
-       'Connection': 'keep-alive'}
+    hdr = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Cache-Control' : 'no-cache, no-store, max-age=0, must-revalidate',
+        'Pragma' : 'no-cache',
+        'Accept-Charset': 'utf-8',
+        'Accept-Language': 'en-US',
+        'Connection': 'keep-alive'
+    }
     url2=url
     url2=url2.replace("/","_")
     filename = "data/" + url2
+    filename = filename.replace('action=purge&','')
 
     if not os.path.exists("data"):
         os.makedirs("data")

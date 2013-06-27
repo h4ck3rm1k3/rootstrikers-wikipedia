@@ -37,6 +37,24 @@ def check(aobj,bobj,name):
         else:
             print 'in b no ' + name ,   "not in a",bobj['id']
 
+def compare(a,b) :
+    for x in sorted(a['wp'].keys()):
+        aobj = a['wp'][x]
+        if x in b['wp'] :
+            bobj = b['wp'][x]
+            if 'links' in aobj :
+                check(aobj,bobj,'bioguide')               
+                check(aobj,bobj,'votesmart')
+                check(aobj,bobj,'ballot')
+            else:
+                print 'no links' 
+                print aobj                
+
+        if 'wikipedia' not in  aobj['links']:
+            print "Missing wikipedia in BP %s " % x, aobj
+        else:
+            print "Missing %s " % x
+            
 
 def compare_bpr(a,b) :
     for x in sorted(a['wp'].keys()):
@@ -52,7 +70,9 @@ def compare_bpr(a,b) :
                     if 'ballot' in  bobj['links']:
                         ballot = bobj['links']['ballot']
                     else:
-                        print 'no BP in '  , wp, bobj
+                        #print 'no BP in wikipedia article '  , wp, bobj
+                        # now we save the new ballotpedia link that we inferred
+                        b['wp'][wp]['links']['ballot']=x
                 else:
                     print 'no links' 
                     print aobj                
@@ -61,7 +81,7 @@ def compare_bpr(a,b) :
 
 compare_bpr(brep,rep)
 compare_bpr(bsen,sen)
-#compare(congress,legs)
+compare(congress,legs)
 
 import dump
 leg.apply(legs)
