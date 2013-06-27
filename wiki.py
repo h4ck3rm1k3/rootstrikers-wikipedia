@@ -9,6 +9,24 @@ import lxml.html
 import lxml
 
 
+def cspan (f_link,obj):
+    match= re.search("http:\/\/c-spanvideo\.org\/person\/(.*)$", f_link)
+    if (match):
+        val = match.group(1)
+        if (re.search(val,"\d+")):
+            print "cspan numeric" , val
+            obj['links']['cspan']=val
+        else:
+            print "cspan string" , val
+            obj['links']['cspan']=val            
+        return
+    
+    match= re.search("http:\/\/c-spanvideo\.org\/(.*)$", f_link)
+    if (match):
+        val = match.group(1)
+        print "cspan short" , val
+        obj['links']['cspan']=val
+
 
 def ballot (f_link,obj):
     match= re.search("http:\/\/ballotpedia\.org\/wiki\/index\.php\/(.*)$", f_link)
@@ -48,6 +66,7 @@ def parse_wiki_page_links(d,reps,obj):
             votesmart(f_link,obj)
             govhomepage(f_link,obj)
             wikipedia(f_link,obj)
+            cspan(f_link,obj)
     return obj
 
 def parse_wiki_page(x,reps,obj):

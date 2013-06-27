@@ -25,17 +25,37 @@ def check(aobj,bobj,name):
         if name in aobj['links'] :
             aval = str(aobj['links'][name])
             if aval != bval :
-#                print "aval " ,aval
                 print "Found " , name,  aval, "/", bval
-#        else:
-#            print 'in a no :' + name , aobj['links']
+            else:
+                pass
     else:
         if name in aobj['links'] :
             val = str(aobj['links'][name])
             print 'in b no ' + name ,  "IN A: ", name + ": " + val, bobj['id']
             bobj['id'][name]=val
         else:
-            print 'in b no ' + name ,   "not in a",bobj['id']
+            pass
+
+def check_cspan(aobj,bobj):
+    name='cspan'
+    if name in bobj['id'] :
+        bval= str(bobj['id'][name])
+        if name in aobj['links'] :
+            aval = str(aobj['links'][name])
+            if aval != bval :
+#                print "Found2 " , name, ":",  aval, "/", bval, aobj
+#                aobj['links'][name]=bval
+                pass
+            else:
+                pass
+    else:
+        if name in aobj['links'] :
+            val = str(aobj['links'][name])
+            print "no cspan in yaml but in source: ", name + ": " , val, aobj
+        else:
+            pass
+
+
 
 def compare(a,b) :
     for x in sorted(a['wp'].keys()):
@@ -45,15 +65,16 @@ def compare(a,b) :
             if 'links' in aobj :
                 check(aobj,bobj,'bioguide')               
                 check(aobj,bobj,'votesmart')
-                check(aobj,bobj,'ballot')
+                check_cspan(aobj,bobj)
+#                a['wp'][x]=
+#                print a['wp'][x]['cspan']
+#                check(aobj,bobj,'ballot')
+
             else:
                 print 'no links' 
                 print aobj                
-
-        if 'wikipedia' not in  aobj['links']:
-            print "Missing wikipedia in BP %s " % x, aobj
         else:
-            print "Missing %s " % x
+            print "missing ",name,"in b"
             
 
 def compare_bpr(a,b) :
@@ -61,7 +82,8 @@ def compare_bpr(a,b) :
         aobj = a['wp'][x]
 #        print aobj
         if 'wikipedia' not in  aobj['links']:
-            print "Missing wikipedia in BP %s " % x, aobj
+#            print "Missing wikipedia in BP %s " % x, aobj
+            pass
         else:
             wp = aobj['links']['wikipedia']
             if wp in b['wp'] :
@@ -77,10 +99,33 @@ def compare_bpr(a,b) :
                     print 'no links' 
                     print aobj                
             else:
-                print "Missing %s in wikipedia, wrong link" % x, aobj
+                #print "Missing %s in wikipedia, wrong link" % x, aobj
+                pass
+
+def compare_bpr_name(a,b,name) :
+    for x in sorted(a['wp'].keys()):
+        aobj = a['wp'][x]
+        if 'wikipedia' not in  aobj['links']:
+            pass
+        else:
+            wp = aobj['links']['wikipedia']
+            if wp in b['wp'] :
+                bobj = b['wp'][wp]
+                if 'links' in aobj :
+                    if name in  bobj['links']:
+                        ballot = bobj['links'][name]
+                    else:
+                        b['wp'][wp]['links'][name]=x
+                else:
+                    print 'no links' 
+                    print aobj                
+            else:
+                pass
 
 compare_bpr(brep,rep)
 compare_bpr(bsen,sen)
+compare_bpr_name(brep,rep,'cspan')
+compare_bpr_name(bsen,sen,'cspan')
 compare(congress,legs)
 
 import dump
