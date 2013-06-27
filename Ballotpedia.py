@@ -47,7 +47,7 @@ def parse(url) :
             link = encode.decode(link)
 
             """ we are going to collect all the links and point to the object """ 
-            print link, f_name_element,  f_name_link 
+#            print link, f_name_element,  f_name_link 
             reps['wp'][link]= parse_ballotwiki_page(f_name_link,reps,obj)
             reps['names'][f_name_element]= obj
 

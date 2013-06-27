@@ -28,6 +28,13 @@ def votesmart (f_link,obj):
         val = match.group(1)
         obj['links']['votesmart']=val
 
+def wikipedia (f_link,obj):
+                     #http:\/\/en\.wikipedia\.org\/wiki\/Aaron_Schock
+    match= re.search("http:\/\/en\.wikipedia\.org\/wiki\/(.+)$", f_link)
+    if (match):
+        val = match.group(1)
+        obj['links']['wikipedia']=val
+
 def govhomepage(f_link,obj):
     if (re.search("http:.*gov/$", f_link)):
         """ based on the link, point to the object, we should be able to merge data sets based on the homepage """ 
@@ -40,9 +47,10 @@ def parse_wiki_page_links(d,reps,obj):
             congbio(f_link,obj)
             votesmart(f_link,obj)
             govhomepage(f_link,obj)
+            wikipedia(f_link,obj)
     return obj
 
-def parse_wiki_page(x,reps,obj) :
+def parse_wiki_page(x,reps,obj):
     d = cache.cachewp ('http://en.wikipedia.org%s?printable=yes' % x)
     html = lxml.html.document_fromstring( d   )
     return parse_wiki_page_links(html,reps,obj)

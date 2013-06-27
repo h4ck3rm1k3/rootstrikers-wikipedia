@@ -47,6 +47,7 @@ def cacheweb (url) :
         data= f.read()
         return data
     else:
+        print "get " + url2
         r = urllib2.Request(url=url, headers=hdr     )
         d = urllib2.urlopen(r)
         data= d.read()
