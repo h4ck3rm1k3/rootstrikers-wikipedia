@@ -29,7 +29,8 @@ def loadlegis ():
     return legis
 
 def load():
-    legis = cache.cache ( "legis",loadlegis)
+    legis = loadlegis()
+#    legis = cache.cache ( "legis",loadlegis)
     data = {  'wp' : {},       'raw' : legis    }
     for l in legis:
         if 'wikipedia' in l['id'] :

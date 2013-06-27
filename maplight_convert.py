@@ -1,5 +1,6 @@
 import re
 import json
+import encode
 from pprint import pprint
 import legislators_current as leg
 legs= leg.load()
@@ -49,6 +50,41 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 #pp.pprint( data)
 
+
+def check_suffix(old_name,last_obj,nameobj):
+    if 'suffix' in nameobj :
+        full_name = old_name + " " + nameobj['suffix'].lower()
+        if ( full_name == last_obj) :
+            print "match5!",full_name
+            return True
+        else:
+            return False
+
+def check_middle_initial (last_obj,nameobj): 
+    full_name =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['middle'][0].lower() + ". "+   nameobj['last'].lower())
+    if (full_name == last_obj) :
+        print "match!",full_name
+        return True
+    else:
+        return check_suffix(full_name,last_obj,nameobj)
+
+
+def check_nick (last_obj,nameobj): 
+    full_name =encode.decodeuc(nameobj['nick'].lower() + " "+   nameobj['last'].lower())
+    if (full_name == last_obj) :
+        print "match6!",full_name
+        return True
+    else:
+        return check_suffix(full_name,last_obj,nameobj)
+
+def check_middle (last_obj,nameobj): 
+    full_name =encode.decodeuc(nameobj['first'].lower() + " "+  nameobj['middle'].lower() + " "+  nameobj['last'].lower())
+    if (full_name == last_obj) :
+        print "match3!",full_name
+    else :
+        if (not check_middle_initial(last_obj,nameobj)) :
+            return check_suffix(full_name,last_obj,nameobj)
+
 for x in sorted(legs['wp'].keys()):
     last_term = legs['wp'][x]['terms'][-1]
 
@@ -73,26 +109,22 @@ for x in sorted(legs['wp'].keys()):
                 if party == 'Democrat' :
                     party = 'Democratic'
                 if party in district_obj :
-                    last_obj = district_obj[ party ]
-
-                    full_name =legs['wp'][x]['name']['official_full']
-                    full_name2 =legs['wp'][x]['name']['first'] + " "+ legs['wp'][x]['name']['last']
+                    last_obj = district_obj[ party ].lower()
+                    nameobj= legs['wp'][x]['name']
+                    full_name =encode.decodeuc(nameobj['official_full'].lower())
+                    full_name2 =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['last'].lower())
 
                     if (full_name == last_obj) :
                         print "match!",full_name
                     elif (full_name2 == last_obj) :
-                        print "match2!",full_name
-                    elif 'middle' in legs['wp'][x]['name'] :
-                        full_name3 =legs['wp'][x]['name']['first'] + " "+ legs['wp'][x]['name']['middle'] + " "+ legs['wp'][x]['name']['last']
-                        if (full_name3 == last_obj) :
-                            print "match2!",full_name
-                        else:
-                            print "last",last_obj
-                            print "name",legs['wp'][x]['name']
-                            print "term",last_term
+                        print "match2!",full_name2
+                    elif 'nick' in nameobj :
+                        check_nick(last_obj,nameobj)
+                    elif 'middle' in nameobj :
+                        check_middle(last_obj,nameobj)
                     else:
                         print "last",last_obj
-                        print "name",legs['wp'][x]['name']
+                        print "name",nameobj
                         print "term",last_term
 
                 else:
