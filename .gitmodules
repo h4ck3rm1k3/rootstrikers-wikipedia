@@ -1,0 +1,6 @@
+[submodule "congress-legislators"]
+	path = congress-legislators
+	url = git@github.com:h4ck3rm1k3/congress-legislators.git
+[submodule "maplight-convert"]
+	path = maplight-convert
+	url = git@github.com:h4ck3rm1k3/rootstriker-fec-maplight-wiki.git

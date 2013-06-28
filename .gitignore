@@ -3,10 +3,8 @@
 *.pyc
 Fech/
 cache
-congress-legislators/
 data/
 dump.yaml
-maplight-convert/
 mediawiki-parser/
 mwlib/
 mwparserfromhell/
