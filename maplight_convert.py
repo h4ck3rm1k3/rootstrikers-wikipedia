@@ -15,21 +15,21 @@ def parse():
 
     };
 
-    with open("maplight-convert/all_split.json") as infile:
+    with open("maplight-convert/active_incumbents.json") as infile:
         for line in infile:
             if 'person_id' in line:
-                if(line[-1] == ']'):
-                    data = json.loads(line[:-1])
-                else:
-                    data = json.loads(line[:-2])
-                full_name=data['full_name']
+                data = json.loads(line[:-2])
+                full_name=data['display_name']
                 sutf8 = full_name.encode('UTF-8')
 
-                office = data['office_holding']
-                state = data['state']
-                dist = data['district_holding']
-                party = data['party']
-                
+                office = data['office_title']
+                state = data['statecode']
+                dist = data['district']
+                party = data['party_name']
+
+                if (party == 'Democrat-Farm-Labor') :
+                    party = "Democratic"
+
                 if office not in index:
                     index[office] = {}
 
@@ -39,8 +39,15 @@ def parse():
                 if dist not in index[office][state]:
                     index[office][state][dist] = {}
 
+                full_name = full_name.replace("\"","")
+                full_name = full_name.replace("Mr. ","")
+                full_name = full_name.replace("Mrs. ","")
+                full_name = full_name.replace("Dr ","")
+                full_name = full_name.replace("Hon. ","")
+                
                 if party not in index[office][state][dist]:
                     index[office][state][dist][party] = full_name                
+
     return index
 
 data =parse()
@@ -74,13 +81,15 @@ def check_middle_initial (last_obj,nameobj):
 
 
 def check_nick (last_obj,nameobj): 
+
     full_name =encode.decodeuc(nameobj['nick'].lower() + " "+   nameobj['last'].lower())
-    if (full_name == last_obj) :
-#        print "match6!",full_name
-#        return True
+    full_name2 =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['nick'].lower() + " "+   nameobj['last'].lower())
+    if (full_name == last_obj):
         person_match(full_name)
         return True
-
+    elif (full_name2 == last_obj):
+        person_match(full_name2)
+        return True
     else:
         return check_suffix(full_name,last_obj,nameobj)
 
@@ -100,6 +109,7 @@ def check_middle (last_obj,nameobj):
 # middle names without .
 # alt names (double last names, try both)
 # remove " from name
+# remove mr. mrs. from name
 # last, first
 
 def check_simple(last_obj,nameobj):
@@ -116,9 +126,7 @@ def check_simple(last_obj,nameobj):
     elif 'middle' in nameobj :
         return check_middle(last_obj,nameobj)
     else:
-        print "last",last_obj
-        print "name",nameobj
-        print "term",last_term
+        print "Fail last:\"%s\"" % last_obj, "name:",nameobj, "term:",last_term
         return False
 
 for x in sorted(legs['wp'].keys()):
@@ -135,8 +143,13 @@ for x in sorted(legs['wp'].keys()):
 
         if 'district' in last_term :
             district=str(last_term['district'])
+            if district == '0' :
+                district ='1'
+
             #    print state
+
             if district in state_obj:
+
                 district_obj = state_obj[ district ]
 
                 party = last_term['party']
@@ -148,11 +161,11 @@ for x in sorted(legs['wp'].keys()):
                     check_simple(last_obj,nameobj)
 
                 else:
-                    print "missing ", party, "in district" , nameobj
+                    print "missing ", party, "in district" , nameobj, last_term
                     pp.pprint( district_obj)
                     
             else:
-                print "missing ", district, "in state", nameobj
+                print "missing ", district, "in state", nameobj, last_term
                 pp.pprint( state_obj)
         
 #OrderedDict([('type', 'rep'), ('start', '2013-01-03'), ('end', '2015-01-03'), ('state', 'CA'), ('party', 'Democrat'), ('district', 19), ('url', 'http://www.house.gov/lofgren'), ('address', '1401 Longworth HOB; Washington DC 20515-0516'), ('phone', '202-225-3072'), ('fax', '202-225-3336'), ('contact_form', 'http://lofgren.house.gov/emailform.shtml'), ('office', '1401 Longworth House Office Building'), ('rss_url', 'http://lofgren.house.gov/index.php?format=feed&amp;type=rss')])
