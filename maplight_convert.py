@@ -1,6 +1,7 @@
 import re
 import json
 import encode
+import dump
 from pprint import pprint
 import legislators_current as leg
 legs= leg.load()
@@ -26,6 +27,7 @@ def parse():
                 state = data['statecode']
                 dist = data['district']
                 party = data['party_name']
+                person_id = data['person_id']
 
                 if (party == 'Democrat-Farm-Labor') :
                     party = "Democratic"
@@ -46,7 +48,10 @@ def parse():
                 full_name = full_name.replace("Hon. ","")
                 
                 if party not in index[office][state][dist]:
-                    index[office][state][dist][party] = full_name                
+                    index[office][state][dist][party] = {                     
+                    'name' :  full_name               ,
+                        'id' :  int(person_id)
+                    }
 
     return index
 
@@ -57,52 +62,68 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def person_match(full_name) :
+#    print "Matched %s" % full_name
     pass
 
-def check_suffix(old_name,last_obj,nameobj):
+
+def check_suffix(old_name,maplight_name,nameobj):
     if 'suffix' in nameobj :
-        full_name = old_name + " " + nameobj['suffix'].lower()
-        if ( full_name == last_obj) :
-            #print "match5!",full_name
+        suffix = nameobj['suffix'].lower()
+        full_name = old_name + " " + suffix
+        suffix = suffix.replace(".", "")
+        full_name2 = old_name + " " + suffix
+        if ( full_name == maplight_name) :
+            person_match(full_name)
+            return True
+        elif ( full_name2 == maplight_name) :
             person_match(full_name)
             return True
         else:
             return False
 
-def check_middle_initial (last_obj,nameobj): 
+def check_middle_initial (maplight_name,nameobj): 
     full_name =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['middle'][0].lower() + ". "+   nameobj['last'].lower())
-    if (full_name == last_obj) :
-#        print "match!",full_name
+    full_name2 =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['middle'][0].lower() + " "+   nameobj['last'].lower())
+
+    if (full_name == maplight_name) :
         person_match(full_name)
         return True
+    elif (full_name2 == maplight_name) :
+        person_match(full_name)
+        return True
+    elif check_suffix(full_name,maplight_name,nameobj) :
+        person_match(full_name)
+        return True
+    else :
+        return check_suffix(full_name2,maplight_name,nameobj)
+    return False
 
-    else:
-        return check_suffix(full_name,last_obj,nameobj)
-
-
-def check_nick (last_obj,nameobj): 
+def check_nick (maplight_name,nameobj): 
 
     full_name =encode.decodeuc(nameobj['nick'].lower() + " "+   nameobj['last'].lower())
     full_name2 =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['nick'].lower() + " "+   nameobj['last'].lower())
-    if (full_name == last_obj):
+    if (full_name == maplight_name):
         person_match(full_name)
         return True
-    elif (full_name2 == last_obj):
+    elif (full_name2 == maplight_name):
         person_match(full_name2)
         return True
     else:
-        return check_suffix(full_name,last_obj,nameobj)
+        return check_suffix(full_name,maplight_name,nameobj)
 
-def check_middle (last_obj,nameobj): 
+
+def check_middle (maplight_name,nameobj): 
     full_name =encode.decodeuc(nameobj['first'].lower() + " "+  nameobj['middle'].lower() + " "+  nameobj['last'].lower())
-    if (full_name == last_obj) :
+    if (full_name == maplight_name) :
 #        print "match3!",full_name
         person_match(full_name)
         return True
 
     else :
-        if (not check_middle_initial(last_obj,nameobj)) :
-            return check_suffix(full_name,last_obj,nameobj)
+        if (not check_middle_initial(maplight_name,nameobj)) :
+            return check_suffix(full_name,maplight_name,nameobj)
+
+    return False
 
 ## todo 
 # 1. prefix (dr.)
@@ -112,26 +133,27 @@ def check_middle (last_obj,nameobj):
 # remove mr. mrs. from name
 # last, first
 
-def check_simple(last_obj,nameobj):
+def check_simple(maplight_name,nameobj):
     full_name =encode.decodeuc(nameobj['official_full'].lower())
     full_name2 =encode.decodeuc(nameobj['first'].lower() + " "+ nameobj['last'].lower())
-    if (full_name == last_obj) :
+    if (full_name == maplight_name) :
         person_match(full_name)
         return True
-    elif (full_name2 == last_obj) :
+    elif (full_name2 == maplight_name) :
         person_match(full_name)
         return True
     elif 'nick' in nameobj :
-        return check_nick(last_obj,nameobj)
+        return check_nick(maplight_name,nameobj)
     elif 'middle' in nameobj :
-        return check_middle(last_obj,nameobj)
+        return check_middle(maplight_name,nameobj)
     else:
-        print "Fail last:\"%s\"" % last_obj, "name:",nameobj, "term:",last_term
+        print "Fail last:\"%s\"" % maplight_name, "name:",nameobj, "term:",last_term
         return False
 
 for x in sorted(legs['wp'].keys()):
     last_term = legs['wp'][x]['terms'][-1]
     nameobj= legs['wp'][x]['name'] 
+    idsobj= legs['wp'][x]['id'] 
     if (last_term['type'] == 'rep'):
         chamber= data['House']
     else:
@@ -156,9 +178,17 @@ for x in sorted(legs['wp'].keys()):
                 if party == 'Democrat' :
                     party = 'Democratic'
                 if party in district_obj :
-                    last_obj = district_obj[ party ].lower()
+                    maplight_name = district_obj[ party ]['name'].lower()
+                    maplight_id = district_obj[ party ]['id']
 
-                    check_simple(last_obj,nameobj)
+                    if check_simple(maplight_name,nameobj):
+                        idsobj['maplight']=maplight_id
+#                        print "new id",maplight_id
+                    else: 
+                        print "failed ",maplight_name,"|",nameobj['official_full']#, last_term
+                        idsobj['maplight']=maplight_id
+
+                        
 
                 else:
                     print "missing ", party, "in district" , nameobj, last_term
@@ -170,3 +200,5 @@ for x in sorted(legs['wp'].keys()):
         
 #OrderedDict([('type', 'rep'), ('start', '2013-01-03'), ('end', '2015-01-03'), ('state', 'CA'), ('party', 'Democrat'), ('district', 19), ('url', 'http://www.house.gov/lofgren'), ('address', '1401 Longworth HOB; Washington DC 20515-0516'), ('phone', '202-225-3072'), ('fax', '202-225-3336'), ('contact_form', 'http://lofgren.house.gov/emailform.shtml'), ('office', '1401 Longworth House Office Building'), ('rss_url', 'http://lofgren.house.gov/index.php?format=feed&amp;type=rss')])
 
+leg.apply(legs)
+dump.dump(legs)
