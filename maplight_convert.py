@@ -48,10 +48,9 @@ def parse():
                 full_name = full_name.replace("Hon. ","")
                 
                 if party not in index[office][state][dist]:
-                    index[office][state][dist][party] = {                     
-                    'name' :  full_name               ,
-                        'id' :  int(person_id)
-                    }
+                    index[office][state][dist][party] = []
+                index[office][state][dist][party].append( { 'name' :  full_name,'id' :  int(person_id)  })
+
 
     return index
 
@@ -161,10 +160,20 @@ def scan_all(x):
             for district in state_obj .keys():
                 district_obj = state_obj[ district ]
                 for party in district_obj.keys() :
-                    maplight_name = district_obj[ party ]['name'].lower()
-                    maplight_id = district_obj[ party ]['id']
-                    if check_simple(maplight_name,nameobj):
-                        idsobj['maplight']=maplight_id
+                    for candidate in district_obj[ party ] :
+                        maplight_name = candidate['name'].lower()
+                        maplight_id = candidate['id']
+                        x = x.replace("_(U.S._politician)",'')
+                        x = x.replace("_"," ")
+                        x = x.lower()
+                        #print maplight_name,x
+                        if (maplight_name == x) :
+                            idsobj['maplight']=maplight_id
+                            return maplight_id
+                        if check_simple(maplight_name,nameobj):
+                            idsobj['maplight']=maplight_id
+                            return maplight_id
+    return None
 
 
 def std_match(x):
@@ -196,6 +205,8 @@ def std_match(x):
                 if party in district_obj :
                     maplight_name = district_obj[ party ]['name'].lower()
                     maplight_id = district_obj[ party ]['id']
+                    if (maplight_name == x) :
+                        idsobj['maplight']=maplight_id
 
                     if check_simple(maplight_name,nameobj):
                         idsobj['maplight']=maplight_id
@@ -223,7 +234,12 @@ def match_maplight(x):
         #print x,idsobj['maplight']
         return
     print "Still missing", x
-    scan_all(x)
+    newid = scan_all(x)
+    if newid == None:
+        print "Could not find", x
+    else:
+        print "New id", newid
+        
 
         
 for x in sorted(legs['wp'].keys()):
