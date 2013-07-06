@@ -19,7 +19,6 @@ Example :
 
 This is from http://data.maplight.org/FEC/active_incumbents.json
 
-The contributions can be identified against the person id in the 2012 or 2014 contributions json the id is used.
 Example data: http://data.maplight.org/FEC/2012/summaries/all.json or from 2014 :http://data.maplight.org/FEC/2014/summaries/all.json
 
 Here is an example from 2012 :
