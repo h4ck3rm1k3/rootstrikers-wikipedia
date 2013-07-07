@@ -15,11 +15,13 @@ def compare(a,b,field,field2,convertInt,verbose) :
         aobj = a['wp'][x]
         bobj = b['wp'][x]
         v2 = None
-        if (not field2 is None) and (field2  in aobj['id'] ) :
-            v2 = aobj['id'][field2]
-        else:
-            if (verbose) :
-                print "missing", field2 ,"in " ,x
+        if (not field2 is None) :
+            if  (field2  in aobj['id'] ) :
+                v2 = aobj['id'][field2]
+            else:
+                if (verbose) :
+                    print "missing", field2 ,"in " ,x
+
         if field  in aobj['id'] :
             v = aobj['id'][field]
             if convertInt :
