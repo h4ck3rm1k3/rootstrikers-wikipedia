@@ -48,11 +48,12 @@ def cacheweb (url) :
         os.makedirs("data")
 
     if (os.path.exists(filename)):
+        print "get file" + url
         f = codecs.open(filename, "rb", "utf-8")
         data= f.read()
         return data
     else:
-        print "get " + url2
+        print "get " + url
         r = urllib2.Request(url=url, headers=hdr     )
         d = urllib2.urlopen(r)
         data= d.read()
