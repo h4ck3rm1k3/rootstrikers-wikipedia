@@ -10,7 +10,7 @@ from cStringIO import StringIO
 legs= leg.load()
 legs2= leg2.load()
 
-def compare(a,b,field,field2,convertInt,verbose) :
+def compare(a,b,field,field2,convertInt,verbose,wiki) :
     for x in sorted(a['wp'].keys()):
         aobj = a['wp'][x]
         bobj = b['wp'][x]
@@ -28,6 +28,10 @@ def compare(a,b,field,field2,convertInt,verbose) :
                 match= re.search('(\d+)', str(v))
                 if (match):
                     v = match.group(1)                
+
+            if wiki :
+                v= v.replace("_"," ")
+
             b['wp'][x]['id'][field]=v
             if (verbose) :
                 print "updated", field ,"for id" ,x, v
@@ -44,12 +48,13 @@ import getopt, sys
 def usage():
     print "--help"
     print "-i,--int convert value to int"
+    print "-w,--wiki remove _ from names for wikis"
     print "-f fieldname,--field=fieldname"
     print "-g fieldname,--field2=fieldname2"
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hifg:v", ["help", "field=","field2=", "int"])
+        opts, args = getopt.getopt(sys.argv[1:], "whifg:v", ["help", "field=","field2=", "int", "wiki"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -58,6 +63,7 @@ def main():
     field = None
     field2 = None
     verbose = False
+    wiki=False
     convertInt=False
     for o, a in opts:
         if o == "-v":
@@ -68,6 +74,9 @@ def main():
         elif o in ("-f", "--field"):
             field = a
 
+        elif o in ("-w", "--wiki"):
+            wiki = True
+
         elif o in ("-g", "--field2"):
             field2 = a
 
@@ -76,7 +85,7 @@ def main():
         else:
             assert False, "unhandled option"
 
-    compare(legs,legs2,field,field2,convertInt,verbose)
+    compare(legs,legs2,field,field2,convertInt,verbose,wiki)
 #    leg.apply(legs)
     dump.dump(legs2)
 
