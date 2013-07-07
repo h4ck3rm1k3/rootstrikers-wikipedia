@@ -4,6 +4,8 @@ import re
 import urllib2
 import urllib
 import codecs
+verbose = False
+
 def cache (x,f) :
 
     filename = "data/%s.pkl" % x
@@ -29,7 +31,8 @@ def cachewp (url) :
 
 
 def cacheweb (url) :
-#    print url
+    if verbose :
+        print "get", url
     hdr = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -48,11 +51,13 @@ def cacheweb (url) :
         os.makedirs("data")
 
     if (os.path.exists(filename)):
-        print "get file" + url
+        if verbose :
+            print "get file" + url
         f = codecs.open(filename, "rb", "utf-8")
         data= f.read()
         return data
     else:
+
         print "get " + url
         r = urllib2.Request(url=url, headers=hdr     )
         d = urllib2.urlopen(r)
