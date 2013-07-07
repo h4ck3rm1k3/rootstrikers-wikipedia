@@ -40,6 +40,12 @@ def ballot (f_link,obj):
         val = match.group(1)
         obj['links']['ballot']=val
 
+def opencongress (f_link,obj):
+    match= re.search("http://www.opencongress.org/people/show/(.*)$", f_link)
+    if (match):
+        val = match.group(1).upper()
+        obj['links']['opencong']=val
+
 def congbio (f_link,obj):
     match= re.search("http:\/\/bioguide.congress.gov\/scripts\/biodisplay\.pl\?index\=(.*)$", f_link)
     if (match):
@@ -67,6 +73,7 @@ def govhomepage(f_link,obj):
 def parse_wiki_page_links(d,reps,obj):
     for (f_name_element, attr , f_link, pos) in d.iterlinks():
         if(attr == 'href'):
+            opencongress(f_link,obj)
             ballot(f_link,obj)
             congbio(f_link,obj)
             votesmart(f_link,obj)
