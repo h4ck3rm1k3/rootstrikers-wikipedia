@@ -5,48 +5,50 @@ import dump
 from pprint import pprint
 import legislators_current as leg
 import cache 
-import urllib
-import urllib2 
-import dump 
+ 
 """
-extract open congress data and records
+Extract open congress data and records
 """
 import getopt, sys
 from lxml import etree
 from StringIO import StringIO
 def load():
     legs= leg.load()
-    out = open("report.wiki", 'w')
-
     for x in sorted(legs['wp'].keys()):
         idsobj= legs['wp'][x]['id'] 
-        gt = idsobj['govtrack']
-        oname = idsobj['opencongwiki']
-        name = unicode(oname)
-        name = name.encode('utf-8')
-        name= urllib.quote_plus(name)
+        name = legs['wp'][x]['name']['official_full'] 
+        congid = idsobj['govtrack']
+        wiki= idsobj['opencongwiki']
+        if (not wiki == "Error" ):
+            continue
 
+        xml = cache.cacheweb('http://api.opencongress.org/people?person_id=%d' % congid)
+        xml =xml.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>","")
+        xmlio = StringIO(xml)
+
+        tree = etree.parse(xmlio)
+        name =  unicode(tree.xpath("//unaccented-name/text()")[0])
+        name = name.replace(" ","_")
         url = "http://www.opencongress.org/w/index.php?title=%s&printable=yes" % name
-
+        #url = "http://www.opencongress.org/wiki/%s" % name
         try :
             data = cache.cacheweb( url)
-        except urllib2.HTTPError, e: 
-            if ( e.code == 404) :
-                p='http://www.opencongress.org/people/show/%d' % gt
-                #            print u"* Missing [[" , unicode(oname) , u"]] from [", unicode(p),  u" ", unicode(oname) ,  u"]"
-                s=u"* Missing [[{}]] from [{} {}]\n".format(unicode(oname),p,unicode(oname))
-                print s
-                out.write(s.encode('utf-8'))
-                idsobj['opencongwiki']="Error"
-                
         except Exception, e:
-#            print "Missing [[",name,"]]"
             print "failed", name ,e
-            idsobj['opencongwiki']="Error2"
         except KeyboardInterrupt:
             print "bye"
             exit()
-    dump.dump(legs)        
+        
+        #       print data 
+#        if 'govtrack' in idsobj:
+ #          congid = idsobj['govtrack']
+           # xml = cache.cacheweb('http://api.opencongress.org/people?person_id=%d' % congid)
+           #some_file_like_object = BytesIO("<root>data</root>")
+
+        #print etree.tostring(tree)
+
+
+
 
 def usage():
     print "--help --verbose"

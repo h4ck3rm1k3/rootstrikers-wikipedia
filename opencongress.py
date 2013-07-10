@@ -11,13 +11,12 @@ import dump
 extract open congress data and records
 """
 import getopt, sys
-verbose = True
+verbose = False
 
 def wikilink(f_link,obj):
     match = re.search("http\:\/\/www\.opencongress\.org\/wiki\/(.+)$", f_link)
     if (match):
-        val = match.group(1).upper()
-        
+        val = match.group(1)
         if(verbose):
             print val, obj
         obj['opencongwiki']= val

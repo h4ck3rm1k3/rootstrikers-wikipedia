@@ -58,7 +58,9 @@ Dumper.add_representer(unicode, our_string_representer)
 Dumper.add_representer(type(None), lambda dumper, value : \
 dumper.represent_scalar(u'tag:yaml.org,2002:null', u"~"))
 
-
-def dump(legs) :
+def dump_data(data) :
     out = open("dump.yaml", 'w')
-    yaml.dump(legs['raw'], out,  default_flow_style=False, allow_unicode=True, Dumper=Dumper)
+    yaml.dump(data, out,  default_flow_style=False, allow_unicode=True, Dumper=Dumper)
+
+def dump(legs) :    
+    dump_data(legs['raw'])

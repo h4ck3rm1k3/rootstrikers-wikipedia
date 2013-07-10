@@ -59,8 +59,23 @@ def cacheweb (url) :
     else:
 
         print "get " + url
+
+
         r = urllib2.Request(url=url, headers=hdr     )
-        d = urllib2.urlopen(r)
+        d=None
+
+        try:
+            d = urllib2.urlopen(r)
+        except urllib2.HTTPError, e:
+#            print "http",e
+            raise e 
+        except Exception, e: 
+#            print "other",e
+            raise e 
+        except:
+            print "could not load "
+            exit()
+
         data= d.read()
         data = data.decode("utf-8")
         f = codecs.open(filename,'wb','utf-8')
