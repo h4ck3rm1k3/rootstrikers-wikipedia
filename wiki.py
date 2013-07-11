@@ -88,3 +88,15 @@ def parse_wiki_page(x,reps,obj):
     html = lxml.html.document_fromstring( d   )
     return parse_wiki_page_links(html,reps,obj)
 
+def parse_wiki_text(d,reps) :
+    match= re.search("{{CongLinks(.+)}}", d)
+    if (match):
+        val = match.group(1)
+        for x in val.split("|"):
+            print "Cong" ,x
+    
+def parse_wiki_source(x,reps):
+    url='http://en.wikipedia.org/w/index.php?title=%s&action=raw' % x
+    d = cache.cachewp (url)
+    return parse_wiki_text(d,reps)
+
