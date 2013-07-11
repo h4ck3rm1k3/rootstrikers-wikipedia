@@ -90,10 +90,24 @@ def parse_wiki_page(x,reps,obj):
 
 def parse_wiki_text(d,reps) :
     match= re.search("{{CongLinks(.+)}}", d)
+    d = {}
     if (match):
         val = match.group(1)
+        val = val.replace("&newMem=Y","")
+        val = val.replace("&newmem=Y","")
         for x in val.split("|"):
-            print "Cong" ,x
+            
+            try :
+                if (x.find("=") > 0):
+                    (k,v) = x.split("=")
+                    k = k.replace(" ","")
+#                    if (k == 'opensecrects') :
+#                        print "Cong" ,x,"\'%s\'" % k,v
+                    d[k]=v
+            except Exception,e :
+                print "error1",x, e, val
+        d["raw"]= val
+    return d 
     
 def parse_wiki_source(x,reps):
     url='http://en.wikipedia.org/w/index.php?title=%s&action=raw' % x

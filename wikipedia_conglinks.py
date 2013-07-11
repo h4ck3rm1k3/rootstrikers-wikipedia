@@ -7,6 +7,17 @@ import getopt, sys
 def usage():
     print "--help"
 
+def checkimdb(x,A,B) :
+    a=None
+    b=None
+    if "imdb" in  A['id']:
+        a =A['id']['imdb']
+    if 'imdb' in B:
+        b=B['imdb']
+    if b is not None:
+        if b.find("nm") > 0 :
+            print x,a,b
+
 def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hv", [])
@@ -27,9 +38,20 @@ def main():
             assert False, "unhandled option"
 
     legs= legislators_current.load()
-    for x in sorted(legs['wp'].keys()):
-        print x        
-        wiki.parse_wiki_source(x,legs)
+    #print legs
+    #    print legs['wp'].keys()
+    #    print legs['wp'].items()
+    names = sorted(legs['wp'].keys())
+#    print names
+    for x in  names:
+#        print legs['wp'][x]
+        try :
+            d =wiki.parse_wiki_source(x,legs)
+            A = legs['wp'][x]
+            checkimdb(x,A,d)
+
+        except Exception,e:
+            print "error1:",e
     dump.dump(legs)
 
 if __name__ == "__main__":
