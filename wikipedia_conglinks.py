@@ -7,7 +7,7 @@ import getopt, sys
 def usage():
     print "--help"
 
-def checkimdb(x,A,B) :
+def check_imdb(x,A,B) :
     a=None
     b=None
     if "imdb" in  A['id']:
@@ -17,6 +17,17 @@ def checkimdb(x,A,B) :
     if b is not None:
         if b.find("nm") > 0 :
             print x,a,b
+
+def check_wikipedia(x,A,B) :
+    a=None
+    b=None
+    k="wikipedia"
+    if k in  A['id']:
+        a =A['id'][k]
+    if k in B:
+        b=B[k]
+    if b is not None:
+        print x,a,b
 
 def main():
     try:
@@ -48,7 +59,8 @@ def main():
         try :
             d =wiki.parse_wiki_source(x,legs)
             A = legs['wp'][x]
-            checkimdb(x,A,d)
+            check_imdb(x,A,d)
+            check_wikipedia(x,A,d)
 
         except Exception,e:
             print "error1:",e
