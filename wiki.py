@@ -101,6 +101,7 @@ def parse_wiki_text(d,reps) :
                 if (x.find("=") > 0):
                     (k,v) = x.split("=")
                     k = k.replace(" ","")
+                    v=v.strip(" ")
 #                    if (k == 'opensecrects') :
 #                        print "Cong" ,x,"\'%s\'" % k,v
                     d[k]=v

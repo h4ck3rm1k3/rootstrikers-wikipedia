@@ -19,6 +19,7 @@ def cache (x,f) :
     else:
         output = open(filename, 'wb')
         data = f()
+        print "got",data
         pickle.dump(data, output)
         return data
 

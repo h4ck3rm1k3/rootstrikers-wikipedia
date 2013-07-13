@@ -18,6 +18,43 @@ def check_imdb(x,A,B) :
         if b.find("nm") > 0 :
             print x,a,b
 
+def compare_cong(x,A,B) :
+    for k in B.keys():   
+        a=None
+        b=None
+        if k in  A['id']:
+            a =A['id'][k]
+        b=B[k]
+        if (a is not None):
+            if (not a == b):
+                print x,k,a,b
+    for k in  A['id'].keys() :
+        print "O",k,A['id'][k]
+
+def compare_votesmart(x,A,B) :
+    k="votesmart"
+    k=u'votesmart'
+    a=None
+    b=None
+    if k in  A['id']:
+        try :
+            a =int(A['id'][k])
+
+            if (a is not None):
+                b=B[k]                
+                if  b is None :
+                    print "* [[%s]] %s" % (x,a)
+                    print B
+                else:
+                    b = int(b)
+                    if (not a == b):
+                        print "* [[%s]] %s %b " % (x,a,b)
+
+
+                #print "O",k,A['id'][k]
+        except:
+            print "* [[%s]] %s %s:" % (x,a,b)
+
 def check_wikipedia(x,A,B) :
     a=None
     b=None
@@ -28,6 +65,17 @@ def check_wikipedia(x,A,B) :
         b=B[k]
     if b is not None:
         print x,a,b
+
+# def check_washpo(x,A,B) :
+#     a=None
+#     b=None
+#     k="washpo"
+#     if k in  A['id']:
+#         a =A['id'][k]
+#     if k in B:
+#         b=B[k]
+#     if b is not None:
+#         print x,a,b
 
 def main():
     try:
@@ -59,9 +107,10 @@ def main():
         try :
             d =wiki.parse_wiki_source(x,legs)
             A = legs['wp'][x]
-            check_imdb(x,A,d)
-            check_wikipedia(x,A,d)
-
+            #check_imdb(x,A,d)
+            #check_wikipedia(x,A,d)
+            #compare_cong(x,A,d)
+            compare_votesmart(x,A,d)
         except Exception,e:
             print "error1:",e
     dump.dump(legs)
