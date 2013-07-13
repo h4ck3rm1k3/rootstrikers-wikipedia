@@ -6,6 +6,7 @@ import os
 import lxml.etree
 import washpost
 import time 
+import lxml.html
 url='http://www.washingtonpost.com/newssearch/search.html'
 br = mechanize.Browser()
 br.open(url)
@@ -49,8 +50,42 @@ def fetch(offset):
     data = data.decode("utf-8")
     f = codecs.open(filename,'wb','utf-8')
     f.write(data)
-    print "filename", filename
+    #print "filename", filename
     return data
+
+def xlinks (page):
+
+#    myparser = lxml.etree.HTMLParser(encoding="utf-8")
+#    html = lxml.etree.HTML(page, parser=myparser)
+    html = lxml.html.document_fromstring( page )
+    for (f_name_element, attr , f_link, pos) in html.iterlinks():
+        #if(attr == 'href'):
+        #    for r in html.xpath("//a") :
+        #        f_link = l.get("href")
+
+
+        if f_link.find("washingtonpost")> 0 :
+            continue
+
+        if f_link.find("washpost")> 0 :
+            continue
+
+        if f_link.find("mailto")>= 0:
+            print "external mail",f_link,pos, attr
+            continue
+        if f_link.find(".gov")>= 0:
+            print "external gov",f_link,pos, attr
+            continue
+        if f_link.find("wiki")>= 0:
+            print "external wiki",f_link,pos, attr
+
+def runtrove(name):
+    for x in range(1,1000):
+        try :
+            washpost.trove(name)
+            return
+        except Exception, e:
+            print "Er", e
 
 for i in range(1,100):
     offset = i * 10
@@ -69,7 +104,14 @@ for i in range(1,100):
         for l in r.xpath("a"):
             f_name_link = l.get("href")
 
-            contents= cache.cacheweb(f_name_link)
+            contents=""
+            try :
+                contents= cache.cacheweb(f_name_link)
+            except :
+                # try once agains
+                contents= cache.cacheweb(f_name_link)
+
+            xlinks(contents)
 
             f_name = l.text.strip()
             match = re.search("([\w\.\s]+)\((\w)\-([\w\.]+)\)$",f_name)   
@@ -87,6 +129,6 @@ for i in range(1,100):
             if (match):
                 link = match.group(1)
                 link2 = match.group(2)
-            print "link",link,link2,"name",name,"party",party,"state",state,"raw",f_name_link
-            washpost.trove(name)
+            #print "link",link,link2,"name",name,"party",party,"state",state,"raw",f_name_link
+            runtrove(name)
 

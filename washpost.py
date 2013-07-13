@@ -38,7 +38,7 @@ def fetch(name):
 def trove(name) :
     headers = {}
     key= "wp_" + name 
-    print key
+    #print key
     f=lambda : fetch(name)
     cache.cache(key,f)
 
