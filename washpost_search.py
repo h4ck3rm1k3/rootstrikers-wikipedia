@@ -7,6 +7,8 @@ import lxml.etree
 import washpost
 import time 
 import lxml.html
+import legis_index_links
+
 url='http://www.washingtonpost.com/newssearch/search.html'
 br = mechanize.Browser()
 br.open(url)
@@ -54,7 +56,7 @@ def fetch(offset):
     return data
 
 def xlinks (page):
-
+    links={}
 #    myparser = lxml.etree.HTMLParser(encoding="utf-8")
 #    html = lxml.etree.HTML(page, parser=myparser)
     html = lxml.html.document_fromstring( page )
@@ -63,7 +65,7 @@ def xlinks (page):
         #    for r in html.xpath("//a") :
         #        f_link = l.get("href")
 
-
+        links[f_link]=1
         if f_link.find("washingtonpost")> 0 :
             continue
 
@@ -71,27 +73,89 @@ def xlinks (page):
             continue
 
         if f_link.find("mailto")>= 0:
-            print "external mail",f_link,pos, attr
+            #print "external mail",f_link,pos, attr
             continue
         if f_link.find(".gov")>= 0:
-            print "external gov",f_link,pos, attr
+
+            f_link = f_link.rstrip("/")
+#            wiki =legis_index_links.lookup("url",f_link)
+#            if wiki is not None :
+#                print "foun",wiki,f_link
+#                return wiki
+#            else:
+#                print "external gov no match",f_link,pos, attr
             continue
         if f_link.find("wiki")>= 0:
             print "external wiki",f_link,pos, attr
+    return links
 
 def runtrove(name):
+    print "run trove",name
     for x in range(1,1000):
         try :
-            washpost.trove(name)
-            return
+            d= washpost.trove(name)
+            print "Got",d
+            return d
         except Exception, e:
-            print "Er", e
+            print "Er on trove", name , e
+    return None
 
+
+def extract_links(f_name_link):
+    print "extract_links",f_name_link
+    contents=""
+    try :
+        contents= cache.cacheweb(f_name_link)
+    except :
+        # try once agains
+        contents= cache.cacheweb(f_name_link)
+    return xlinks(contents)
+    
+
+def parse_name (f_name):
+    match = re.search("([\w\.\s]+)\((\w)\-([\w\.]+)\)$",f_name)   
+    if (match):
+        (name,party,state)=(match.group(1),match.group(2),match.group(3))
+    else:
+        (name,party,state)=("no name","no party","state")
+    name = name.strip()
+    name = name.rstrip()
+    return (name,party,state)
+
+def parse_link (f_name_link):
+    link = None 
+    match = re.search("\/politics\/([\w\-]+)\/([\w\-^_]+)_topic\.html$",f_name_link)
+    if (match):
+        link = match.group(1)
+        link2 = match.group(2)
+        return (link,link2)
+    else:
+        return ("","")
+
+def process_link(l):
+            f_name_link = l.get("href")
+            f_name = l.text.strip()
+
+            callit = lambda : extract_links(f_name_link)
+#           cache.delcache("wp"+ f_name)
+            extract = cache.cache("wp"+ f_name,callit)
+            (name,party,state)=parse_name (f_name)
+            (link,link2) = parse_link (f_name_link)
+####
+            callit = lambda : runtrove(name)
+#            troveid = runtrove(name)
+#            cache.delcache("wpt"+ f_name)
+            troveid = cache.cache("wpt"+ f_name,callit)
+
+#            print "missing link",link,link2,"name",name,"party",party,"state",state,"raw",f_name_link
+
+
+# search all the pages of results on congress members
 for i in range(1,100):
     offset = i * 10
     filename = "data/wp_%d" % offset
     data=None
-    if (os.path.exists(filename)):
+    if (not os.path.exists(filename)):
         data=fetch(offset)
     else:
         f = codecs.open(filename, "rb", "utf-8")
@@ -102,33 +166,7 @@ for i in range(1,100):
     html = lxml.etree.HTML(data, parser=myparser)
     for r in html.xpath("//h3") :
         for l in r.xpath("a"):
-            f_name_link = l.get("href")
+            process_link(l)
 
-            contents=""
-            try :
-                contents= cache.cacheweb(f_name_link)
-            except :
-                # try once agains
-                contents= cache.cacheweb(f_name_link)
 
-            xlinks(contents)
-
-            f_name = l.text.strip()
-            match = re.search("([\w\.\s]+)\((\w)\-([\w\.]+)\)$",f_name)   
-            if (match):
-                (name,party,state)=(match.group(1),match.group(2),match.group(3))
-            else:
-                (name,party,state)=("no name","no party","state")
-            name = name.strip()
-            name = name.rstrip()
-#            if (match):
-#                print "name",match.group(1),":",match.group(2),":",match.group(3)
-            
-            link = None 
-            match = re.search("\/politics\/([\w\-]+)\/([\w\-^_]+)_topic\.html$",f_name_link)
-            if (match):
-                link = match.group(1)
-                link2 = match.group(2)
-            #print "link",link,link2,"name",name,"party",party,"state",state,"raw",f_name_link
-            runtrove(name)
-
+legis_index_links.report()

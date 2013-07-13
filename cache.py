@@ -6,6 +6,25 @@ import urllib
 import codecs
 verbose = False
 
+def doload(x,f):
+    filename = "data/%s.pkl" % x
+    output = open(filename, 'wb')
+    data = f()
+    if data is None :
+        raise Exception (" ".join(["for",x,"for", filename,"got None"]))
+    s= str(data)
+    l =len(s)
+    if (l > 80 ):
+        l=80
+    print "for",x,"for", filename,"got",s[:l]
+    pickle.dump(data, output)
+    return data
+
+def delcache(x) :
+    filename = "data/%s.pkl" % x
+    if (os.path.exists(filename)):
+        os.remove(filename)
+
 def cache (x,f) :
 
     filename = "data/%s.pkl" % x
@@ -14,14 +33,16 @@ def cache (x,f) :
         os.makedirs("data")
     if (os.path.exists(filename)):
         pkl_file = open(filename, 'rb')
-        data = pickle.load(pkl_file)
-        return data
+        try :
+            data = pickle.load(pkl_file)
+            return data
+        except :
+            # just load it
+            return doload(x,f)
+
     else:
-        output = open(filename, 'wb')
-        data = f()
-        print "got",data
-        pickle.dump(data, output)
-        return data
+        return doload(x,f)
+
 
 def cachewp (url) :
     data = cacheweb(url)

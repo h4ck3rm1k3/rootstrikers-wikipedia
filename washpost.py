@@ -4,6 +4,7 @@ import cache
 import time
 import re
 def fetch(name): 
+    print "fetch trove",name
     params = urllib.urlencode({ 
         'key': secret.washpo(),   
         'variant': name,
@@ -37,8 +38,9 @@ def fetch(name):
 
 def trove(name) :
     headers = {}
-    key= "wp_" + name 
+    key= "wpt2_" + name 
     #print key
     f=lambda : fetch(name)
-    cache.cache(key,f)
-
+#    cache.delcache(key)
+    return cache.cache(key,f)
+    
