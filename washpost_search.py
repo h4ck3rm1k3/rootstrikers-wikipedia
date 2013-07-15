@@ -8,7 +8,7 @@ import washpost
 import time 
 import lxml.html
 import legis_index_links
-
+import pprint
 url='http://www.washingtonpost.com/newssearch/search.html'
 br = mechanize.Browser()
 br.open(url)
@@ -78,12 +78,6 @@ def xlinks (page):
         if f_link.find(".gov")>= 0:
 
             f_link = f_link.rstrip("/")
-#            wiki =legis_index_links.lookup("url",f_link)
-#            if wiki is not None :
-#                print "foun",wiki,f_link
-#                return wiki
-#            else:
-#                print "external gov no match",f_link,pos, attr
             continue
         if f_link.find("wiki")>= 0:
             print "external wiki",f_link,pos, attr
@@ -132,6 +126,19 @@ def parse_link (f_name_link):
     else:
         return ("","")
 
+def scan_links(extract,l,f_name_link, f_name,name,party,state,link,link2,troveid):
+    #    pp = pprint.PrettyPrinter(indent=4)
+    #    pp.pprint(extract)
+    for l2 in extract.keys():
+        wiki =legis_index_links.lookup("url",l2,name,party,state,link,link2,troveid)
+        if wiki is not None :
+#            print "found",wiki,l2,f_name,f_name_link
+            return wiki
+        else:
+            pass
+            #print "external gov no match",f_link,pos, attr
+
+
 def process_link(l):
             f_name_link = l.get("href")
             f_name = l.text.strip()
@@ -139,13 +146,19 @@ def process_link(l):
             callit = lambda : extract_links(f_name_link)
 #           cache.delcache("wp"+ f_name)
             extract = cache.cache("wp"+ f_name,callit)
+
             (name,party,state)=parse_name (f_name)
             (link,link2) = parse_link (f_name_link)
+
+
+
 ####
             callit = lambda : runtrove(name)
 #            troveid = runtrove(name)
 #            cache.delcache("wpt"+ f_name)
             troveid = cache.cache("wpt"+ f_name,callit)
+
+            wiki=scan_links(extract,l,f_name_link, f_name,name,party,state,link,link2,troveid)
 
 #            print "missing link",link,link2,"name",name,"party",party,"state",state,"raw",f_name_link
 
