@@ -55,6 +55,38 @@ def compare_votesmart(x,A,B) :
         except:
             print "* [[%s]] %s %s:" % (x,a,b)
 
+def compare_washpo(x,A,B) :
+    k="washpo"
+    k=u'washpo'
+    a=None
+    b=None
+    if k in  A['id']:
+        try :
+            
+            a =A['id'][k]
+            a=a.strip()
+            a=a.rstrip()
+            if (a is not None):
+                b=None
+                if (k in B):
+                    b=B[k]                
+                    b=b.strip()
+                    b=b.rstrip()
+                    if (b==""):
+                        b=None
+
+                if  b is None :
+                    print "* [[%s]] washpo = %s" % (x,a)
+#                    print B
+                else:                    
+                    if (not a == b):
+                        print "* [[%s]] washpo = %s | not \'%s\' " % (x,a,b)
+
+
+                #print "O",k,A['id'][k]
+        except Exception,e:
+            print e,"ERROR* [[%s]] %s %s:" % (x,a,b)
+
 def check_wikipedia(x,A,B) :
     a=None
     b=None
@@ -110,7 +142,8 @@ def main():
             #check_imdb(x,A,d)
             #check_wikipedia(x,A,d)
             #compare_cong(x,A,d)
-            compare_votesmart(x,A,d)
+            #compare_votesmart(x,A,d)
+            compare_washpo(x,A,d)
         except Exception,e:
             print "error1:",e
     dump.dump(legs)
