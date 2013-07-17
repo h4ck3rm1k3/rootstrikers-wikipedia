@@ -96,13 +96,17 @@ def parse_wiki_text(d,reps) :
         val = val.replace("&newMem=Y","")
         val = val.replace("&newmem=Y","")
         for x in val.split("|"):
-            
             try :
                 if (x.find("=") > 0):
                     (k,v) = x.split("=")
                     k = k.replace(" ","")
+                    k = k.replace("\'","")
                     v=v.strip(" ")
-#                    if (k == 'opensecrects') :
+                    v=v.rstrip(" ")
+                    v=v.strip("'")
+                    v=v.rstrip("'")
+
+#                    if (k == 'opensecrets') :
 #                        print "Cong" ,x,"\'%s\'" % k,v
                     d[k]=v
             except Exception,e :

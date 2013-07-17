@@ -48,44 +48,63 @@ def compare_votesmart(x,A,B) :
                 else:
                     b = int(b)
                     if (not a == b):
-                        print "* [[%s]] %s %b " % (x,a,b)
-
-
+                        print "* [[%s]] %s %s " % (x,a,b)
                 #print "O",k,A['id'][k]
         except:
             print "* [[%s]] %s %s:" % (x,a,b)
+    else:
+        print "* [[%s]]  %s " % (x,b)
 
 def compare_washpo(x,A,B) :
     k="washpo"
     k=u'washpo'
     a=None
     b=None
-    if k in  A['id']:
-        try :
-            
+    try :
+        if k in  A['id']:              
             a =A['id'][k]
-            a=a.strip()
-            a=a.rstrip()
+
             if (a is not None):
+                a=a.strip()
+                a=a.rstrip()
+
                 b=None
                 if (k in B):
                     b=B[k]                
-                    b=b.strip()
-                    b=b.rstrip()
-                    if (b==""):
-                        b=None
-
+                    if b is not None :
+                        b=b.strip()
+                        b=b.rstrip()
+                        b=b.strip("\'")
+                        b=b.rstrip("\'")
+                        if (b==""):
+                            b=None
                 if  b is None :
-                    print "* [[%s]] washpo = %s" % (x,a)
-#                    print B
+                    #print "* [[%s]] washpo = %s" % (x,a)
+                    pass
                 else:                    
-                    if (not a == b):
-                        print "* [[%s]] washpo = %s | not \'%s\' " % (x,a,b)
+                    if (not str(a) == str(b)):
+                        #print "* [[%s]] washpo = %s | not \'%s\' " % (x,a,b)
+                        A['id'][k]=b
+                        pass
+        else:
+            b=None
+            if (k in B):
+                b=B[k]                
+                b=b.strip()
+                b=b.rstrip()
+                b=b.strip("\'")
+                b=b.rstrip("\'")
+                if (b==""):
+                    b=None            
 
+            if (b == None):
+                print "* [[%s]] {{Mdupont:washpo|%s|%s}} " % (x,b,x)
+            else:
+                A['id'][k]=b
 
                 #print "O",k,A['id'][k]
-        except Exception,e:
-            print e,"ERROR* [[%s]] %s %s:" % (x,a,b)
+    except Exception,e:
+        print e,"ERROR* [[%s]] %s %s:" % (x,a,b)
 
 def check_wikipedia(x,A,B) :
     a=None
