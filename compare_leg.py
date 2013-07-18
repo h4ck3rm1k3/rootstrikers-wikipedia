@@ -51,10 +51,11 @@ def usage():
     print "-w,--wiki remove _ from names for wikis"
     print "-f fieldname,--field=fieldname"
     print "-g fieldname,--field2=fieldname2"
+    print "-v --verbose"
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "whifg:v", ["help", "field=","field2=", "int", "wiki"])
+        opts, args = getopt.getopt(sys.argv[1:], "whifg:v", ["help", "field=","field2=", "int", "wiki", "verbose"])
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err) # will print something like "option -a not recognized"
@@ -66,7 +67,7 @@ def main():
     wiki=False
     convertInt=False
     for o, a in opts:
-        if o == "-v":
+        if o in ("-v" , "--verbose"):
             verbose = True
         elif o in ("-h", "--help"):
             usage()

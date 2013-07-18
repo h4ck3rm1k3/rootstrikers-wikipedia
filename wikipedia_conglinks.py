@@ -97,14 +97,14 @@ def compare_washpo(x,A,B) :
                 if (b==""):
                     b=None            
 
-            if (b is not None):
-                A['id'][k]=b
+        if (b is not None):
+            A['id'][k]=b
 
                 #print "O",k,A['id'][k]
         if (not a == b) :
-            print "* [[%s]] {{Mdupont:washpo|%s|%s}} {{Mdupont:washpo|%s|%s}}" % (x,b,x,a,v)
-        else:
-            print "* [[%s]] {{Mdupont:washpo|%s|%s}}" % (x,b,x)
+            print "* [[%s]] {{Mdupont:washpo|%s|%s}} {{Mdupont:washpo|%s|%s}}" % (x,b,x,a,x)
+#        else:
+#            print "* [[%s]] {{Mdupont:washpo|%s|%s}}" % (x,b,x)
 
     except Exception,e:
         print e,"ERROR* [[%s]] %s %s:" % (x,a,b)
