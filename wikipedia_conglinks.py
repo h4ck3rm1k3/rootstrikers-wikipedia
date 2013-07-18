@@ -55,8 +55,22 @@ def compare_votesmart(x,A,B) :
     else:
         print "* [[%s]]  %s " % (x,b)
 
+def extractKey(B,k):
+        b=None
+        if (k in B):
+            b=B[k]                
+            if b is not None :
+                b=b.strip()
+                b=b.rstrip()
+                b=b.strip("\'")
+                b=b.rstrip("\'")
+                if (b==""):
+                    b=None
+            if  b is None :
+                print "* [[%s]] %s = None" % (x,k)
+        return b
+
 def compare_washpo(x,A,B) :
-    k="washpo"
     k=u'washpo'
     a=None
     b=None
@@ -70,39 +84,30 @@ def compare_washpo(x,A,B) :
 
                 b=None
                 if (k in B):
-                    b=B[k]                
-                    if b is not None :
-                        b=b.strip()
-                        b=b.rstrip()
-                        b=b.strip("\'")
-                        b=b.rstrip("\'")
-                        if (b==""):
-                            b=None
-                if  b is None :
-                    #print "* [[%s]] washpo = %s" % (x,a)
-                    pass
+                    b=extractKey(B,k)
                 else:                    
                     if (not str(a) == str(b)):
                         #print "* [[%s]] washpo = %s | not \'%s\' " % (x,a,b)
                         A['id'][k]=b
                         pass
+            else:
+
+                b=extractKey(B,k)
+                if (b is not None):
+                    A['id'][k]=b
+                    #print "* [[%s]] washpo added to " % (x), b
+                else:
+                    print "* [[%s]] washpo is null " % (x), B["raw"]
+
         else:
-            b=None
-            if (k in B):
-                b=B[k]                
-                b=b.strip()
-                b=b.rstrip()
-                b=b.strip("\'")
-                b=b.rstrip("\'")
-                if (b==""):
-                    b=None            
+            b=extractKey(B,k)
 
         if (b is not None):
             A['id'][k]=b
-
+        
                 #print "O",k,A['id'][k]
-        if (not a == b) :
-            print "* [[%s]] {{Mdupont:washpo|%s|%s}} {{Mdupont:washpo|%s|%s}}" % (x,b,x,a,x)
+#        if (not a == b) :
+            #print "* [[%s]] {{Mdupont:washpo|%s|%s}} {{Mdupont:washpo|%s|%s}}" % (x,b,x,a,x)
 #        else:
 #            print "* [[%s]] {{Mdupont:washpo|%s|%s}}" % (x,b,x)
 
@@ -119,17 +124,6 @@ def check_wikipedia(x,A,B) :
         b=B[k]
     if b is not None:
         print x,a,b
-
-# def check_washpo(x,A,B) :
-#     a=None
-#     b=None
-#     k="washpo"
-#     if k in  A['id']:
-#         a =A['id'][k]
-#     if k in B:
-#         b=B[k]
-#     if b is not None:
-#         print x,a,b
 
 def main():
     try:

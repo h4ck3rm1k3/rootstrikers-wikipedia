@@ -89,9 +89,10 @@ def parse_wiki_page(x,reps,obj):
     return parse_wiki_page_links(html,reps,obj)
 
 def parse_wiki_text(d,reps) :
-    match= re.search("{{CongLinks(.+)}}", d)
+    matches= re.finditer("{{CongLinks(.+)}}", d)
     d = {}
-    if (match):
+    d["raw"]=""
+    for match in matches :
         val = match.group(1)
         val = val.replace("&newMem=Y","")
         val = val.replace("&newmem=Y","")
@@ -105,13 +106,10 @@ def parse_wiki_text(d,reps) :
                     v=v.rstrip(" ")
                     v=v.strip("'")
                     v=v.rstrip("'")
-
-#                    if (k == 'opensecrets') :
-#                        print "Cong" ,x,"\'%s\'" % k,v
                     d[k]=v
             except Exception,e :
                 print "error1",x, e, val
-        d["raw"]= val
+        d["raw"]= d["raw"] + val
     return d 
     
 def parse_wiki_source(x,reps):

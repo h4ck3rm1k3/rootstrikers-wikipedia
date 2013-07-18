@@ -32,9 +32,14 @@ def compare(a,b,field,field2,convertInt,verbose,wiki) :
             if wiki :
                 v= v.replace("_"," ")
 
-            b['wp'][x]['id'][field]=v
-            if (verbose) :
-                print "updated", field ,"for id" ,x, v
+            if (v is not None ):
+                b['wp'][x]['id'][field]=v
+                if (verbose) :
+                    print "updated", field ,"for id" ,x, v
+            else:
+                if (verbose) :
+                    print "source was null, not updated:", field ,"for id" ,x
+                
         else :
             if (v2 is None ):
                 print "missing", field ,"in source" ,x
