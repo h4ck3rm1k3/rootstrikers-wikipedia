@@ -4,7 +4,8 @@ import re
 import urllib2
 import urllib
 import codecs
-verbose = False
+#verbose = False
+verbose = True
 
 def doload(x,f):
     filename = "data/%s.pkl" % x
@@ -149,10 +150,15 @@ def cacheweb2 (url) :
         os.makedirs("data")
     if (os.path.exists(filename)):
         if verbose :
-            print "get file" + url
-        f = codecs.open(filename, "rb", "utf-8")
-        data= f.read()
-        return data
+            print "get file:" ,url, filename
+            try : 
+                f = codecs.open(filename, "rb", "utf-8")
+                data= f.read()
+                return data
+            except :
+                f = open(filename, "rb")
+                data= f.read()
+                return data
     else:
         print "get " + url
         r = urllib2.Request(url=url, headers=hdr     )

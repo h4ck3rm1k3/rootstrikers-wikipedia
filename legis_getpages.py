@@ -20,17 +20,35 @@ we can use that to look for links in the washpost pages by url or phone.
 
 seen={} 
 
+import lxml.html
+def scan_contact(data, base_url) :
+    try :
+        d = lxml.html.document_fromstring( data   )
+        d.make_links_absolute(base_url)
+        for (f_name_element, attr , f_link, pos) in d.iterlinks():
+            if(attr == 'href'):
+                if f_link.find("email-me") > 0:
+                    print (f_name_element, attr , f_link, pos)
+                    return f_link
+    except Exception, e:
+        print e, "cannot read" , base_url
+        return None
+
 def index(contacts,n,term,field_list):
     global seen 
+    main = cache.cacheweb2 (term['url'])
+    
     for f in field_list :
         if f in term :
             url= term[f]
+            newdata=None
             if url in seen:
                 continue        
             try:
-                d = cache.cacheweb2 (url)
+                d = cache.cacheweb2 (url)    
             except Exception, e:
                 print e, url
+                newdata=scan_contact(main,term['url'])
 #                seen[url]=1
 #                try :
 #                    d = cache.cacheweb ("http://web.archive.org/web/*/" + url)
@@ -38,14 +56,21 @@ def index(contacts,n,term,field_list):
 #                    print e, url                    
         else:
             print f, " missing in ",n, term
+            newdata=scan_contact(main,term['url'])
+
+        if newdata is not None:
+            term[f]=newdata
+
+    return term 
 
 def process():            
     global _legs
     contacts={}
     for x in sorted(_legs['wp'].keys()):
         t = _legs['wp'][x]['terms'][-1]
+        t = index(contacts,x,t,['contact_form'])
 #        index(contacts,x,t,['url'])
-        index(contacts,x,t,['contact_form'])
+
 #        index(contacts,x,t,'url',['contact_form','url','rss_url'])
 
 #            index(contacts,x,t,'url',['url'])
@@ -61,7 +86,8 @@ def doit():
 
 _legs=loadlegs()
 
-doit();
-
 def save():
     dump.dump(_legs)
+
+doit()
+save()
