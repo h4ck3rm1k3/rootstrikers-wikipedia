@@ -60,8 +60,8 @@ def cacheweb (url) :
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Cache-Control' : 'no-cache, no-store, max-age=0, must-revalidate',
         'Pragma' : 'no-cache',
-        'Accept-Charset': 'utf-8',
-        'Accept-Language': 'en-US',
+#        'Accept-Charset': 'utf-8',
+#        'Accept-Language': 'en-US',
         'Connection': 'keep-alive'
     }
     url2=url
@@ -81,27 +81,109 @@ def cacheweb (url) :
     else:
 
         print "get " + url
-
-
         r = urllib2.Request(url=url, headers=hdr     )
         d=None
 
         try:
             d = urllib2.urlopen(r)
         except urllib2.HTTPError, e:
-#            print "http",e
+            print "http",e
             raise e 
         except Exception, e: 
-#            print "other",e
+            print "other",e
             raise e 
         except:
             print "could not load "
             exit()
 
-        data= d.read()
-        data = data.decode("utf-8")
-        f = codecs.open(filename,'wb','utf-8')
 
-        f.write(data)
+
+        data= d.read()
+
+        try :
+            data2 = data.decode("utf-8")
+            f = codecs.open(filename,'wb','utf-8')
+            f.write(data2)
+        except Exception, e :
+            print "decoding", e
+
+            try :
+                f = open(filename,'wb')
+                f.write(data)
+            except Exception, e :
+                print "decoding2", e
+
         return data
 
+import pycurl
+import StringIO
+    
+def curlget(url):
+    c = pycurl.Curl()
+    c.setopt(pycurl.URL, url)
+    print " pycurl", url
+    b = StringIO.StringIO()
+    c.perform()
+    c.close()
+    data = b.getvalue()
+    return data
+
+def cacheweb2 (url) :
+    if verbose :
+        print "get", url
+    hdr = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+#        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+#        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+#        'Cache-Control' : 'no-cache, no-store, max-age=0, must-revalidate',
+#        'Pragma' : 'no-cache',
+#        'Accept-Charset': 'utf-8',
+#        'Accept-Language': 'en-US',
+#        'Connection': 'keep-alive'
+    }
+    url2=url
+    url2=url2.replace("/","_")
+    filename = "data/" + url2
+    filename = filename.replace('action=purge&','')
+    if not os.path.exists("data"):
+        os.makedirs("data")
+    if (os.path.exists(filename)):
+        if verbose :
+            print "get file" + url
+        f = codecs.open(filename, "rb", "utf-8")
+        data= f.read()
+        return data
+    else:
+        print "get " + url
+        r = urllib2.Request(url=url, headers=hdr     )
+        d=None
+        try:
+            d = urllib2.urlopen(r)
+        except urllib2.HTTPError, e:
+
+            if e.code == 403 :
+                print "pycurl",e,e.code
+                d=curlget(url)
+            else:
+                print "http",e,e.code
+                raise e 
+            
+        except Exception, e: 
+            print "other",e
+            raise e 
+        except:
+            print "could not load "
+            exit()
+        data= d.read()
+        try :
+            data2 = data.decode("utf-8")
+            f = codecs.open(filename,'wb','utf-8')
+            f.write(data2)
+        except Exception, e :
+            print "decoding", e
+            try :
+                f = open(filename,'wb')
+                f.write(data)
+            except Exception, e :
+                print "decoding2", e
+        return data
