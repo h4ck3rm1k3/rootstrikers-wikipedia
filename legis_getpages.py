@@ -30,6 +30,12 @@ def scan_contact(data, base_url) :
                 if f_link.find("email-me") > 0:
                     print (f_name_element, attr , f_link, pos)
                     return f_link
+                if f_link.find("email") > 0:
+                    print (f_name_element, attr , f_link, pos)
+                    return f_link
+                if f_link.find("contact") > 0:
+                    print (f_name_element, attr , f_link, pos)
+                    return f_link
     except Exception, e:
         print e, "cannot read" , base_url
         return None

@@ -4,8 +4,8 @@ import re
 import urllib2
 import urllib
 import codecs
-#verbose = False
-verbose = True
+verbose = False
+#verbose = True
 
 def doload(x,f):
     filename = "data/%s.pkl" % x
@@ -166,13 +166,12 @@ def cacheweb2 (url) :
         try:
             d = urllib2.urlopen(r)
         except urllib2.HTTPError, e:
-
             if e.code == 403 :
-                print "pycurl",e,e.code
-                d=curlget(url)
+                print "403!",url,e,e.code
+#                d=curlget(url)
             else:
-                print "http",e,e.code
-                raise e 
+                print "http",url,e,e.code
+            raise e 
             
         except Exception, e: 
             print "other",e
