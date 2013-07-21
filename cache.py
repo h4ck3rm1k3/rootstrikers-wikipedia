@@ -54,8 +54,8 @@ def cachewp (url) :
 
 
 def cacheweb (url) :
-    if verbose :
-        print "get", url
+#    if verbose :
+#        print "get", url
     hdr = {
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -75,38 +75,40 @@ def cacheweb (url) :
 
     if (os.path.exists(filename)):
         if verbose :
-            print "get file" + url
-        f = codecs.open(filename, "rb", "utf-8")
-        data= f.read()
-        return data
-    else:
-
-        print "get " + url
-        r = urllib2.Request(url=url, headers=hdr     )
-        d=None
-
+            print "get url" , url, " from file ", filename
         try:
-            d = urllib2.urlopen(r)
-        except urllib2.HTTPError, e:
-            print "http",e
-            raise e 
-        except Exception, e: 
-            print "other",e
-            raise e 
-        except:
-            print "could not load "
-            exit()
+            f = codecs.open(filename, "rb", "utf-8")
+            data= f.read()
+            return data
+        except Exception,e :
+            print "failed to open, ", e, "try again without utf8"
+            f = open(filename, "rb")
+            data= f.read()
+            return data
 
+    ###
 
-
+    r = urllib2.Request(url=url, headers=hdr     )
+    d=None
+    try:
+        d = urllib2.urlopen(r)
+    except urllib2.HTTPError, e:
+        print "error http",e
+        raise e 
+    except Exception, e: 
+        print "other",e
+        raise e 
+    except:
+        print "could not load "
+        exit()
         data= d.read()
-
         try :
             data2 = data.decode("utf-8")
             f = codecs.open(filename,'wb','utf-8')
             f.write(data2)
+            print "write", filename
         except Exception, e :
-            print "decoding", e
+            print "error decoding", e
 
             try :
                 f = open(filename,'wb')
@@ -114,7 +116,7 @@ def cacheweb (url) :
             except Exception, e :
                 print "decoding2", e
 
-        return data
+    return data
 
 import pycurl
 import StringIO
@@ -129,66 +131,3 @@ def curlget(url):
     data = b.getvalue()
     return data
 
-def cacheweb2 (url) :
-    if verbose :
-        print "get", url
-    hdr = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-#        'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-#        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#        'Cache-Control' : 'no-cache, no-store, max-age=0, must-revalidate',
-#        'Pragma' : 'no-cache',
-#        'Accept-Charset': 'utf-8',
-#        'Accept-Language': 'en-US',
-#        'Connection': 'keep-alive'
-    }
-    url2=url
-    url2=url2.replace("/","_")
-    filename = "data/" + url2
-    filename = filename.replace('action=purge&','')
-    if not os.path.exists("data"):
-        os.makedirs("data")
-    if (os.path.exists(filename)):
-        if verbose :
-            print "get file:" ,url, filename
-            try : 
-                f = codecs.open(filename, "rb", "utf-8")
-                data= f.read()
-                return data
-            except :
-                f = open(filename, "rb")
-                data= f.read()
-                return data
-    else:
-        print "get " + url
-        r = urllib2.Request(url=url, headers=hdr     )
-        d=None
-        try:
-            d = urllib2.urlopen(r)
-        except urllib2.HTTPError, e:
-            if e.code == 403 :
-                print "403!",url,e,e.code
-#                d=curlget(url)
-            else:
-                print "http",url,e,e.code
-            raise e 
-            
-        except Exception, e: 
-            print "other",e
-            raise e 
-        except:
-            print "could not load "
-            exit()
-        data= d.read()
-        try :
-            data2 = data.decode("utf-8")
-            f = codecs.open(filename,'wb','utf-8')
-            f.write(data2)
-        except Exception, e :
-            print "decoding", e
-            try :
-                f = open(filename,'wb')
-                f.write(data)
-            except Exception, e :
-                print "decoding2", e
-        return data
