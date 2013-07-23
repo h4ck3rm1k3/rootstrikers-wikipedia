@@ -101,22 +101,25 @@ def cacheweb (url) :
     except:
         print "could not load "
         exit()
-        data= d.read()
+    
+    data= d.read()
+    try :
+        data2 = data.decode("utf-8")
+        f = codecs.open(filename,'wb','utf-8')
+        f.write(data2)
+        print "write", filename
+        return data
+    except Exception, e :
+        print "error decoding", e
+        
         try :
-            data2 = data.decode("utf-8")
-            f = codecs.open(filename,'wb','utf-8')
-            f.write(data2)
-            print "write", filename
+            f = open(filename,'wb')
+            f.write(data)
+            return data
         except Exception, e :
-            print "error decoding", e
+            print "decoding2", e
 
-            try :
-                f = open(filename,'wb')
-                f.write(data)
-            except Exception, e :
-                print "decoding2", e
-
-    return data
+    return None
 
 import pycurl
 import StringIO
