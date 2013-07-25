@@ -1,3 +1,6 @@
+fecelectronic:
+	python fec_electronic.py
+
 feccontrib:
 	python fec_electronic_contrib.py
 

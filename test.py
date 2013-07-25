@@ -1,8 +1,6 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
-import encode
-wiki = u"Rubén Hinojosa"
-legis = u"Rubén Hinojosa"
+import sys
+print sys.path
+import pdfminer.layout 
+from pdfminer.layout import LAParams
 
-print encode.decode(wiki)
-print encode.decode(legis)

@@ -4,8 +4,8 @@ import re
 import urllib2
 import urllib
 import codecs
-verbose = False
-#verbose = True
+#verbose = False
+verbose = True
 
 def doload(x,f):
     filename = "data/%s.pkl" % x
@@ -53,18 +53,7 @@ def cachewp (url) :
     return data
 
 
-def cacheweb (url) :
-#    if verbose :
-#        print "get", url
-    hdr = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Cache-Control' : 'no-cache, no-store, max-age=0, must-revalidate',
-        'Pragma' : 'no-cache',
-#        'Accept-Charset': 'utf-8',
-#        'Accept-Language': 'en-US',
-        'Connection': 'keep-alive'
-    }
+def cachewebfile (url) :
     url2=url
     url2=url2.replace("/","_")
     filename = "data/" + url2
@@ -76,17 +65,20 @@ def cacheweb (url) :
     if (os.path.exists(filename)):
         if verbose :
             print "get url" , url, " from file ", filename
-        try:
-            f = codecs.open(filename, "rb", "utf-8")
-            data= f.read()
-            return data
-        except Exception,e :
-            print "failed to open, ", e, "try again without utf8"
-            f = open(filename, "rb")
-            data= f.read()
-            return data
+            return filename
 
     ###
+#    if verbose :
+#        print "get", url
+    hdr = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Cache-Control' : 'no-cache, no-store, max-age=0, must-revalidate',
+        'Pragma' : 'no-cache',
+#        'Accept-Charset': 'utf-8',
+#        'Accept-Language': 'en-US',
+        'Connection': 'keep-alive'
+    }
 
     r = urllib2.Request(url=url, headers=hdr     )
     d=None
@@ -107,17 +99,37 @@ def cacheweb (url) :
         data2 = data.decode("utf-8")
         f = codecs.open(filename,'wb','utf-8')
         f.write(data2)
+        f.close()
         print "write", filename
-        return data
+        return filename
     except Exception, e :
         print "error decoding", e
         
         try :
             f = open(filename,'wb')
             f.write(data)
-            return data
+            f.close()
+            return filename
         except Exception, e :
             print "decoding2", e
+    
+    return None
+
+def cacheweb (url) :
+
+    filename =cachewebfile (url)
+    if (os.path.exists(filename)):
+        if verbose :
+            print "get url" , url, " from file ", filename
+        try:
+            f = codecs.open(filename, "rb", "utf-8")
+            data= f.read()
+            return data
+        except Exception,e :
+            print "failed to open, ", e, "try again without utf8"
+            f = open(filename, "rb")
+            data= f.read()
+            return data
 
     return None
 
