@@ -2,13 +2,6 @@ import zipfile
 import os 
 import re
 
-class Parser :
-    
-    def endHeader(self):
-        print "END HEADER"
-
-    def HDR(self,l):
-        print "HEADER LINE", l.split(",")
 
 class ZipCSV :
     def process_csv (self,filename):
@@ -19,8 +12,9 @@ class ZipCSV :
             d=zfile.read(name)
             for l in d.split("\n"):
                 self.process(l)
-    def process_generate (self,filename,classname):
-        h = Parser()
+
+    def process_generate (self,filename,classname,parser):
+#        h = Parser()
 
         zfile = zipfile.ZipFile(filename)
         for name in zfile.namelist():
@@ -30,12 +24,21 @@ class ZipCSV :
            
             for l in d.split("\n"):
                 if re.match(r'\/\* End Header',l):
-                    h.endHeader()
+                    parser.endHeader()
                     return
 
                 if re.match(r'HDR',l):
-                    h.HDR(l)
+                    parser.HDR(l)
                     return
+
+                if re.match(r'\'HDR\'',l):
+                    parser.HDR(l,quote='\'')
+                    return
+
+                if re.match(r'\"HDR\"',l):
+                    parser.HDR(l,quote='\"')
+                    return
+
 #                print l
 #                v=l.split("")
                 
