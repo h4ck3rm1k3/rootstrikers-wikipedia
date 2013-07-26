@@ -1,9 +1,25 @@
 #porting of fetch to python
 #code borrowed from https://github.com/NYTimes/Fech
 #wich is under the apache license https://github.com/NYTimes/Fech/blob/master/LICENSE
+import re 
 
-#
+#state enum
+STATE_UNKNOWN=0
+STATE_HEADER=1
+STATE_BODY=2
+
 class Parser :
+
+  
+  # Converts symbols and strings to Regexp objects for use in regex-keyed maps.
+  # Assumes that symbols should be matched literally, strings unanchored.
+  # @param [String,Symbol,Regexp] label the object to convert to a Regexp
+    def regexify(self, label):
+        if label in self.ROW_TYPES_REGEX :
+            return ROW_TYPES[label]
+        else:
+            return r("^#{label.to_s}$")
+
     def RowTypes_hdr() : 
         pass
     def RowTypes_f1():
@@ -1294,6 +1310,54 @@ class Parser :
                                   "F94", "F99", "H1", "H2", "H3", "H4", "H5", "H6",
                                   "SchA", "SchB", "SchC", "SchC1", "SchC2", "SchD", "SchE", "SchF", "SchL", "TEXT"]
         
+        ###
+        self.ROW_TYPES_REGEX = {
+            'hdr'   : r'^hdr$',
+            'f1'    : r'^f1',
+            'f13'   : r'^f13[an]',
+            'f132'  : r'^f132',
+            'f133'  : r'^f133',
+            'f1m'   : r'(^f1m[^a|n])',
+            'f2'    : r'(^f2$)|(^f2[^4])',
+            'f24'   : r'(^f24$)|(^f24[an])',
+            'f3'    : r'^f3[a|n|t]',
+            'f3l'   : r'^f3l[a|n]',
+            'f3p'   : r'(^f3p$)|(^f3p[^s|3])',
+            'f3s'   : r'^f3s',
+            'f3p31' : r'^f3p31',
+            'f3ps'  : r'^f3ps',
+            'f3x'   : r'(^f3x$)|(^f3x[ant])',
+            'f4'    : r'^f4[na]',
+            'f5'    : r'^f5[na]',
+            'f56'   : r'^f56',
+            'f57'   : r'^f57',
+            'f6'    : r'(^f6$)|(^f6[an])',
+            'f65'   : r'^f65',
+            'f7'    : r'^f7[na]',
+            'f76'   : r'^f76',
+            'f9'    : r'^f9',
+            'f91'   : r'^f91',
+            'f92'   : r'^f92',
+            'f93'   : r'^f93',
+            'f94'   : r'^f94',
+            'f99'   : r'^f99',
+            'h1'    : r'^h1',
+            'h2'    : r'^h2',
+            'h3'    : r'^h3',
+            'h4'    : r'^h4',
+            'h5'    : r'^h5',
+            'h6'    : r'^h6',
+            'sa'    : r'^sa',
+            'sb'    : r'^sb',
+            'sc'    : r'^sc[^1-2]',
+            'sc1'   : r'^sc1',
+            'sc2'   : r'^sc2',
+            'sd'    : r'^sd',
+            'se'    : r'^se',
+            'sf'    : r'^sf',
+            'sl'    : r'^sl',
+            'text'  : r'^text',
+        }
 
         self.ROW_TYPES = {
             "HDR"    : self.RowTypes_hdr,
@@ -1589,8 +1653,13 @@ class Parser :
           }
 
     
+    def startHeader(self):
+        self.state=STATE_HEADER
+        print "start HEADER"
+    
     def endHeader(self):
         print "END HEADER"
+        self.state=STATE_BODY
 
     def HDR(self,l,quote=""):
         print "HEADER LINE",l, l.split(",")
@@ -1605,4 +1674,70 @@ class Parser :
         # # quote_row2= parts[6]
         # # quote_row3= parts[6]
 
-        
+
+    def delimiter(self,filing_version):
+        if (filing_version.to_f < 6):
+            return  "," 
+        return "\034"
+
+    def filing_url(self):
+        return "http://query.nictusa.com/dcdev/posted/#{filing_id}.fec"
+
+
+    def parse_file_data_line(self,l):
+#        if re.match(r'\034',l):
+        if l.find("\034") > 0:
+            print "found 034 in %s" % l
+            #if first.index("\034").nil?
+
+        if re.match(r'\/\* Header',l):
+            self.startHeader()
+            return 
+
+        if re.match(r'\/\* End Header',l):
+            self.endHeader()
+            return
+        if re.match(r'HDR',l):
+            self.HDR(l)
+            return
+        if re.match(r'\'HDR\'',l):
+            self.HDR(l,quote='\'')
+            return
+        if re.match(r'\"HDR\"',l):
+            self.HDR(l,quote='\"')
+            return
+
+        if self.state==STATE_HEADER :
+            print "in header", l 
+            return
+
+        if self.state==STATE_BODY :
+            print "in body", l 
+            return
+
+        print l
+#                v=l.split("")              
+#                self.generate(v,classname)
+#                return
+
+
+    def parse_file_data(self,d):
+        for l in d.split("\n")[0:20]:
+            self.parse_file_data_line(l)
+
+    def generate(self,v,name):
+        c=0
+#        print "class %s:"  % name
+        v2=[]
+        v3=[]
+        for f in v :
+            f=f.strip(" ").rstrip(" ")
+            f=f.strip("\"").rstrip("\"")
+            #self.fields_dict[f]=c
+            print "    %s=%d" % (f,c)
+#            print "    def get%s(self):\n        return self.v[%s.%s]" % (f,name,f)            
+            c=c+1
+#            v2.append(f)       
+#            v3.append("r.get%s()" % (f)) 
+#        print "    fields=%s" % (v2)
+#        print "    def printall(self):\n        print %s" % (",".join(v3))
