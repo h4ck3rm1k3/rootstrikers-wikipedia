@@ -8,6 +8,11 @@ STATE_UNKNOWN=0
 STATE_HEADER=1
 STATE_BODY=2
 
+class FileObject :
+    def  __init__(self):
+        self.attributes={}
+
+
 class Parser :
 
   
@@ -1655,8 +1660,14 @@ class Parser :
     
     def startHeader(self):
         self.state=STATE_HEADER
+
         print "start HEADER"
-    
+
+    def header_line(self,line):
+        parts= line.split('=')
+        if (len(parts) > 1):
+            self.current.attributes[parts[0]]=parts[1]
+
     def endHeader(self):
         print "END HEADER"
         self.state=STATE_BODY
@@ -1673,7 +1684,7 @@ class Parser :
         # # quote_row= parts[5]
         # # quote_row2= parts[6]
         # # quote_row3= parts[6]
-
+        self.state=STATE_BODY
 
     def delimiter(self,filing_version):
         if (filing_version.to_f < 6):
@@ -1709,10 +1720,25 @@ class Parser :
 
         if self.state==STATE_HEADER :
             print "in header", l 
+            self.header_line(l)
             return
 
         if self.state==STATE_BODY :
             print "in body", l 
+            body=l.split(",")
+            for k in self.ROW_TYPES_REGEX.keys():
+                v = self.ROW_TYPES_REGEX[k]
+                btype=body[0]
+                g = re.findall("(" + v + ")", btype,   re.IGNORECASE )
+                if (g is not None):
+                    if (len(g)  > 0):
+                        print "check: ",  k, v, g ,btype, body
+                    else:
+                        pass
+#                        print "check3, (" + v + ")", btype
+                else:
+                    pass
+#                    print "check2, (" + v + ")", btype
             return
 
         print l
@@ -1722,8 +1748,11 @@ class Parser :
 
 
     def parse_file_data(self,d):
+        self.current=FileObject()
         for l in d.split("\n")[0:20]:
             self.parse_file_data_line(l)
+        print "COLLECTED",self.current.attributes
+        self.current=None
 
     def generate(self,v,name):
         c=0
