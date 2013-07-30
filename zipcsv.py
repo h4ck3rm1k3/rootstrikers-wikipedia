@@ -14,8 +14,6 @@ class ZipCSV :
                 self.process(l)
 
     def process_generate (self,filename,classname,parser):
-#        h = Parser()
-
         zfile = zipfile.ZipFile(filename)
         for name in zfile.namelist():
             (dirname, filename) = os.path.split(name)

@@ -3,6 +3,7 @@
 import cache
 import zipcsv
 import Fech
+import Fech_rendered_maps
 
 #def get(url, name):
 #    return cache.cachewebfile(url)
@@ -14,7 +15,7 @@ def listing():
             f= cache.cachewebfile('ftp://ftp.fec.gov/FEC/electronic/' + f)
             print f
             e1=zipcsv.ZipCSV()
-            parser=Fech.Parser()
+            parser=Fech_rendered_maps.FieldParser()
             e1.process_generate (f,"FecElectronicFilings",parser)
 
 l = listing()
