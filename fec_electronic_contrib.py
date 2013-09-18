@@ -1,111 +1,152 @@
+u"""
+Produce a wikitable based on the fec data
+the output files are written next to the input files
+"""
+
 import legislators_current as leg
 import datetime
+import getopt
+import sys
+
 
 def dord(day):
-    day=int(day)
+    u"""
+    day ordinal, inflect the day
+    """
+    day = int(day)
     if 4 <= day <= 20 or 24 <= day <= 30:
         suffix = "th"
     else:
         suffix = ["st", "nd", "rd"][day % 10 - 1]
-
     return "%d%s" % (day, suffix)
 
 
-def process(filename,verbose):
-    if verbose :
-        print ("reading", filename)
-    ################################################
-    f = open(filename,"rb")
+def format_date(date):
+    u"""
+    format the date
+    """
+    date = datetime.datetime.strptime(date, "%Y%m%d")
+    record_day = dord(date.strftime("%d"))
+    record_month = date.strftime("%B")
+    record_year = date.strftime("%Y")
+    return  "%s %s %s" % (record_month, record_day, record_year)
 
+
+def wikify_fields(fecids, fields, table, wiki):
+    u"""
+    Wikify the fields, and write them to the table as well
+    """
+
+    date = fields[19]
+    amount = float(fields[20])
+    fromfec = fields[1]
+    #fec = fields[24]
+    fec2 = fields[26]
+    campaign = fields[22]
+    committee = fields[6]
+    #name = ' '.join([fields[28], fields[29], fields[27]])
+    #state = fields[33]
+
+    if (fec2 in fecids):
+        tablestr = (
+            "|-\n|[[%s]]\n|"
+            " [[%s]]\n| $%s\n| %s | %s | '''%s'''" % (
+                fromfec,
+                fecids[fec2]['id']["wikipedia"],
+                amount,
+                format_date(date),
+                campaign,
+                committee
+            )
+        )
+        table.write(tablestr.encode("UTF-8"))
+        wikistr = (
+            " * [[%s]] %s donated $%s on %s "
+            "to the %s via '''%s'''." % (
+                fecids[fec2]['id']["wikipedia"],
+                fromfec,
+                amount,
+                date,
+                campaign,
+                committee
+            )
+        )
+        wiki.write(wikistr.encode("UTF-8"))
+
+
+def process(filename, verbose):
+    u"""
+    Process the file
+    """
+    if verbose:
+        print("reading", filename)
+    #
+    fileobj = open(filename, "rb")
     wiki = open(filename + '.wiki', "wb")
     table = open(filename + '.wikitable', "wb")
+    legs = leg.load()
+    # index
+    fecids = {}
+    for fec_id in sorted(legs['wp'].keys()):
+        if 'fec' in legs['wp'][fec_id]['id']:
+            for field in legs['wp'][fec_id]['id']['fec']:
+                fecids[field] = legs['wp'][fec_id]
 
-    legs=leg.load()
 
-    ## index
-    fecids={}
-    for x in sorted(legs['wp'].keys()):
-        if 'fec' in legs['wp'][x]['id']:
-            for field in legs['wp'][x]['id']['fec']:
-                fecids[field]=legs['wp'][x]
-            #else:
-            #print "no fec", legs['wp'][x]
-
-    ################################################
-    d = f.read()
-    for l in d.split("\n"):
-        if l[0:4] == "SB23" :
-#            print "---"
-            fields=l.split("")
-            i=0
-            for f in fields:
-                i = i +1
-            f=fields
-            date = f[19]
-            amount = float(f[20])
-            if amount < 0 :
-                continue
-            fromfec = f[1]
-            fec = f[24]
-            fec2 = f[26]
-            campaign = f[22]
-            committee =f[6]
-            name = ' '.join([ f[28],f[29], f[27]])
-            state = f[33]
-
-            if (fec2 in fecids):
-                date = datetime.datetime.strptime(date, "%Y%m%d")
-                day = dord(date.strftime("%d"))
-                m = date.strftime("%B")
-                y = date.strftime("%Y")
-                date = "%s %s %s" % (m,day,y)
-                tablestr= "|-\n|[[%s]]\n| [[%s]]\n| $%s\n| %s | %s | '''%s'''" %  ( fromfec, fecids[fec2]['id']["wikipedia"] , amount, date, campaign,committee  )
-                table.write(tablestr )
-                wikistr=" * [[%s]] %s donated $%s on %s to the %s via '''%s'''." %  (fecids[fec2]['id']["wikipedia"], fromfec, amount, date, campaign,committee  )
-                wiki.write( wikistr)
-#                print wikistr
-
-            else:
-                print "fec2 missing", fec2, fields
-
+    for line in fileobj.read().split("\n"):
+        # TODO : this should tie into the real parser
+        if line[0:4] == "SB23":
+        #            print "---"
+            fields = line.split("")
+            wikify_fields(fecids, fields, table, wiki)
     wiki.close()
     table.close()
 
 
-####
-import getopt, sys
-
 def usage():
+    u"""
+    print usage
+    """
     print "--help"
     print "-f,--file read this file"
     print "-v --verbose"
 
+
 def main():
+    u"""
+    main routine
+    """
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hf:v", ["help", "file=","verbose"])
+        (opts, args) = getopt.getopt(
+            sys.argv[1:],
+            "hf:v",
+            ["help",
+             "file=",
+             "verbose"]
+        )
+        
     except getopt.GetoptError as err:
         # print help information and exit:
-        print str(err) # will print something like "option -a not recognized"
+        print str(err)  # will print something like "option -a not recognized"
         usage()
         sys.exit(2)
     filename = None
     verbose = False
-    print opts
-    for o, a in opts:
-        if o in ("-v" , "--verbose"):
+    print (opts, args)
+    for opt, value in opts:
+        if opt in ("-v", "--verbose"):
             verbose = True
-        elif o in ("-h", "--help"):
+        elif opt in ("-h", "--help"):
             usage()
             sys.exit()
-        elif o in ("-f", "--file"):
-            filename = a
+        elif opt in ("-f", "--file"):
+            filename = value
         else:
             assert False, "unhandled option"
-    if filename is not None :
-        process(filename,verbose)
+    if filename is not None:
+        process(filename, verbose)
     else:
         print "Filename is none"
 
 if __name__ == "__main__":
     main()
-

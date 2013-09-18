@@ -2,7 +2,7 @@ import os
 import pickle
 import re
 import urllib2
-import urllib
+#import urllib
 import codecs
 #verbose = False
 verbose = True

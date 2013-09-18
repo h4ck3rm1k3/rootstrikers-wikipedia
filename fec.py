@@ -1,20 +1,33 @@
+u'''
+routine to load and cache all fec data
+'''
 import cache
 
+
+FECDATAURL = 'http://www.fec.gov/data/'
+FECDISPURL = 'ftp://ftp.fec.gov/FEC/data.fec.gov/candidate_disbursement/'
+
 def expenses():
-    url='http://www.fec.gov/data/IndependentExpenditure.do?format=xml'
+    u'''
+    '''
+    url = FECDATAURL + '/IndependentExpenditure.do?format=xml'
     return cache.cacheweb(url)
 
-def CommitteeSummary() :
-    url='http://www.fec.gov/data/CommitteeSummary.do?format=xml'
+
+def committee_summary():
+    u'''
+    '''
+    url = FECDATAURL + '/CommitteeSummary.do?format=xml'
     return cache.cacheweb(url)
 
 
-
-def all_candidate_disbursement() :
-    data={}
-    for x in ['AK_01.xml',
+def all_candidate_disbursement():
+    u'''
+    '''
+    data = {}
+    for filename in ['AK_01.xml',
               'AK_all_house_senate.xml',
-              'AK_all_house.xml', 
+              'AK_all_house.xml',
               'AK_all_senate.xml',
               'AK_S0AK00097.xml',
               'AK_S0AK00121.xml',
@@ -911,35 +924,59 @@ def all_candidate_disbursement() :
               'WY_01.xml',
               'WY_all_house_senate.xml',
               'WY_all_house.xml',
-              'WY_all_senate.xml'] :
-        url='ftp://ftp.fec.gov/FEC/data.fec.gov/candidate_disbursement/' + x 
-        data[x]=cache.cacheweb(url)
+              'WY_all_senate.xml']:
+        url = FECDISPURL + filename
+        data[filename] = cache.cacheweb(url)
     return data
-            
-def CandidateSummary():
-    url='http://www.fec.gov/data/CandidateSummary.do?format=xml'
+
+
+def candidate_summary():
+    u'''
+    '''
+    url = FECDATAURL + '/CandidateSummary.do?format=xml'
     return cache.cacheweb(url)
 
-def CampaignAndCommitteeSummary():
-    url='http://www.fec.gov/data/CampaignAndCommitteeSummary.do?format=xml'
+
+def campaign_and_committee_summary():
+    u'''
+    '''
+    url = FECDATAURL + '/CampaignAndCommitteeSummary.do?format=xml'
     return cache.cacheweb(url)
 
-def LobbyistBundle ():
-    url='http://www.fec.gov/data/LobbyistBundle.do?format=xml'
+
+def lobbyist_bundle():
+    u'''
+    '''
+    url = FECDATAURL + '/LobbyistBundle.do?format=xml'
     return cache.cacheweb(url)
 
-def Leadership ():
-    url='http://www.fec.gov/data/Leadership.do?format=xml'
+
+def leadership():
+    u'''
+    '''
+    url = FECDATAURL + '/Leadership.do?format=xml'
     return cache.cacheweb(url)
+
 
 def lobbyist():
-    url='http://www.fec.gov/data/Lobbyist.do?format=xml'
+    u'''
+    '''
+    url = FECDATAURL + '/Lobbyist.do?format=xml'
     return cache.cacheweb(url)
 
-_lobbist=cache.cache("fec_lobbist",lobbyist)
-_lobbist_bundle=cache.cache("fec_lobbist_bundle",LobbyistBundle)
-_expenses=cache.cache("fec_expenses",expenses)
-_all_candidate_disbursement=cache.cache("fec_all_candidate_disbursement",all_candidate_disbursement)
-_CommitteeSummary=cache.cache("CommitteeSummary",CommitteeSummary)
-_CampaignAndCommitteeSummary=cache.cache("CampaignAndCommitteeSummary",CampaignAndCommitteeSummary)
-_CandidateSummary=cache.cache("CandidateSummary",CandidateSummary)
+def load_cache():
+    u'''
+    '''
+    cache_lobbist = cache.cache("fec_lobbist", lobbyist)
+    cache_lobbist_bundle = cache.cache("fec_lobbist_bundle", lobbyist_bundle)
+    cache_expenses = cache.cache("fec_expenses", expenses)
+    cache_can_disburse = cache.cache(
+        "fec_all_candidate_disbursement",
+        all_candidate_disbursement)
+    cache_committee_summary = cache.cache("CommitteeSummary", committee_summary)
+    cache_camp_comm_sum = cache.cache(
+        "CampaignAndCommitteeSummary",
+        campaign_and_committee_summary)
+    cache_candidate_summary = cache.cache("CandidateSummary", candidate_summary)
+
+load_cache()
