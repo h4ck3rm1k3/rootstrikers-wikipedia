@@ -5,8 +5,13 @@ from fech_rendered_maps import FieldParser
 import fech
 import re
 
-version_field_name = u"FEC_Ver_\#"
+
 class FieldParser(fech.Parser):
+
+    def version_field_name (self):
+        return  u"FEC_Ver_\#"
+
+
     def __init__(self):
         self.rendered_maps = {
             "^hdr$": {

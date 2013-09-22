@@ -7,8 +7,8 @@ uses the new Fech module which is being ported from ruby
 
 import cache
 import zipcsv
-#import Fech
-import fech_rendered_maps
+import fech
+#import fech_rendered_maps
 
 BASEURL = 'ftp://ftp.fec.gov/FEC/electronic/'
 def listing():
@@ -21,7 +21,8 @@ def listing():
             cached_file = cache.cachewebfile(BASEURL + filename)
             print("cached file %s" % cached_file)
             csv_data = zipcsv.ZipCSV()
-            parser = fech_rendered_maps.FieldParser()
+#            parser = fech_rendered_maps.FieldParser()
+            parser = fech.Parser()
             csv_data.process_generate (
                 cached_file,
                 "FecElectronicFilings",
