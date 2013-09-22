@@ -967,16 +967,27 @@ def lobbyist():
 def load_cache():
     u'''
     '''
+    print ("lobbist")
     cache_lobbist = cache.cache("fec_lobbist", lobbyist)
+    print ("lobbist bundle")
     cache_lobbist_bundle = cache.cache("fec_lobbist_bundle", lobbyist_bundle)
+    print ("expenses")
     cache_expenses = cache.cache("fec_expenses", expenses)
-    cache_can_disburse = cache.cache(
-        "fec_all_candidate_disbursement",
-        all_candidate_disbursement)
+
+    print ("candidate_disbursement")
+    #    cache_can_disburse = cache.cache(
+    #        "fec_all_candidate_disbursement",
+    #        all_candidate_disbursement)
+
+    print ("Committee Summary")
     cache_committee_summary = cache.cache("CommitteeSummary", committee_summary)
+
+    print ("CampaignAndCommitteeSummary")
     cache_camp_comm_sum = cache.cache(
         "CampaignAndCommitteeSummary",
         campaign_and_committee_summary)
+
+    print ("CandidateSummary")
     cache_candidate_summary = cache.cache("CandidateSummary", candidate_summary)
 
 load_cache()

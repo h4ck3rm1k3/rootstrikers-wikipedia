@@ -8,8 +8,16 @@ STATE_UNKNOWN = 0
 STATE_HEADER = 1
 STATE_BODY = 2
 
-import sys
-sys.path.append('./FEC-Field-Documentation')
+#import sys
+#sys.path.append('./FEC-Field-Documentation')
+
+import fec.version.v1
+
+
+#from fec.version.v1 import Version as V1V
+
+x= fec.version.v1.Version()
+
 
 import versions
 
@@ -22,7 +30,7 @@ class Document:
         self.url=url
         self.filename=filename
 
-class VersionsProc (Versions):
+class VersionsProc (versions.Versions):
     def lookup(version):
         version  = version.replace(".","_")
         factory =self.versions[version]

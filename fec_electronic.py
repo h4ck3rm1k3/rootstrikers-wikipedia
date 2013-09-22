@@ -17,7 +17,9 @@ def listing():
     """
     dirlisting = cache.cacheweb('ftp://ftp.fec.gov/FEC/electronic/')
     for filename in dirlisting.split():
+        print("consider file %s" % filename)
         if (filename.find(".zip") >0 ):
+            print("going to get file %s" % BASEURL + filename)
             cached_file = cache.cachewebfile(BASEURL + filename)
             print("cached file %s" % cached_file)
             csv_data = zipcsv.ZipCSV()
