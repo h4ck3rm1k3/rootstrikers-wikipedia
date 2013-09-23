@@ -8,6 +8,20 @@ STATE_UNKNOWN = 0
 STATE_HEADER = 1
 STATE_BODY = 2
 
+import fec.version.v1
+import fec.version.v2
+import fec.version.v3
+import fec.version.v5_0
+import fec.version.v5_1
+import fec.version.v5_2
+import fec.version.v5_3
+import fec.version.v6_1
+import fec.version.v6_2
+import fec.version.v6_3
+import fec.version.v6_4
+import fec.version.v7_0
+import fec.version.v8_0
+
 
 import versions
 
@@ -40,12 +54,16 @@ class FileObject:
 
 class Parser:
 
+    def set_zipfilename(self,zipfile):
+        self.zip_filename=zipfile
+
     def version_field_name (self):
-        return  u"FEC_Ver_\#"
+        return  u"FEC_Ver_# "
 
     def __init__(self):
+        self.zip_filename=None
         self.header=None
-
+        self.header_version=None
         # Converts symbols and strings to Regexp objects for use in regex-keyed maps.
         # Assumes that symbols should be matched literally, strings unanchored.
         # @param [String,Symbol,Regexp] label the object to convert to a Regexp
@@ -62,7 +80,7 @@ class Parser:
     def header_line(self, line):
         parts = line.split('=')
         if (len(parts) > 1):
-            self.current.attributes[parts[0]] = parts[1]
+            self.current.attributes[parts[0]] = parts[1].strip().rstrip()
 
 
     def endHeader(self):
@@ -75,11 +93,11 @@ class Parser:
         header = parts[0]
         fec = parts[1]
         version = parts[2]
-        dbg ( "HEADER LINE header %s fec %s version %s " % ( header, fec, version))
+        #dbg ( "HEADER LINE header %s fec %s version %s " % ( header, fec, version))
         #        self.version = Version(version)
         self.header=Header(header,fec,version)
-        version = self.header.version_factory()
-        version.parse(parts)
+        self.header_version = self.header.version_factory()
+        self.header_version.parse(parts)
         self.state = STATE_BODY
 
     def delimiter(self, filing_version):
@@ -119,9 +137,10 @@ class Parser:
             return
 
         if self.state == STATE_BODY:
-            dbg ( "in body %s" % l)
+            #dbg ( "in body %s" % l)
             self.body_line(l)
             # call into the base class fech_rendered_maps
+
 
     def body_line(self, line):
         u"""
@@ -131,58 +150,83 @@ class Parser:
         version_field_name = self.version_field_name()
         if version_field_name in self.current.attributes:
                 version = self.current.attributes[version_field_name]
-                #         print ("check version: ",
-                #                "version:",version,
-                #                "attr:",self.current.attributes
-                #            )
+#                print ("check version: ",
+#                       "version:",version,
+#                       "attr:",self.current.attributes
+#                )
+                if self.header_version is None:
+                    if re.match(r'1\..+',version  ):
+                        self.header_version= fec.version.v1.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)                               
+                    elif re.match(r'2\..+',version  ):
+                        self.header_version= fec.version.v2.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'3\..+',version  ):
+                        self.header_version= fec.version.v3.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'5\.0.+',version  ):
+                        self.header_version= fec.version.v5_0.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'5\.1.+',version  ):
+                        self.header_version= fec.version.v5_1.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'5\.2.+',version  ):
+                        self.header_version= fec.version.v5_2.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'5\.3.+',version  ):
+                        self.header_version= fec.version.v5_3.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'6\.1.+',version  ):
+                        self.header_version= fec.version.v6_1.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'6\.2.+',version  ):
+                        self.header_version= fec.version.v6_2.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'6\.3.+',version  ):
+                        self.header_version= fec.version.v6_3.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'6\.4.+',version  ):
+                        self.header_version= fec.version.v6_4.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'7\..+',version  ):
+                        self.header_version= fec.version.v7.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    elif re.match(r'8\..+',version  ):
+                        self.header_version= fec.version.v8.Version()
+                        self.header_version.set_attr_hash(self.current.attributes)
+                    else:
+                        raise Exception()
+
         else:
-            print("no version: ",
-                  "version:", version,
-                  "attr:", self.current.attributes
-                  )
+            #print("no version: (%s)" % version_field_name,
+            #      "version:", version,
+            #      "attr:", self.current.attributes
+            #      )
+            self.header_version.set_attr_hash(self.current.attributes)
 
-        body = line.split(",")
-        for field_regex in self.rendered_maps.keys():
-            btype = body[0]
 
-            g = re.findall("(" + field_regex + ")", btype, re.IGNORECASE)
-            if (g is not None):
-                if (len(g) > 0):
-                    print("check: ",
-                          "regex:", field_regex,
-                          "group", g,
-                          "btype:", btype,
-                          "version:", version,
-                          "body:", body)
+        if self.header_version is not None:
+            self.header_version.parse_body(line)
+       
 
-                    if (version is not None):
-                        for version_regex in self.rendered_maps[field_regex].keys():
-                            rest_of_data = self.rendered_maps[
-                                field_regex][version_regex]
-                            #TODO: use rest_of_data
-                            g = re.findall(
-                                "(" + version_regex + ")",
-                                version,
-                                re.IGNORECASE)
-                            if (g is not None):
-                                if (len(g) > 0):
-                                    print(
-                                        "check2: ", field_regex, g, btype, version, body, self.rendered_maps[field_regex][version_regex])
-
-        #print l
-        #                v=l.split("")
-        #                self.generate(v,classname)
-        #                return
-
-    def parse_file_data(self, d):
+    def parse_file_data(self, filename, dirname, d):
         self.current = FileObject()
-        for l in d.split("\n")[0:20]:
-            self.parse_file_data_line(l)
+        try :
+            for l in d.split("\n")[0:20]:
+                self.parse_file_data_line(l)
+        except:
+            print "Parsing Failed"
+            traceback.print_exc()
 
-            if (self.state == STATE_BODY):
-                return 
+        dbg( "ZIPFILE %s" % self.zip_filename)
+        dbg( "FILENAME %s" % filename)
+        dbg( "DIRNAME %s" % dirname)
+        #dbg ( "FINISHED_COLLECTED %s" % self.current.attributes)
+        #dbg ( "FINISHED_DATA %s" % str(self.header_version.record_list))
 
-        dbg ( "COLLECTED %s" % self.current.attributes)
+        
+        #self.record_list
+
         self.current = None
 
     def generate(self, v, name):

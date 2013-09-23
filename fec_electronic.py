@@ -25,6 +25,9 @@ def listing():
             csv_data = zipcsv.ZipCSV()
 #            parser = fech_rendered_maps.FieldParser()
             parser = fech.Parser()
+
+            parser.set_zipfilename(filename)
+
             csv_data.process_generate (
                 cached_file,
                 "FecElectronicFilings",
