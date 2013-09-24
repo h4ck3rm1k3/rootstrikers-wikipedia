@@ -8,6 +8,10 @@ FECDATAURL = 'http://www.fec.gov/data/'
 FECDISPURL = 'ftp://ftp.fec.gov/FEC/data.fec.gov/candidate_disbursement/'
 
 def expenses():
+    u"""
+    get the xml for expenses
+    """
+    
     u'''
     '''
     url = FECDATAURL + '/IndependentExpenditure.do?format=xml'

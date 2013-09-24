@@ -94,7 +94,6 @@ def process(filename, verbose):
 
 
     for line in fileobj.read().split("\n"):
-        # TODO : this should tie into the real parser
         if line[0:4] == "SB23":
         #            print "---"
             fields = line.split("")
@@ -124,7 +123,6 @@ def main():
              "file=",
              "verbose"]
         )
-        
     except getopt.GetoptError as err:
         # print help information and exit:
         print str(err)  # will print something like "option -a not recognized"

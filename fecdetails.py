@@ -8,6 +8,7 @@ def get(url, name):
     u"""
     just call the fetch routine
     """
+    print "getting name %s with url %s" % (name, url)
     return cache.cacheweb(url)
 
 get('ftp://ftp.fec.gov/FEC/2014/cm14.zip','Committee Master File')

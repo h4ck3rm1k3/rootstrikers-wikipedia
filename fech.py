@@ -7,6 +7,7 @@ import traceback
 STATE_UNKNOWN = 0
 STATE_HEADER = 1
 STATE_BODY = 2
+STATE_END = 3
 
 import fec.version.v1
 import fec.version.v2
@@ -27,12 +28,13 @@ import versions
 
 def dbg (x):
 #    traceback.print_stack(limit=2)
-    print (x)
+    #print (x)
+    pass
 
 class Document:
-    def __init__(self,url,filename):
-        self.url=url
-        self.filename=filename
+    def __init__(self, url, filename):
+        self.url = url
+        self.filename = filename
 
    
 # global instance         
@@ -40,9 +42,9 @@ version_proc = versions.Versions()
    
 class Header:
     def __init__(self,header,fec,version):
-        self.header=header
-        self.fec=fec
-        self.version=version
+        self.header = header
+        self.fec = fec
+        self.version = version
 
     def version_factory(self):
         return version_proc.lookup(self.version)
@@ -54,8 +56,8 @@ class FileObject:
 
 class Parser:
 
-    def set_zipfilename(self,zipfile):
-        self.zip_filename=zipfile
+    def set_zipfilename(self, zipfile):
+        self.zip_filename = zipfile
 
     def version_field_name (self):
         return  u"FEC_Ver_# "
@@ -89,10 +91,14 @@ class Parser:
 
     def HDR(self, l, quote=""):
 
-        parts = l.split(",")
+        parts = []
+        for x in l.split(","):
+            x = x.replace("\"","")
+            parts.append(x)
         header = parts[0]
         fec = parts[1]
         version = parts[2]
+
         #dbg ( "HEADER LINE header %s fec %s version %s " % ( header, fec, version))
         #        self.version = Version(version)
         self.header=Header(header,fec,version)
@@ -116,29 +122,38 @@ class Parser:
 
         if re.match(r'\/\* Header', l):
             self.startHeader()
-            return
+            return self.state
 
         if re.match(r'\/\* End Header', l):
             self.endHeader()
-            return
+            return self.state
+
         if re.match(r'HDR', l):
             self.HDR(l)
-            return
+            return self.state
+
         if re.match(r'\'HDR\'', l):
             self.HDR(l, quote='\'')
-            return
+            return self.state
+
         if re.match(r'\"HDR\"', l):
             self.HDR(l, quote='\"')
-            return
+            return self.state
 
         if self.state == STATE_HEADER:
 #            dbg ( "in header %s" %  l)
             self.header_line(l)
-            return
+            return self.state
 
         if self.state == STATE_BODY:
             #dbg ( "in body %s" % l)
-            self.body_line(l)
+            result = self.body_line(l)
+            if result is None :
+                self.state = STATE_END
+                return None
+
+        if self.state == STATE_END:
+            return None 
             # call into the base class fech_rendered_maps
 
 
@@ -149,53 +164,53 @@ class Parser:
         version = None
         version_field_name = self.version_field_name()
         if version_field_name in self.current.attributes:
-                version = self.current.attributes[version_field_name]
+            version = self.current.attributes[version_field_name]
 #                print ("check version: ",
 #                       "version:",version,
 #                       "attr:",self.current.attributes
 #                )
-                if self.header_version is None:
-                    if re.match(r'1\..+',version  ):
-                        self.header_version= fec.version.v1.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)                               
-                    elif re.match(r'2\..+',version  ):
-                        self.header_version= fec.version.v2.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'3\..+',version  ):
-                        self.header_version= fec.version.v3.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'5\.0.+',version  ):
-                        self.header_version= fec.version.v5_0.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'5\.1.+',version  ):
-                        self.header_version= fec.version.v5_1.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'5\.2.+',version  ):
-                        self.header_version= fec.version.v5_2.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'5\.3.+',version  ):
-                        self.header_version= fec.version.v5_3.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'6\.1.+',version  ):
-                        self.header_version= fec.version.v6_1.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'6\.2.+',version  ):
-                        self.header_version= fec.version.v6_2.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'6\.3.+',version  ):
-                        self.header_version= fec.version.v6_3.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'6\.4.+',version  ):
-                        self.header_version= fec.version.v6_4.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'7\..+',version  ):
-                        self.header_version= fec.version.v7.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    elif re.match(r'8\..+',version  ):
-                        self.header_version= fec.version.v8.Version()
-                        self.header_version.set_attr_hash(self.current.attributes)
-                    else:
-                        raise Exception()
+            if self.header_version is None:
+                if re.match(r'1\..+', version  ):
+                    self.header_version= fec.version.v1.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)                               
+                elif re.match(r'2\..+',version  ):
+                    self.header_version= fec.version.v2.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'3\..+',version  ):
+                    self.header_version= fec.version.v3.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'5\.0.+',version  ):
+                    self.header_version= fec.version.v5_0.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'5\.1.+',version  ):
+                    self.header_version= fec.version.v5_1.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'5\.2.+',version  ):
+                    self.header_version= fec.version.v5_2.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'5\.3.+',version  ):
+                    self.header_version= fec.version.v5_3.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'6\.1.+',version  ):
+                    self.header_version= fec.version.v6_1.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'6\.2.+',version  ):
+                    self.header_version= fec.version.v6_2.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'6\.3.+',version  ):
+                    self.header_version= fec.version.v6_3.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'6\.4.+',version  ):
+                    self.header_version= fec.version.v6_4.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'7\..+',version  ):
+                    self.header_version= fec.version.v7.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                elif re.match(r'8\..+',version  ):
+                    self.header_version= fec.version.v8.Version()
+                    self.header_version.set_attr_hash(self.current.attributes)
+                else:
+                    raise Exception()
 
         else:
             #print("no version: (%s)" % version_field_name,
@@ -206,26 +221,34 @@ class Parser:
 
 
         if self.header_version is not None:
-            self.header_version.parse_body(line)
+            result = self.header_version.parse_body(line) 
+            if result is None :
+                return result
        
 
-    def parse_file_data(self, filename, dirname, d):
+            # entry point into inptu
+    def parse_file_data(self, filename, dirname, d, out_file):
         self.current = FileObject()
         try :
             for l in d.split("\n")[0:20]:
-                self.parse_file_data_line(l)
+                result = self.parse_file_data_line(l)
+                if result is None :
+                    return 
         except:
             print "Parsing Failed"
             traceback.print_exc()
 
-        dbg( "ZIPFILE %s" % self.zip_filename)
-        dbg( "FILENAME %s" % filename)
-        dbg( "DIRNAME %s" % dirname)
-        #dbg ( "FINISHED_COLLECTED %s" % self.current.attributes)
-        #dbg ( "FINISHED_DATA %s" % str(self.header_version.record_list))
+        out_file.dir_name(dirname)
+        out_file.file_attributes(self.current.attributes)
+        if self.header_version is not None:
 
-        
-        #self.record_list
+            try:
+                out_file.rows(self.header_version.record_list)
+            except Exception, e:
+                traceback.print_exc()
+                print (e)
+                print (self.header_version)
+
 
         self.current = None
 

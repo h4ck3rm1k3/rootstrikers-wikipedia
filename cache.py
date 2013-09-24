@@ -64,7 +64,7 @@ def cachewebfile (url) :
 
     if (os.path.exists(filename)):
         if verbose :
-            print "get url" , url, " from file ", filename
+            #print "get url" , url, " from file ", filename
             return filename
 
     ###
@@ -120,7 +120,8 @@ def cacheweb (url) :
     filename =cachewebfile (url)
     if (os.path.exists(filename)):
         if verbose :
-            print "get url" , url, " from file ", filename
+            #print "get url" , url, " from file ", filename
+            pass
         try:
             f = codecs.open(filename, "rb", "utf-8")
             data= f.read()
