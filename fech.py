@@ -47,7 +47,9 @@ class Header:
         self.version = version
 
     def version_factory(self):
-        return version_proc.lookup(self.version)
+        item= version_proc.lookup(self.version)
+        item.do_init()
+        return item
 
 class FileObject:
     def  __init__(self):
