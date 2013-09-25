@@ -94,9 +94,16 @@ class Parser:
     def HDR(self, l, quote=""):
 
         parts = []
+        count = 0
         for x in l.split(","):
             x = x.replace("\"","")
+            count = count +1
             parts.append(x)
+        
+        if count < 2 :
+            self.state = STATE_BODY
+            return None
+
         header = parts[0]
         fec = parts[1]
         version = parts[2]
@@ -219,8 +226,10 @@ class Parser:
             #      "version:", version,
             #      "attr:", self.current.attributes
             #      )
-            self.header_version.set_attr_hash(self.current.attributes)
-
+            if self.header_version is not None:
+                self.header_version.set_attr_hash(self.current.attributes)
+            else:
+                return None
 
         if self.header_version is not None:
             result = self.header_version.parse_body(line) 
