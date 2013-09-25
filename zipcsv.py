@@ -12,12 +12,12 @@ class ZipCSV:
     #         for l in d.split("\n"):
     #             self.process(l)
 
-    def process_generate (self, filename, classname, parser, out):
+    def process_generate (self, baseurl, urlfile, filename, classname, parser, out):
         zfile = zipfile.ZipFile(filename)
         for name in zfile.namelist():
-            (dirname, filename) = os.path.split(name)
-            #print "reading " + filename + " on " + dirname
+            (dirname, ifilename) = os.path.split(name)
+#            print "reading  filename %s from source %s" %  (ifilename, filename)
             d = zfile.read(name)
-            out_file = out.create_file(name)
-            parser.parse_file_data(filename, dirname, d, out_file)
+            out_file = out.create_file(ifilename, filename, baseurl, urlfile)
+            parser.parse_file_data(ifilename, filename, d, out_file)
             out_file.close()

@@ -35,6 +35,8 @@ def listing():
             #parser.set_zipfilename(filename)
 
             csv_data.process_generate (
+                BASEURL, 
+                filename,
                 cached_file,
                 "FecElectronicFilings",
                 parser,

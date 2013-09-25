@@ -93,9 +93,14 @@ class Parser:
 
     def HDR(self, l, quote=""):
 
+        if l.find('HDRFEC') > -1 :
+            self.sep=''
+        else:
+            self.sep=','
+
         parts = []
         count = 0
-        for x in l.split(","):
+        for x in l.split(self.sep):
             x = x.replace("\"","")
             count = count +1
             parts.append(x)
@@ -112,6 +117,7 @@ class Parser:
         #        self.version = Version(version)
         self.header=Header(header,fec,version)
         self.header_version = self.header.version_factory()
+        self.header_version.set_sep(self.sep)
         self.header_version.parse(parts)
         self.state = STATE_BODY
 
@@ -237,19 +243,19 @@ class Parser:
                 return result
        
 
-            # entry point into inptu
-    def parse_file_data(self, filename, dirname, d, out_file):
+            # entry point into input, 
+    def parse_file_data(self, filename, sourcefile, d, out_file):
         self.current = FileObject()
         try :
-            for l in d.split("\n")[0:20]:
+            for l in d.split("\n")[0:20]:                
                 result = self.parse_file_data_line(l)
                 if result is None :
                     return 
         except:
-            print "Parsing Failed"
+            print "Parsing Failed filename %s source %s" % (filename, sourcefile)
             traceback.print_exc()
 
-        out_file.dir_name(dirname)
+        #out_file.dir_name(dirname)
         out_file.file_attributes(self.current.attributes)
         if self.header_version is not None:
 
