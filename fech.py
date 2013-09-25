@@ -100,7 +100,7 @@ class Parser:
             count = count +1
             parts.append(x)
         
-        if count < 2 :
+        if count < 3 :
             self.state = STATE_BODY
             return None
 
