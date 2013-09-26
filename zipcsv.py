@@ -16,7 +16,7 @@ class ZipCSV:
         zfile = zipfile.ZipFile(filename)
         for name in zfile.namelist():
             (dirname, ifilename) = os.path.split(name)
-#            print "reading  filename %s from source %s" %  (ifilename, filename)
+            print "reading  filename %s from zip %s" %  (ifilename, filename)
             d = zfile.read(name)
             out_file = out.create_file(ifilename, filename, baseurl, urlfile)
             parser.parse_file_data(ifilename, filename, d, out_file)

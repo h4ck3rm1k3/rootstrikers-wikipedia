@@ -28,7 +28,7 @@ import versions
 
 def dbg (x):
 #    traceback.print_stack(limit=2)
-    #print (x)
+#    print (x)
     pass
 
 class Document:
@@ -65,9 +65,11 @@ class Parser:
         return  u"FEC_Ver_# "
 
     def __init__(self):
+        self.state=STATE_UNKNOWN
         self.zip_filename=None
         self.header=None
         self.header_version=None
+
         # Converts symbols and strings to Regexp objects for use in regex-keyed maps.
         # Assumes that symbols should be matched literally, strings unanchored.
         # @param [String,Symbol,Regexp] label the object to convert to a Regexp
@@ -82,10 +84,16 @@ class Parser:
 #        dbg ( "start HEADER")
 
     def header_line(self, line):
+
+        if line == 'Schedule_Counts:':
+            return 
+
         parts = line.split('=')
+        
         if (len(parts) > 1):
             self.current.attributes[parts[0]] = parts[1].strip().rstrip()
-
+        else:
+            raise Exception(line)
 
     def endHeader(self):
 #        dbg ( "END HEADER" )
@@ -129,8 +137,9 @@ class Parser:
     def filing_url(self):
         return "http://query.nictusa.com/dcdev/posted/#{filing_id}.fec"
 
-    def parse_file_data_line(self, l):
-    #        if re.match(r'\034',l):
+    def parse_line(self, l):
+        dbg ( "check '%s' '%d'" % (l, self.state))
+
         if l.find("\034") > 0:
             dbg ( "found 034 in %s" % l)
             #if first.index("\034").nil?
@@ -156,28 +165,27 @@ class Parser:
             return self.state
 
         if self.state == STATE_HEADER:
-#            dbg ( "in header %s" %  l)
+            dbg ( "in header %s" %  l)
             self.header_line(l)
             return self.state
 
         if self.state == STATE_BODY:
-            #dbg ( "in body %s" % l)
+            dbg ( "in body %s" % l)
             result = self.body_line(l)
             if result is None :
                 self.state = STATE_END
-                return None
+                #raise Exception("Body parse failed %s" % l) 
 
         if self.state == STATE_END:
             return None 
             # call into the base class fech_rendered_maps
 
 
-    def body_line(self, line):
-        u"""
-        the body function
-        """
+    def find_version_info(self,line):
         version = None
         version_field_name = self.version_field_name()
+
+
         if version_field_name in self.current.attributes:
             version = self.current.attributes[version_field_name]
 #                print ("check version: ",
@@ -226,34 +234,43 @@ class Parser:
                     self.header_version.set_attr_hash(self.current.attributes)
                 else:
                     raise Exception()
-
         else:
-            #print("no version: (%s)" % version_field_name,
-            #      "version:", version,
-            #      "attr:", self.current.attributes
-            #      )
             if self.header_version is not None:
                 self.header_version.set_attr_hash(self.current.attributes)
             else:
-                return None
+                print("check version in : (%s)" % line )
+                raise Exception("missing version")
+
+
+    def body_line(self, line):
+        u"""
+        the body function
+        rest th
+        """
+        if self.header_version is None:
+            self.find_version_info(line)
 
         if self.header_version is not None:
             result = self.header_version.parse_body(line) 
-            if result is None :
-                return result
+         #   if result is None :
+         #       raise Exception("Parse body failed %s" % line)
+        else:
+            raise Exception("no version")
        
 
-            # entry point into input, 
+    # entry point into input, called from zipcsv.py
     def parse_file_data(self, filename, sourcefile, d, out_file):
         self.current = FileObject()
-        try :
-            for l in d.split("\n")[0:20]:                
-                result = self.parse_file_data_line(l)
-                if result is None :
-                    return 
-        except:
-            print "Parsing Failed filename %s source %s" % (filename, sourcefile)
-            traceback.print_exc()
+        #        try :
+        for l in d.split("\n")[0:20]:                
+            out_file.raw_line(l)
+            result = self.parse_line(l)
+                #if result is None :
+                    #raise Exception("could not parse %s" % l) 
+ #       except Exception, e:
+ #           print "Parsing Failed filename %s source %s" % (filename, sourcefile)
+ #           traceback.print_exc()
+ #           raise Exception(e)
 
         #out_file.dir_name(dirname)
         out_file.file_attributes(self.current.attributes)
