@@ -9,22 +9,122 @@ STATE_HEADER = 1
 STATE_BODY = 2
 STATE_END = 3
 
-import fec.version.v1
-import fec.version.v2
-import fec.version.v3
-import fec.version.v5_0
-import fec.version.v5_1
-import fec.version.v5_2
-import fec.version.v5_3
-import fec.version.v6_1
-import fec.version.v6_2
-import fec.version.v6_3
-import fec.version.v6_4
-import fec.version.v7_0
-import fec.version.v8_0
+
+import zipfile
+import os
+import cache
+import fechout
 
 
-import versions
+import sys
+#import fec.version.v1.F1
+#import fec.version.v1 as v1
+
+#print sys.path
+#sys.path
+
+# before we import these, we must define the base classes, do that here so we have everything in one file
+
+
+
+
+BASEURL = 'ftp://ftp.fec.gov/FEC/electronic/'
+def listing():
+    u"""
+    execute the listing
+    """
+    dirlisting = cache.cacheweb('ftp://ftp.fec.gov/FEC/electronic/')
+    for filename in dirlisting.split():
+        #print("consider file %s" % filename)
+        if (filename.find(".zip") >0 ):
+            #print("going to get file %s" % BASEURL + filename)
+            cached_file = cache.cachewebfile(BASEURL + filename)
+            #print("cached file %s" % cached_file)
+            csv_data = ZipCSV()
+#            parser = fech_rendered_maps.FieldParser()
+            parser = Parser()
+            output_object = fechout.Fechout()
+            output_object.set_input_url(BASEURL + filename)
+            output_object.set_input_zipfilename(filename)
+            #parser.set_zipfilename(filename)
+
+            csv_data.process_generate (
+                BASEURL, 
+                filename,
+                cached_file,
+                "FecElectronicFilings",
+                parser,
+                output_object)
+
+class HDR:
+# SEQ	 DESCRIPTION	TYPE	REQUIRED	DATA	REFERENCE	REFERENCE					
+# 1	Record Type	A/N-3	X (error)	HDR	HDR	
+# 2	EF Type	A/N-3	X (error)	FEC	FEC	
+# 3	FEC Ver	A/N-4	X (error)	3.00		
+# 4	Soft Name	A/N-90		SUPERIFLER		
+# 5	Soft Ver	A/N-16		1.02		
+# 6	Name Delim	A-1				Only if other than "^"
+# 7	Rpt ID	A/N-16		FEC-1234		FEC report ID of original report (Amenment only)
+# 8	Rpt Number	N-3		1	1,2,3,4	Sequential number of amenments
+# 9	HDRcomment 	A/N-200				For testing only.
+    def __init__(self,fields):
+        self.field_count= len(fields)
+
+        self.record_type=fields[0];
+        self.EF_type=fields[1]; # FEC
+        self.FEC_ver=fields[2]; #
+
+        if (self.field_count> 3):
+            self.soft_name=fields[3];
+        else :
+            print "check version3: %d %s " % (self.field_count,fields)
+
+        if (self.field_count> 4):
+            self.soft_ver=fields[4];
+        else :
+
+            print "check version4: %d %s " % (self.field_count,fields)
+
+        if (self.field_count> 5):
+            #print "before field 5: %d %s " % (self.field_count,fields)
+            self.name_delim=fields[5];
+        else:
+            #                    0      1       2       3              4
+            #check version6: 5 ['HDR', 'FEC', '3.00', 'Super Filer', 'Ver 1.0'] 
+
+            #print "check version5: %d %s " % (self.field_count,fields)
+            pass
+
+        if (self.field_count> 6):
+            self.report_id=fields[6];
+        else:
+            #print "check version6: %d %s " % (self.field_count,fields)
+            pass
+
+        if (self.field_count> 7):
+            self.report_num=fields[7];
+        else:
+            #print "check version7: %d %s " % (self.field_count,fields)
+            pass
+
+    def emit(self):
+        #print str(self)
+        pass
+
+
+
+class ZipCSV:
+
+    def process_generate (self, baseurl, urlfile, filename, classname, parser, out):
+
+        zfile = zipfile.ZipFile(filename)
+        for name in zfile.namelist():
+            (dirname, ifilename) = os.path.split(name)
+            print "reading  filename %s from zip %s" %  (ifilename, filename)
+            d = zfile.read(name)
+            out_file = out.create_file(ifilename, filename, baseurl, urlfile)
+            parser.parse_file_data(ifilename, filename, d, out_file)
+            out_file.close()
 
 def dbg (x):
 #    traceback.print_stack(limit=2)
@@ -35,19 +135,21 @@ class Document:
     def __init__(self, url, filename):
         self.url = url
         self.filename = filename
-
    
 # global instance         
-version_proc = versions.Versions()
    
 class Header:
     def __init__(self,header,fec,version):
+
+        from  versions import Versions
+        self.version_proc = Versions()
+
         self.header = header
         self.fec = fec
         self.version = version
 
     def version_factory(self):
-        item= version_proc.lookup(self.version)
+        item= self.version_proc.lookup(self.version)
         item.do_init()
         return item
 
@@ -193,7 +295,9 @@ class Parser:
 #                       "attr:",self.current.attributes
 #                )
             if self.header_version is None:
-                if re.match(r'1\..+', version  ):
+                if re.match(r'1\..+', version  ):   
+                    import fec.version.v1.F1
+                    import fec.version.v1
                     self.header_version= fec.version.v1.Version()
                     self.header_version.set_attr_hash(self.current.attributes)                               
                 elif re.match(r'2\..+',version  ):
@@ -261,28 +365,26 @@ class Parser:
     # entry point into input, called from zipcsv.py
     def parse_file_data(self, filename, sourcefile, d, out_file):
         self.current = FileObject()
-        #        try :
-        for l in d.split("\n")[0:20]:                
-            out_file.raw_line(l)
-            result = self.parse_line(l)
-                #if result is None :
-                    #raise Exception("could not parse %s" % l) 
- #       except Exception, e:
- #           print "Parsing Failed filename %s source %s" % (filename, sourcefile)
- #           traceback.print_exc()
- #           raise Exception(e)
 
-        #out_file.dir_name(dirname)
-        out_file.file_attributes(self.current.attributes)
-        if self.header_version is not None:
+        try :
+            for l in d.split("\n")[0:20]:                
+                out_file.raw_line(l)
+                result = self.parse_line(l)
 
-            try:
-                out_file.rows(self.header_version.record_list)
-            except Exception, e:
-                traceback.print_exc()
-                print (e)
-                print (self.header_version)
+            #out_file.dir_name(dirname)
+            out_file.file_attributes(self.current.attributes)
+            if self.header_version is not None:
+                try:
+                    out_file.rows(self.header_version.record_list)
+                except Exception, e:
+                    traceback.print_exc()
+                    print (e)
+                    print (self.header_version)
 
+        except Exception, e:
+            print "Parsing Failed filename %s source %s" % (filename, sourcefile)
+            traceback.print_exc()
+            raise e
 
         self.current = None
 
@@ -294,3 +396,6 @@ class Parser:
             f = f.strip("\"").rstrip("\"")
             dbg ( "    %s=%d" % (f, c))
             c = c + 1
+
+#main
+listing()
