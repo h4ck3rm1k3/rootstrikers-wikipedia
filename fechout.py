@@ -53,7 +53,7 @@ class FechoutFile ():
                 'countrows' :   len(self._rows),
                 'countraw'  :   len(self._raw),
                 'rows'      :   self._rows,
-                'raw'       :   self._raw,
+#                'raw'       :   self._raw,
             }, 
             default_flow_style=False
     )
