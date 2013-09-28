@@ -41,13 +41,19 @@ class FechoutFile ():
         self._rows=rows
 
     def create_yaml(self):
+
+#        print ('countrows' , len(self._rows),  'countraw' ,  len(self._raw))       
+#        if (len(self._rows) ==len(self._raw))
+
         return dump(
             { 
-                'sourceurl' :    self.sourcefile,
-                'filename' :    self.name,
-                'header' :self._attr,
-                'rows' :self._rows,
-                'raw' : self._raw,
+                'sourceurl' :   self.sourcefile,
+                'filename'  :   self.name,
+                'header'    :   self._attr,
+                'countrows' :   len(self._rows),
+                'countraw'  :   len(self._raw),
+                'rows'      :   self._rows,
+                'raw'       :   self._raw,
             }, 
             default_flow_style=False
     )

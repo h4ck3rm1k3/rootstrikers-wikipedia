@@ -75,20 +75,26 @@ class VersionBase:
             fieldtype=x[0]
             if fieldtype == "HDR":
                   self.hdr=HDR(x)
-                  self.hdr.emit()
             else:
-                  #print "Version Base, parse," + str(x)
-                  pass
-            
-            #raise Exception(x)
+                raise Exception(x)
 
-      def parse_record(self,fields, record_type,line):
+      def parse_record(self,fields, record_type, line):
+
             self.current_record=self.records[record_type]()
+
             result = self.current_record.parse(fields,line)
+
+            if result is None:
+                raise Exception("failed type:%s line:%s fields:%s " % (record_type,line, str(fields)))
+
             self.record_list.append(result)            
             return result
 
       def parse_body(self,line):
+
+            if line == "": 
+                return { "Empty" : "" }
+
             fields_temp=line.split(self.sep)
             fields=[]
             for f in fields_temp:
@@ -135,7 +141,8 @@ class VersionBase:
             #return  
 
       def set_attr_hash(self, attrdict):
-            self.record_list=[]
+          #self.record_list=[]
+          pass
             
 
 class VersionsBase:

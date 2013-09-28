@@ -107,9 +107,6 @@ class HDR:
             #print "check version7: %d %s " % (self.field_count,fields)
             pass
 
-    def emit(self):
-        #print str(self)
-        pass
 
 
 
@@ -276,12 +273,14 @@ class Parser:
             result = self.body_line(l)
             if result is None :
                 self.state = STATE_END
-                #raise Exception("Body parse failed %s" % l) 
+                raise Exception("Body parse failed %s" % l) 
+            return result
 
         if self.state == STATE_END:
             return None 
             # call into the base class fech_rendered_maps
 
+        return None
 
     def find_version_info(self,line):
         version = None
@@ -349,15 +348,15 @@ class Parser:
     def body_line(self, line):
         u"""
         the body function
-        rest th
         """
         if self.header_version is None:
             self.find_version_info(line)
 
         if self.header_version is not None:
             result = self.header_version.parse_body(line) 
-         #   if result is None :
-         #       raise Exception("Parse body failed %s" % line)
+            if result is None :
+                raise Exception("failed to parse body %s" % line)
+            return result
         else:
             raise Exception("no version")
        
@@ -367,9 +366,11 @@ class Parser:
         self.current = FileObject()
 
         try :
-            for l in d.split("\n")[0:20]:                
+            for l in d.split("\n"):                
+#                print ("Raw input:%s" % l)
                 out_file.raw_line(l)
                 result = self.parse_line(l)
+#                print (result)
 
             #out_file.dir_name(dirname)
             out_file.file_attributes(self.current.attributes)
@@ -380,6 +381,8 @@ class Parser:
                     traceback.print_exc()
                     print (e)
                     print (self.header_version)
+            else:
+                raise Exception("no header")
 
         except Exception, e:
             print "Parsing Failed filename %s source %s" % (filename, sourcefile)
