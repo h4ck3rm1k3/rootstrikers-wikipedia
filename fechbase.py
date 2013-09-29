@@ -23,12 +23,12 @@ class RecordsBase:
         #copy of fields
         fields2=fields
 
+        result["record"]=str(self)
+
         if not input_count == expected_count :
             #print ("%s != %s" % (expected_count,    input_count))
             result["expected_count"]=expected_count
             result["input_count"]=input_count
-
-
             result["attempt"]=[]
 
             # now just fill out what we can
@@ -115,27 +115,46 @@ class VersionBase:
                   raise Exception("skip mail file")
                   #return None 
 
-            #hack
-            if record_type == "H4":
-                  record_type = "SH4"
-
-            if record_type == "H1":
-                  record_type = "SH1"
-
-            if record_type == "H2":
-                  record_type = "SH2"
-
-            if record_type == "H3":
-                  record_type = "SH3"
 
             if record_type in self.records:                  
                   return self.parse_record(fields,record_type,line)
             else:
-                  record_type=record_type[:2]
-                  if record_type in self.records:                  
+
+                #hack
+                if record_type == "H4":
+                    record_type = "SH4"                   
+                if record_type == "H1":
+                    record_type = "SH1"                        
+                if record_type == "H2":
+                    record_type = "SH2"
+                if record_type == "H3":
+                    record_type = "SH3"
+
+#                if record_type == "F3XN":
+#                    record_type = "F3X" # truncate the f3x
+
+                if record_type not in self.records:                  
+                    
+                    record_type=record_type[:3]
+
+                    if record_type in self.records:                  
                         return self.parse_record(fields,record_type,line)
-                  else:
+                    else:
+
+                        record_type=record_type[:2]
+                        if record_type in self.records:                  
+                            return self.parse_record(fields,record_type,line)
+                        else:
+                            raise Exception("recordtype '%s' original_record_type %s not known %s record %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields) ))
+
+
                         raise Exception("recordtype '%s' original_record_type %s not known %s record %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields) ))
+
+
+                else:
+                    return self.parse_record(fields,record_type,line)
+                    
+
                         #'F3' : fec.version.v1.F3.Records,
             raise Exception()
             #return  
