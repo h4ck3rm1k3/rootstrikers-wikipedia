@@ -1,3 +1,14 @@
+FECH reimplementation :
+
+This contains fech.py, a rewrite of the fech project in python.
+It uses a code generator for creating the record objects
+ git@github.com:h4ck3rm1k3/FEC-Field-Documentation.git
+which is checked out into FECFieldDocumentation
+
+The results will be published here :
+	git@github.com:h4ck3rm1k3/federal-election-commision-aggregation.git in
+	the branch rawdata
+
 
 CRP_IDs.txt 
 -----------
