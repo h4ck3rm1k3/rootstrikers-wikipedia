@@ -58,6 +58,58 @@ class RecordsBase:
             result["result"].append(field_descriptor)
         return result
 
+class HDR:
+# SEQ	 DESCRIPTION	TYPE	REQUIRED	DATA	REFERENCE	REFERENCE					
+# 1	Record Type	A/N-3	X (error)	HDR	HDR	
+# 2	EF Type	A/N-3	X (error)	FEC	FEC	
+# 3	FEC Ver	A/N-4	X (error)	3.00		
+# 4	Soft Name	A/N-90		SUPERIFLER		
+# 5	Soft Ver	A/N-16		1.02		
+# 6	Name Delim	A-1				Only if other than "^"
+# 7	Rpt ID	A/N-16		FEC-1234		FEC report ID of original report (Amenment only)
+# 8	Rpt Number	N-3		1	1,2,3,4	Sequential number of amenments
+# 9	HDRcomment 	A/N-200				For testing only.
+    def __init__(self,fields):
+        self.field_count= len(fields)
+
+        self.record_type=fields[0];
+        self.EF_type=fields[1]; # FEC
+        self.FEC_ver=fields[2]; #
+
+        if (self.field_count> 3):
+            self.soft_name=fields[3];
+        else :
+            print "check version3: %d %s " % (self.field_count,fields)
+
+        if (self.field_count> 4):
+            self.soft_ver=fields[4];
+        else :
+
+            print "check version4: %d %s " % (self.field_count,fields)
+
+        if (self.field_count> 5):
+            #print "before field 5: %d %s " % (self.field_count,fields)
+            self.name_delim=fields[5];
+        else:
+            #                    0      1       2       3              4
+            #check version6: 5 ['HDR', 'FEC', '3.00', 'Super Filer', 'Ver 1.0'] 
+
+            #print "check version5: %d %s " % (self.field_count,fields)
+            pass
+
+        if (self.field_count> 6):
+            self.report_id=fields[6];
+        else:
+            #print "check version6: %d %s " % (self.field_count,fields)
+            pass
+
+        if (self.field_count> 7):
+            self.report_num=fields[7];
+        else:
+            #print "check version7: %d %s " % (self.field_count,fields)
+            pass
+
+
 class VersionBase:
 
       def __init__(self):

@@ -20,6 +20,23 @@ import sys
 #import fec.version.v1.F1
 #import fec.version.v1 as v1
 
+import fec.version.v1
+import fec.version.v2
+test2= fec.version.v2.Version()
+
+import fec.version.v3
+import fec.version.v5_0
+import fec.version.v5_1
+import fec.version.v5_2
+import fec.version.v5_3
+import fec.version.v6_1
+import fec.version.v6_2
+import fec.version.v6_3
+import fec.version.v6_4
+import fec.version.v7_0
+import fec.version.v8_0
+
+
 #print sys.path
 #sys.path
 
@@ -56,57 +73,6 @@ def listing():
                 parser,
                 output_object)
 
-class HDR:
-# SEQ	 DESCRIPTION	TYPE	REQUIRED	DATA	REFERENCE	REFERENCE					
-# 1	Record Type	A/N-3	X (error)	HDR	HDR	
-# 2	EF Type	A/N-3	X (error)	FEC	FEC	
-# 3	FEC Ver	A/N-4	X (error)	3.00		
-# 4	Soft Name	A/N-90		SUPERIFLER		
-# 5	Soft Ver	A/N-16		1.02		
-# 6	Name Delim	A-1				Only if other than "^"
-# 7	Rpt ID	A/N-16		FEC-1234		FEC report ID of original report (Amenment only)
-# 8	Rpt Number	N-3		1	1,2,3,4	Sequential number of amenments
-# 9	HDRcomment 	A/N-200				For testing only.
-    def __init__(self,fields):
-        self.field_count= len(fields)
-
-        self.record_type=fields[0];
-        self.EF_type=fields[1]; # FEC
-        self.FEC_ver=fields[2]; #
-
-        if (self.field_count> 3):
-            self.soft_name=fields[3];
-        else :
-            print "check version3: %d %s " % (self.field_count,fields)
-
-        if (self.field_count> 4):
-            self.soft_ver=fields[4];
-        else :
-
-            print "check version4: %d %s " % (self.field_count,fields)
-
-        if (self.field_count> 5):
-            #print "before field 5: %d %s " % (self.field_count,fields)
-            self.name_delim=fields[5];
-        else:
-            #                    0      1       2       3              4
-            #check version6: 5 ['HDR', 'FEC', '3.00', 'Super Filer', 'Ver 1.0'] 
-
-            #print "check version5: %d %s " % (self.field_count,fields)
-            pass
-
-        if (self.field_count> 6):
-            self.report_id=fields[6];
-        else:
-            #print "check version6: %d %s " % (self.field_count,fields)
-            pass
-
-        if (self.field_count> 7):
-            self.report_num=fields[7];
-        else:
-            #print "check version7: %d %s " % (self.field_count,fields)
-            pass
-
 
 
 
@@ -120,8 +86,11 @@ class ZipCSV:
             print "reading  filename %s from zip %s" %  (ifilename, filename)
             d = zfile.read(name)
             out_file = out.create_file(ifilename, filename, baseurl, urlfile)
-            parser.parse_file_data(ifilename, filename, d, out_file)
-            out_file.close()
+            if (not out_file.exists()):
+                parser.parse_file_data(ifilename, filename, d, out_file)
+                out_file.close()
+            else:
+                print "skipping  filename %s from zip %s" %  (ifilename, filename)
 
 def dbg (x):
 #    traceback.print_stack(limit=2)
@@ -295,45 +264,57 @@ class Parser:
 #                )
             if self.header_version is None:
                 if re.match(r'1\..+', version  ):   
-                    import fec.version.v1.F1
+
                     import fec.version.v1
                     self.header_version= fec.version.v1.Version()
                     self.header_version.set_attr_hash(self.current.attributes)                               
                 elif re.match(r'2\..+',version  ):
+                    import fec.version.v2
                     self.header_version= fec.version.v2.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'3\..+',version  ):
+                    import fec.version.v3
                     self.header_version= fec.version.v3.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'5\.0.+',version  ):
+                    import fec.version.v5_0
                     self.header_version= fec.version.v5_0.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'5\.1.+',version  ):
+                    import fec.version.v5_1
                     self.header_version= fec.version.v5_1.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'5\.2.+',version  ):
+                    import fec.version.v5_2
                     self.header_version= fec.version.v5_2.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'5\.3.+',version  ):
+                    import fec.version.v5_3
                     self.header_version= fec.version.v5_3.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'6\.1.+',version  ):
+                    import fec.version.v6_1
                     self.header_version= fec.version.v6_1.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'6\.2.+',version  ):
+                    import fec.version.v6_2
                     self.header_version= fec.version.v6_2.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'6\.3.+',version  ):
+                    import fec.version.v6_3
                     self.header_version= fec.version.v6_3.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'6\.4.+',version  ):
+                    import fec.version.v6_4
                     self.header_version= fec.version.v6_4.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'7\..+',version  ):
-                    self.header_version= fec.version.v7.Version()
+                    import fec.version.v7_0
+                    self.header_version= fec.version.v7_0.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 elif re.match(r'8\..+',version  ):
-                    self.header_version= fec.version.v8.Version()
+                    import fec.version.v8_0
+                    self.header_version= fec.version.v8_0.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 else:
                     raise Exception()
