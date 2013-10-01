@@ -10,6 +10,8 @@ STATE_BODY = 2
 STATE_END = 3
 
 
+from fechbase import SkipException
+
 import zipfile
 import os
 import cache
@@ -82,15 +84,19 @@ class ZipCSV:
 
         zfile = zipfile.ZipFile(filename)
         for name in zfile.namelist():
-            (dirname, ifilename) = os.path.split(name)
-            print "reading  filename %s from zip %s" %  (ifilename, filename)
-            d = zfile.read(name)
-            out_file = out.create_file(ifilename, filename, baseurl, urlfile)
-            if (not out_file.exists()):
-                parser.parse_file_data(ifilename, filename, d, out_file)
-                out_file.close()
-            else:
-                print "skipping  filename %s from zip %s" %  (ifilename, filename)
+            try :
+                (dirname, ifilename) = os.path.split(name)
+                print "reading  filename %s from zip %s" %  (ifilename, filename)
+                d = zfile.read(name)
+                out_file = out.create_file(ifilename, filename, baseurl, urlfile)
+                if (not out_file.exists()):
+                    parser.parse_file_data(ifilename, filename, d, out_file)
+                    out_file.close()
+                else:
+                    print "skipping  filename %s from zip %s" %  (ifilename, filename)
+            except SkipException, e:
+                print "Parsing Failed filename %s source %s" % (filename, sourcefile)
+
 
 def dbg (x):
 #    traceback.print_stack(limit=2)

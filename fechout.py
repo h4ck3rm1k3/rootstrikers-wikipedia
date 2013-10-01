@@ -31,8 +31,12 @@ class FechoutFile ():
         return os.path.exists(self.filename())
 
     def open(self):
-        if not os.path.exists(self.pathname()):
-            os.makedirs(self.pathname())
+        try:
+            if not os.path.exists(self.pathname()):
+                os.makedirs(self.pathname())
+        except Exception , e:
+            print(e)
+            pass
 
     def file_attributes(self,attr):
         self._attr=attr

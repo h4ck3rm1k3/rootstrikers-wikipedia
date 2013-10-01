@@ -2,6 +2,8 @@
 # wich is under the apache license
 # https://github.com/NYTimes/Fech/blob/master/LICENSE
 
+class SkipException (Exception):
+    pass
 
 class RecordsBase:
     def __init__(self):
@@ -160,12 +162,12 @@ class VersionBase:
                   #return None 
 
             if record_type == "[BEGINTEXT]": 
-                  raise Exception("skip mail file")
-                  #return None 
+                raise SkipException("skip mail file")
+                #return {}
 
             if record_type == "[BEGIN TEXT]": 
-                  raise Exception("skip mail file")
-                  #return None 
+                raise SkipException("skip mail file")
+                #return {}
 
 
             if record_type in self.records:                  
@@ -197,7 +199,7 @@ class VersionBase:
                         if record_type in self.records:                  
                             return self.parse_record(fields,record_type,line)
                         else:
-                            raise Exception("recordtype '%s' original_record_type %s not known %s record %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields) ))
+                            raise Exception("recordtype '%s' original_record_type %s not known %s record %s on line %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields), line ))
 
 
                         raise Exception("recordtype '%s' original_record_type %s not known %s record %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields) ))
