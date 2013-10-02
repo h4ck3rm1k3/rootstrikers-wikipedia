@@ -154,7 +154,7 @@ class VersionBase:
             for f in fields_temp:
                   f=f.replace('\"',"")
                   fields.append(f)
-            record_type=fields[0]
+            record_type=fields[0].upper()
             original_record_type=record_type
 
             if record_type == "": 

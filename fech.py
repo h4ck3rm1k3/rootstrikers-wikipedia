@@ -95,7 +95,7 @@ class ZipCSV:
                 else:
                     print "skipping  filename %s from zip %s" %  (ifilename, filename)
             except SkipException, e:
-                print "Parsing Failed filename %s source %s" % (filename, sourcefile)
+                print "Parsing Failed filename %s source %s" % (ifilename, filename)
 
 
 def dbg (x):
