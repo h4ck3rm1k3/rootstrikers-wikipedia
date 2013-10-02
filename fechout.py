@@ -2,6 +2,10 @@
 from yaml import load, dump
 import os
 
+def checkin(path):
+    os.system("bash ./checkin.sh %s" % path)
+
+
 class FechoutFile ():
     u"""
     Wrapper for fech, manage the zip file
@@ -62,10 +66,12 @@ class FechoutFile ():
             default_flow_style=False
     )
 
+
     def close(self):
         if (len(self._rows)>0):
             self.outfile=open(self.filename(),"w")
             self.outfile.write(self.create_yaml())
+            checkin(self.pathname())
         else:
             self.outfile=open(self.filename(),"w")
             self.outfile.write("\n".join(self._raw))
