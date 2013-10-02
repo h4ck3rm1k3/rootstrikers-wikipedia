@@ -71,7 +71,7 @@ class FechoutFile ():
         if (len(self._rows)>0):
             self.outfile=open(self.filename(),"w")
             self.outfile.write(self.create_yaml())
-            checkin(self.pathname())
+            checkin(self.filename())
         else:
             self.outfile=open(self.filename(),"w")
             self.outfile.write("\n".join(self._raw))
