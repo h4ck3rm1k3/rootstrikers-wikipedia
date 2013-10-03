@@ -146,6 +146,10 @@ class VersionBase:
 
       def parse_body(self,line):
 
+            if line.find( "[BEGINTEXT]" ) > -1:
+                raise SkipException("skip mail file")
+
+
             if line == "": 
                 return { "Empty" : "" }
 
