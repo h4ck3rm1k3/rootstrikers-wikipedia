@@ -69,21 +69,69 @@ class FechoutFile ():
 
     def create_yaml(self):
 
-        count = 0
-        for chunk in self.chunks():
-            count = count + 1
-            filename=self.filename(count) 
-            print "writing %s" % filename
-            self.outfile=open(filename,"w")        
+        total = len(self._rows)
+        if (total > 2000):
+            count = 0
+            for chunk in self.chunks():
+                count = count + 1
+                filename=self.filename(count) 
+                print "writing %s" % filename
+                self.outfile=open(filename,"w")        
+                self.outfile.write( yaml.dump(
+                    { 
+                        'type': "chunk",
+                        'sourceurl' :   self.sourcefile,
+                        'filename'  :   self.name,
+                        'header'    :   self._attr,
+                        'countrows' :   len(self._rows),
+                        'countraw'  :   len(self._raw),
+                        'rows'      :   chunk,            
+                    }, 
+                    default_flow_style=False,
+                    Dumper=yaml.CDumper
+                ))
+                self.outfile.flush()
+                self.outfile.close()
+                print "going to checkin"
+                checkin(filename)
+                print "after checkin"
+
+            #####
+            #write the header
+            self.outfile=open(self.filename(),"w")        
             self.outfile.write( yaml.dump(
                 { 
-                    'type': "chunk",
+                    'type': "header",
                     'sourceurl' :   self.sourcefile,
                     'filename'  :   self.name,
                     'header'    :   self._attr,
                     'countrows' :   len(self._rows),
                     'countraw'  :   len(self._raw),
-                    'rows'      :   chunk,            
+                    "chunks"    :   count
+                }, 
+                default_flow_style=False,
+                Dumper=yaml.CDumper                
+            ))
+            self.outfile.flush()
+            self.outfile.close()
+            self.outfile=None
+            print "going to checkin"
+            checkin(self.filename())
+            print "after checkin"
+        else:
+            count =  1
+            filename=self.filename() 
+            print "writing %s" % filename
+            self.outfile=open(filename,"w")        
+            self.outfile.write( yaml.dump(
+                { 
+                    'type': "single",
+                    'sourceurl' :   self.sourcefile,
+                    'filename'  :   self.name,
+                    'header'    :   self._attr,
+                    'countrows' :   len(self._rows),
+                    'countraw'  :   len(self._raw),
+                    'rows'      :   self._rows,            
                 }, 
                 default_flow_style=False,
                 Dumper=yaml.CDumper
@@ -93,30 +141,7 @@ class FechoutFile ():
             print "going to checkin"
             checkin(filename)
             print "after checkin"
-
-        #####
-        #write the header
-        self.outfile=open(self.filename(),"w")        
-        self.outfile.write( yaml.dump(
-            { 
-                'type': "header",
-                'sourceurl' :   self.sourcefile,
-                'filename'  :   self.name,
-                'header'    :   self._attr,
-                'countrows' :   len(self._rows),
-                'countraw'  :   len(self._raw),
-                "chunks"    :   count
-            }, 
-            default_flow_style=False,
-            Dumper=yaml.CDumper                
-        ))
-        self.outfile.flush()
-        self.outfile.close()
-        self.outfile=None
-        print "going to checkin"
-        checkin(self.filename())
-        print "after checkin"
-
+            
 
     def close(self):
         if (len(self._rows)>0):
