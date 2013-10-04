@@ -86,14 +86,20 @@ class ZipCSV:
         for name in zfile.namelist():
             try :
                 (dirname, ifilename) = os.path.split(name)
-                print "reading  filename %s from zip %s" %  (ifilename, filename)
-                d = zfile.read(name)
+#                print "eval  filename %s from zip %s" %  (ifilename, filename)
                 out_file = out.create_file(ifilename, filename, baseurl, urlfile)
                 if (not out_file.exists()):
+                    print "before reading filename %s from zip %s" %  (ifilename, filename)
+                    d = zfile.read(name)
+                    print "after reading filename %s from zip %s" %  (ifilename, filename)
                     parser.parse_file_data(ifilename, filename, d, out_file)
+                    print "after parsing filename %s from zip %s" %  (ifilename, filename)
                     out_file.close()
-                else:
-                    print "skipping  filename %s from zip %s" %  (ifilename, filename)
+                    print "after closing filename %s from zip %s" %  (ifilename, filename)
+                #else:
+                #    print "skipping filename %s from zip %s" %  (ifilename, filename)
+                out_file = None
+
             except SkipException, e:
                 print "Parsing Failed filename %s source %s" % (ifilename, filename)
 
@@ -372,8 +378,8 @@ class Parser:
                 raise Exception("no header")
 
         except Exception, e:
-            print "Parsing Failed filename %s source %s" % (filename, sourcefile)
-            traceback.print_exc()
+            print "Parsing Failed filename %s source %s e %s" % (filename, sourcefile, e)
+            #traceback.print_exc()
             raise e
 
         self.current = None

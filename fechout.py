@@ -1,8 +1,10 @@
 #encapsulate the output of fec
-from yaml import load, dump
+import yaml
+#from 
 import os
 
 def checkin(path):
+    print "going to process %s" % path
     os.system("bash ./checkin.sh %s" % path)
 
 
@@ -27,8 +29,16 @@ class FechoutFile ():
         self.sourcefile = self.sourcefile.replace (".zip","")
         return "fech_yaml/%s/" % (self.sourcefile)
 
-    def filename(self):
-        self._filename = self.pathname() +  "/"  + self.name +  ".yml"
+    def filename(self, count =0):
+
+        self._filename = self.pathname() +  self.name 
+
+        if (count > 0):
+            # chunk
+            self._filename = self._filename +  "_%d" % count
+                    
+        self._filename = self._filename +  ".yml"
+
         return self._filename
 
     def exists(self):
@@ -48,34 +58,70 @@ class FechoutFile ():
     def rows(self,rows):
         self._rows=rows
 
+
+    def chunks(self):
+        """ Yield successive n-sized chunks from l.
+        http://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks-in-python
+        """
+        n=2000
+        for i in xrange(0, len(self._rows), n):
+            yield self._rows[i:i+n]
+
     def create_yaml(self):
 
-#        print ('countrows' , len(self._rows),  'countraw' ,  len(self._raw))       
-#        if (len(self._rows) ==len(self._raw))
+        count = 0
+        for chunk in self.chunks():
+            count = count + 1
+            filename=self.filename(count) 
+            print "writing %s" % filename
+            self.outfile=open(filename,"w")        
+            self.outfile.write( yaml.dump(
+                { 
+                    'type': "chunk",
+                    'sourceurl' :   self.sourcefile,
+                    'filename'  :   self.name,
+                    'header'    :   self._attr,
+                    'countrows' :   len(self._rows),
+                    'countraw'  :   len(self._raw),
+                    'rows'      :   chunk,            
+                }, 
+                default_flow_style=False,
+                Dumper=yaml.CDumper
+            ))
+            self.outfile.flush()
+            self.outfile.close()
+            print "going to checkin"
+            checkin(filename)
+            print "after checkin"
 
-        return dump(
+        #####
+        #write the header
+        self.outfile=open(self.filename(),"w")        
+        self.outfile.write( yaml.dump(
             { 
+                'type': "header",
                 'sourceurl' :   self.sourcefile,
                 'filename'  :   self.name,
                 'header'    :   self._attr,
                 'countrows' :   len(self._rows),
                 'countraw'  :   len(self._raw),
-                'rows'      :   self._rows,
-#                'raw'       :   self._raw,
+                "chunks"    :   count
             }, 
-            default_flow_style=False
-    )
+            default_flow_style=False,
+            Dumper=yaml.CDumper                
+        ))
+        self.outfile.flush()
+        self.outfile.close()
+        self.outfile=None
+        print "going to checkin"
+        checkin(self.filename())
+        print "after checkin"
 
 
     def close(self):
         if (len(self._rows)>0):
-            self.outfile=open(self.filename(),"w")
-            self.outfile.write(self.create_yaml())
-            self.outfile.flush()
-            self.outfile.close()
-            self.outfile=None
-            
-            checkin(self.filename())
+            self.create_yaml()
+                       
         else:
             self.outfile=open(self.filename(),"w")
             self.outfile.write("\n".join(self._raw))
