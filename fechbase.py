@@ -193,6 +193,8 @@ class VersionBase:
                     record_type = "SH3"
                 if record_type == "H6":
                     record_type = "SH6"
+                if record_type == "H5":
+                    record_type = "SH5"
 
 #                if record_type == "F3XN":
 #                    record_type = "F3X" # truncate the f3x
