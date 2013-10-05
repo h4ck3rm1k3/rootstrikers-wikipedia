@@ -146,7 +146,7 @@ class VersionBase:
 
       def parse_body(self,line):
 
-            if line.find( "[BEGINTEXT]" ) > -1:
+            if line.find( "[BEGINTEXT" ) > -1:
                 raise SkipException("skip mail file")
 
 
@@ -169,6 +169,10 @@ class VersionBase:
                 raise SkipException("skip mail file")
                 #return {}
 
+            if record_type == "[BEGINTEXT": 
+                raise SkipException("skip mail file")
+                #return {}
+
             if record_type == "[BEGIN TEXT]": 
                 raise SkipException("skip mail file")
                 #return {}
@@ -187,6 +191,8 @@ class VersionBase:
                     record_type = "SH2"
                 if record_type == "H3":
                     record_type = "SH3"
+                if record_type == "H6":
+                    record_type = "SH6"
 
 #                if record_type == "F3XN":
 #                    record_type = "F3X" # truncate the f3x
