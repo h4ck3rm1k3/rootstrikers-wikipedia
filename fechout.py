@@ -3,9 +3,9 @@ import yaml
 #from 
 import os
 
-def checkin(path):
+def checkin(path,filename):
     print "going to process %s" % path
-    os.system("bash ./checkin.sh %s" % path)
+    os.system("bash ./checkin.sh %s %s" % (path,filename))
 
 
 class FechoutFile ():
@@ -27,11 +27,13 @@ class FechoutFile ():
 
     def pathname(self):
         self.sourcefile = self.sourcefile.replace (".zip","")
-        return "fech_yaml/%s/" % (self.sourcefile)
+        year = self.sourcefile[0:4]
+        #print(year)
+        return "fech_yaml/%s/%s/" % (year,self.sourcefile)
 
     def filename(self, count =0):
 
-        self._filename = self.pathname() +  self.name 
+        self._filename =  self.name 
 
         if (count > 0):
             # chunk
@@ -42,7 +44,7 @@ class FechoutFile ():
         return self._filename
 
     def exists(self):
-        return os.path.exists(self.filename())
+        return os.path.exists(self.pathname () + self.filename())
 
     def open(self):
         try:
@@ -74,7 +76,7 @@ class FechoutFile ():
             count = 0
             for chunk in self.chunks():
                 count = count + 1
-                filename=self.filename(count) 
+                filename=self.pathname () + self.filename(count) 
                 print "writing %s" % filename
                 self.outfile=open(filename,"w")        
                 self.outfile.write( yaml.dump(
@@ -93,12 +95,12 @@ class FechoutFile ():
                 self.outfile.flush()
                 self.outfile.close()
                 print "going to checkin"
-                checkin(filename)
+                checkin(self.pathname(), self.filename(count) )
                 print "after checkin"
 
             #####
             #write the header
-            self.outfile=open(self.filename(),"w")        
+            self.outfile=open(self.pathname () + self.filename(),"w")        
             self.outfile.write( yaml.dump(
                 { 
                     'type': "header",
@@ -116,11 +118,11 @@ class FechoutFile ():
             self.outfile.close()
             self.outfile=None
             print "going to checkin"
-            checkin(self.filename())
+            checkin(self.pathname(),self.filename())
             print "after checkin"
         else:
             count =  1
-            filename=self.filename() 
+            filename=self.pathname () + self.filename() 
             print "writing %s" % filename
             self.outfile=open(filename,"w")        
             self.outfile.write( yaml.dump(
@@ -139,7 +141,7 @@ class FechoutFile ():
             self.outfile.flush()
             self.outfile.close()
             print "going to checkin"
-            checkin(filename)
+            checkin(self.pathname(),self.filename())
             print "after checkin"
             
 
@@ -148,7 +150,7 @@ class FechoutFile ():
             self.create_yaml()
                        
         else:
-            self.outfile=open(self.filename(),"w")
+            self.outfile=open(self.pathname () + self.filename(),"w")
             self.outfile.write("\n".join(self._raw))
             raise Exception("no rows for %s %s" %( self.sourcefile, self.name))
     
