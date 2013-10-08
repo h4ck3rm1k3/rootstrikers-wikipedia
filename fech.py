@@ -48,7 +48,7 @@ import fec.version.v8_0
 
 
 BASEURL = 'ftp://ftp.fec.gov/FEC/electronic/'
-def listing():
+def listing(year):
     u"""
     execute the listing
     """
@@ -56,6 +56,10 @@ def listing():
     for filename in dirlisting.split():
         #print("consider file %s" % filename)
         if (filename.find(".zip") >0 ):
+            if not re.match(year,filename) :
+                print "skip file %s" % filename
+                continue 
+
             #print("going to get file %s" % BASEURL + filename)
             cached_file = cache.cachewebfile(BASEURL + filename)
             #print("cached file %s" % cached_file)
@@ -394,4 +398,12 @@ class Parser:
             c = c + 1
 
 #main
-listing()
+#argv1 is the regex to match files
+in_pattern=str(sys.argv[1])
+
+pattern=re.compile(in_pattern,re.DEBUG)
+
+if pattern is None:
+    raise Exception(in_pattern )
+
+listing(pattern)
