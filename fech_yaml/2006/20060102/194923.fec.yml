@@ -1,0 +1,1746 @@
+countraw: 14
+countrows: 12
+filename: 194923.fec
+header: {}
+rows:
+- input: '"F3XA","C00395590","Placer County Republican Party (Federal Acct.)","PO
+    Box 292","","Loomis","CA","956500292","","","M10","","","CA","20050901","20050930","10616.38","1340","11956.38","1264.01","10692.37","","","500","40","540","0","0","540","0","0","0","0","0","800","0","1340","1340","108.87","403.64","751.5","1264.01","0","0","0","0","0","0","0","0","0","0","0","1264.01","860.37","540","0","540","860.37","0","860.37","12596.38","2005","103292.58","115888.96","105196.59","10692.37","51350","12116.67","63466.67","0","0","63466.67","57.96","0","0","0","0","7924.45","31843.5","103292.58","71449.08","62105.62","41114.08","1830.73","105050.43","0","0","0","0","0","0","0","146.16","0","146.16","0","105196.59","64082.51","63466.67","146.16","63320.51","63936.35","0","63936.35","Klein^Aaron","20060102","0","0","0","0","0","0","0","31843.5","0","0","0","0"'
+  record: <fec.version.v5_2.F3X.Records instance at 0x14d0170>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: F3XA
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: COMMITTEE NAME
+    number: '3'
+    value: Placer County Republican Party (Federal Acct.)
+  - name: STREET 1
+    number: '4'
+    value: PO Box 292
+  - name: STREET 2
+    number: '5'
+    value: ''
+  - name: CITY
+    number: '6'
+    value: Loomis
+  - name: STATE
+    number: '7'
+    value: CA
+  - name: ZIP
+    number: '8'
+    value: '956500292'
+  - name: CHG OF ADDRESS
+    number: '9'
+    value: ''
+  - name: QUALIFIED CMTE
+    number: '10'
+    value: ''
+  - name: RPTCODE
+    number: '11'
+    value: M10
+  - name: RPTPGI
+    number: '12'
+    value: ''
+  - name: Of Election
+    number: 13-
+    value: ''
+  - name: STATE (Of Election)
+    number: '14'
+    value: CA
+  - name: Coverage From
+    number: 15-
+    value: '20050901'
+  - name: Coverage To
+    number: 16-
+    value: '20050930'
+  - name: Cash on Hand beginning
+    number: 17-6(b)
+    value: '10616.38'
+  - name: Total Receipts
+    number: 18-6(c)
+    value: '1340'
+  - name: Subtotal
+    number: 19-6(d)
+    value: '11956.38'
+  - name: Total Disbursements
+    number: 20-7.
+    value: '1264.01'
+  - name: Cash on Hand at Close
+    number: 21-8.
+    value: '10692.37'
+  - name: Debts to
+    number: 22-9.
+    value: ''
+  - name: Debts by
+    number: 23-10.
+    value: ''
+  - name: Itemized
+    number: 24-11(a)i
+    value: '500'
+  - name: Unitemized
+    number: 25-11(a)ii
+    value: '40'
+  - name: Total
+    number: 26-11(a)iii
+    value: '540'
+  - name: Political Party Committees
+    number: 27-11(b)
+    value: '0'
+  - name: Other Political Committees (PACs)
+    number: 28-11(c)
+    value: '0'
+  - name: Total Contributions
+    number: 29-11(d)
+    value: '540'
+  - name: Transfers from Affiliated/Other Party Committees
+    number: 30-12.
+    value: '0'
+  - name: All Loans Received
+    number: 31-13.
+    value: '0'
+  - name: Loan Repayments Received
+    number: 32-14.
+    value: '0'
+  - name: Offsets to Operating Expenditures (refunds)
+    number: 33-15.
+    value: '0'
+  - name: Refunds of Federal Contributions
+    number: 34-16.
+    value: '0'
+  - name: Other Federal Receipts (dividends)
+    number: 35-17.
+    value: '800'
+  - name: Transfers from Nonfederal Account (H3)
+    number: 36-18(a)
+    value: '0'
+  - name: Total Receipts
+    number: 37-19.
+    value: '1340'
+  - name: Total Federal Receipts
+    number: 38-20.
+    value: '1340'
+  - name: Federal Share
+    number: 39-21(a)i
+    value: '108.87'
+  - name: Non-Federal Share
+    number: 40-21(a)ii
+    value: '403.64'
+  - name: Other Federal Operating Expenditures
+    number: 41-21(b)
+    value: '751.5'
+  - name: Total Operating Expenditures
+    number: 42-21(c)
+    value: '1264.01'
+  - name: Transfers to Affiliated/Other Party Committees
+    number: 43-22.
+    value: '0'
+  - name: Contributions to Federal Candidates/Committees
+    number: 44-23.
+    value: '0'
+  - name: Independent Expenditures
+    number: 45-24.
+    value: '0'
+  - name: Coordinated Expend made by Party Committees
+    number: 46-25.
+    value: '0'
+  - name: Loan Repayments
+    number: 47-26.
+    value: '0'
+  - name: Loans Made
+    number: 48-27.
+    value: '0'
+  - name: Individuals/Persons
+    number: 49-28(a)
+    value: '0'
+  - name: Political Party Committees
+    number: 50-28(b)
+    value: '0'
+  - name: Other Political Committees
+    number: 51-28(c)
+    value: '0'
+  - name: Total Contributions Refunds
+    number: 52-28(d)
+    value: '0'
+  - name: Other Disbursements
+    number: 53-29.
+    value: '0'
+  - name: Total Disbursements
+    number: 54-31.
+    value: '1264.01'
+  - name: Total Federal Disbursements
+    number: 55-32.
+    value: '860.37'
+  - name: Total Contributions
+    number: 56-33.
+    value: '540'
+  - name: Total Contribution Refunds
+    number: 57-34.
+    value: '0'
+  - name: Net Contributions
+    number: 58-35.
+    value: '540'
+  - name: Total Federal Operating Expenditures
+    number: 59-36.
+    value: '860.37'
+  - name: Offsets to Operating Expenditures
+    number: 60-37.
+    value: '0'
+  - name: Net Operating Expenditures
+    number: 61-38.
+    value: '860.37'
+  - name: Cash on Hand Jan 1, 19
+    number: 62-6(a)
+    value: '12596.38'
+  - name: Year for Above
+    number: '63'
+    value: '2005'
+  - name: Total Receipts
+    number: 64-6(c)
+    value: '103292.58'
+  - name: Subtotal
+    number: 65-6(d)
+    value: '115888.96'
+  - name: Total disbursements
+    number: 66-7.
+    value: '105196.59'
+  - name: Cash on Hand Close
+    number: 67-8.
+    value: '10692.37'
+  - name: Itemized
+    number: 68-11(a)i
+    value: '51350'
+  - name: Unitemized
+    number: 69-11(a)ii
+    value: '12116.67'
+  - name: Total
+    number: 70-11(a)iii
+    value: '63466.67'
+  - name: Political Party committees
+    number: 71-11(b)
+    value: '0'
+  - name: Other Political Committees (PACs)
+    number: 72-11(c)
+    value: '0'
+  - name: Total Contributions
+    number: 73-11(d)
+    value: '63466.67'
+  - name: Transfers from Affiliated/Other Party Committees
+    number: 74-12.
+    value: '57.96'
+  - name: All Loans Received
+    number: 75-13.
+    value: '0'
+  - name: Loan Repayments Received
+    number: 76-14.
+    value: '0'
+  - name: Offsets to Operating Expenditures (refunds)
+    number: 77-15.
+    value: '0'
+  - name: Refunds of Federal Contributions
+    number: 78-16.
+    value: '0'
+  - name: Other Federal Receipts (dividends)
+    number: 79-17.
+    value: '7924.45'
+  - name: Transfers from Nonfederal Account (H3)
+    number: 80-18(a)
+    value: '31843.5'
+  - name: Total Receipts
+    number: 81-19.
+    value: '103292.58'
+  - name: Total Federal Receipts
+    number: 82-20.
+    value: '71449.08'
+  - name: Federal Share
+    number: 83-21(a)i
+    value: '62105.62'
+  - name: Non-Federal Share
+    number: 84-21(a)ii
+    value: '41114.08'
+  - name: Other Federal Operating Expenditures
+    number: 85-21(b)
+    value: '1830.73'
+  - name: Total operating Expenditures
+    number: 86-21(c)
+    value: '105050.43'
+  - name: Transfers to Affiliated/Other Party Committees
+    number: 87-22.
+    value: '0'
+  - name: Contributions to Federal Candidates/Committees
+    number: 88-23.
+    value: '0'
+  - name: Independent Expenditures
+    number: 89-24.
+    value: '0'
+  - name: Coordinated Expend made by Party Committees
+    number: 90-25.
+    value: '0'
+  - name: Loan Repayments Made
+    number: 91-26.
+    value: '0'
+  - name: Loans Made
+    number: 92-27.
+    value: '0'
+  - name: Individuals/Persons
+    number: 93-28(a)
+    value: '0'
+  - name: Political Party Committees
+    number: 94-28(b)
+    value: '146.16'
+  - name: Other Political Committees
+    number: 95-28(c)
+    value: '0'
+  - name: Total contributions Refunds
+    number: 96-28(d)
+    value: '146.16'
+  - name: Other Disbursements
+    number: 97-29.
+    value: '0'
+  - name: Total Disbursements
+    number: 98-31.
+    value: '105196.59'
+  - name: Total Federal Disbursements
+    number: 99-32.
+    value: '64082.51'
+  - name: Total Contributions
+    number: 100-33.
+    value: '63466.67'
+  - name: Total Contribution Refunds
+    number: 101-34.
+    value: '146.16'
+  - name: Net contributions
+    number: 102-35.
+    value: '63320.51'
+  - name: Total Federal Operating Expenditures
+    number: 103-36.
+    value: '63936.35'
+  - name: Offsets to Operating Expenditures
+    number: 104-37.
+    value: '0'
+  - name: Net Operating Expenditures
+    number: 105-38.
+    value: '63936.35'
+  - name: NAME/TREASURER (as signed)
+    number: '106'
+    value: Klein^Aaron
+  - name: Signed
+    number: 107-
+    value: '20060102'
+  - name: Transfers from Non-Federal (Levin - H5)
+    number: 108-18(b)
+    value: '0'
+  - name: Total Non-Federal Transfers (18a+18b)
+    number: 109-18(c)
+    value: '0'
+  - name: Shared Federal Activity (H6) Fed Share
+    number: 110-30(a)i
+    value: '0'
+  - name: Shared Federal Activity (H6) Non-Fed
+    number: 111-30(a)ii
+    value: '0'
+  - name: Non-Allocable 100% Fed Election Activity
+    number: 112-30(b)
+    value: '0'
+  - name: Total Federal Election Activity
+    number: 113-30(c)
+    value: '0'
+  - name: Transfers from Non-Federal (Levin - H5)
+    number: 114-18(b)
+    value: '0'
+  - name: Total Non-Federal Transfers (18a+18b)
+    number: 115-18(c)
+    value: '31843.5'
+  - name: Shared Federal Activity (H6) Fed Share
+    number: 116-30(a)i
+    value: '0'
+  - name: Shared Federal Activity (H6) Non-Fed
+    number: 117-30(a)ii
+    value: '0'
+  - name: Non-Allocable 100% Fed Election Activity
+    number: 118-30(b)
+    value: '0'
+  - name: Total Federal Election Activity
+    number: 119-30(c)
+    value: '0'
+- attempt:
+  - name: FORM TYPE
+    number: '1'
+    value: SA11A1
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: IND
+  - name: CONTRIBUTOR NAME
+    number: '4'
+    value: ''
+  - name: STREET 1
+    number: '5'
+    value: 18505 Sierra Ranch Road
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Colfax
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '957139649'
+  - name: ITEM ELECT CD
+    number: '10'
+    value: ''
+  - name: ITEM ELECT OTHER
+    number: '11'
+    value: ''
+  - name: INDEMP
+    number: '12'
+    value: Genovese Forman & Burford
+  - name: INDOCC
+    number: '13'
+    value: Owner
+  - name: AGGREGATE AMT Y-T-D
+    number: '14'
+    value: '500'
+  - name: DATE RECEIVED
+    number: '15'
+    value: '20050929'
+  - name: AMOUNT RECEIVED
+    number: '16'
+    value: '500'
+  - name: TRANS CODE
+    number: '17'
+    value: ''
+  - name: TRANS DESCRIP
+    number: '18'
+    value: In-Kind:Pocket Constitutions
+  - name: FEC COMMITTEE ID NUMBER
+    number: '19'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '20'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '21'
+    value: ''
+  - name: CAN/OFFICE
+    number: '22'
+    value: ''
+  - name: CAN/STATE
+    number: '23'
+    value: ''
+  - name: CAN/DIST
+    number: '24'
+    value: ''
+  - name: CONDUIT NAME
+    number: '25'
+    value: ''
+  - name: CONDUIT STREET1
+    number: '26'
+    value: ''
+  - name: CONDUIT STREET2
+    number: '27'
+    value: ''
+  - name: CONDUIT CITY
+    number: '28'
+    value: ''
+  - name: CONDUIT STATE
+    number: '29'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '30'
+    value: ''
+  - name: MEMO CODE
+    number: '31'
+    value: ''
+  - name: MEMO TEXT
+    number: '32'
+    value: ''
+  - name: AMENDED CD
+    number: '33'
+    value: ''
+  - name: TRAN ID
+    number: '34'
+    value: SA11A1-692-1451-i
+  - name: BACK REF TRAN ID
+    number: '35'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '36'
+    value: ''
+  - name: Reference to SI or SL system code that identifies the Account
+    number: '37'
+    value: ''
+  - name: INCREASED LIMIT
+    number: '38'
+    value: ''
+  - name: CONTRIB ORGANIZATION NAME
+    number: '39'
+    value: ''
+  - name: CONTRIBUTOR LAST NAME
+    number: '40'
+    value: Forman
+  - name: CONTRIBUTOR FIRST NAME
+    number: '41'
+    value: Dean
+  - name: CONTRIBUTOR MIDDLE NAME
+    number: '42'
+    value: ''
+  - name: CONTRIBUTOR PREFIX
+    number: '43'
+    value: ''
+  - name: CONTRIBUTOR SUFFIX
+    number: '44'
+    value: NO VALUE!
+  expected_count: 44
+  input: '"SA11A1","C00395590","IND","","18505 Sierra Ranch Road","","Colfax","CA","957139649","","","Genovese
+    Forman & Burford","Owner","500","20050929","500","","In-Kind:Pocket Constitutions","","","","","","","","","","","","","","","","SA11A1-692-1451-i","","","","","","Forman","Dean","",""'
+  input_count: 43
+  record: <fec.version.v5_2.SA.Records instance at 0x14d0290>
+  result: []
+- attempt:
+  - name: FORM TYPE
+    number: '1'
+    value: SA17
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: ORG
+  - name: CONTRIBUTOR NAME
+    number: '4'
+    value: ''
+  - name: STREET 1
+    number: '5'
+    value: 2650 Sunset Boulevard
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Rocklin
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '956774243'
+  - name: ITEM ELECT CD
+    number: '10'
+    value: ''
+  - name: ITEM ELECT OTHER
+    number: '11'
+    value: ''
+  - name: INDEMP
+    number: '12'
+    value: ''
+  - name: INDOCC
+    number: '13'
+    value: ''
+  - name: AGGREGATE AMT Y-T-D
+    number: '14'
+    value: '800'
+  - name: DATE RECEIVED
+    number: '15'
+    value: '20050915'
+  - name: AMOUNT RECEIVED
+    number: '16'
+    value: '800'
+  - name: TRANS CODE
+    number: '17'
+    value: ''
+  - name: TRANS DESCRIP
+    number: '18'
+    value: Refund on Deposit for Venue
+  - name: FEC COMMITTEE ID NUMBER
+    number: '19'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '20'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '21'
+    value: ''
+  - name: CAN/OFFICE
+    number: '22'
+    value: ''
+  - name: CAN/STATE
+    number: '23'
+    value: ''
+  - name: CAN/DIST
+    number: '24'
+    value: ''
+  - name: CONDUIT NAME
+    number: '25'
+    value: ''
+  - name: CONDUIT STREET1
+    number: '26'
+    value: ''
+  - name: CONDUIT STREET2
+    number: '27'
+    value: ''
+  - name: CONDUIT CITY
+    number: '28'
+    value: ''
+  - name: CONDUIT STATE
+    number: '29'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '30'
+    value: ''
+  - name: MEMO CODE
+    number: '31'
+    value: ''
+  - name: MEMO TEXT
+    number: '32'
+    value: ''
+  - name: AMENDED CD
+    number: '33'
+    value: ''
+  - name: TRAN ID
+    number: '34'
+    value: SA17-827-1439-m
+  - name: BACK REF TRAN ID
+    number: '35'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '36'
+    value: ''
+  - name: Reference to SI or SL system code that identifies the Account
+    number: '37'
+    value: ''
+  - name: INCREASED LIMIT
+    number: '38'
+    value: ''
+  - name: CONTRIB ORGANIZATION NAME
+    number: '39'
+    value: City of Rocklin - Community Services Dept.
+  - name: CONTRIBUTOR LAST NAME
+    number: '40'
+    value: ''
+  - name: CONTRIBUTOR FIRST NAME
+    number: '41'
+    value: ''
+  - name: CONTRIBUTOR MIDDLE NAME
+    number: '42'
+    value: ''
+  - name: CONTRIBUTOR PREFIX
+    number: '43'
+    value: ''
+  - name: CONTRIBUTOR SUFFIX
+    number: '44'
+    value: NO VALUE!
+  expected_count: 44
+  input: '"SA17","C00395590","ORG","","2650 Sunset Boulevard","","Rocklin","CA","956774243","","","","","800","20050915","800","","Refund
+    on Deposit for Venue","","","","","","","","","","","","","","","","SA17-827-1439-m","","","","","City
+    of Rocklin - Community Services Dept.","","","",""'
+  input_count: 43
+  record: <fec.version.v5_2.SA.Records instance at 0x14d0bd8>
+  result: []
+- attempt:
+  - name: FORM TYPE
+    number: '1'
+    value: SB21B
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: IND
+  - name: RECIPIENT NAME
+    number: '4'
+    value: ''
+  - name: STREET 1
+    number: '5'
+    value: 1333 Muscat Circle
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Roseville
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '957477286'
+  - name: TRANS Purpose CODE
+    number: '10'
+    value: ''
+  - name: TRANS Purpose DESCRIP
+    number: '11'
+    value: 'Fundraising: Event Tickets'
+  - name: ITEM ELECT CD
+    number: '12'
+    value: ''
+  - name: ITEM ELECT OTHER
+    number: '13'
+    value: ''
+  - name: DATE OF EXPENDITURE
+    number: '14'
+    value: '20050914'
+  - name: AMOUNT OF EXPENDITURE
+    number: '15'
+    value: '251.5'
+  - name: FEC COMMITTEE ID NUMBER
+    number: '16'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '17'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '18'
+    value: ''
+  - name: CAN/OFFICE
+    number: '19'
+    value: ''
+  - name: CAN/STATE
+    number: '20'
+    value: ''
+  - name: CAN/DIST
+    number: '21'
+    value: ''
+  - name: CONDUIT NAME
+    number: '22'
+    value: ''
+  - name: CONDUIT STREET 1
+    number: '23'
+    value: ''
+  - name: CONDUIT STREET 2
+    number: '24'
+    value: ''
+  - name: CONDUIT CITY
+    number: '25'
+    value: ''
+  - name: CONDUIT STATE
+    number: '26'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '27'
+    value: ''
+  - name: MEMO CODE
+    number: '28'
+    value: ''
+  - name: MEMO TEXT
+    number: '29'
+    value: ''
+  - name: AMENDED CD
+    number: '30'
+    value: ''
+  - name: TRAN ID
+    number: '31'
+    value: SB21B-444-1438-e
+  - name: BACK REF TRAN ID
+    number: '32'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '33'
+    value: ''
+  - name: Reference to SI or SL system code that identifies the Account
+    number: '34'
+    value: ''
+  - name: REFUND OR DISPOSAL OF EXCESS
+    number: '35'
+    value: ''
+  - name: CATEGORY CODE
+    number: '36'
+    value: '003'
+  - name: COMMUNICATION DATE
+    number: '37'
+    value: ''
+  - name: RECIPIENT ORGANIZATION NAME
+    number: '38'
+    value: ''
+  - name: RECIPIENT LAST NAME
+    number: '39'
+    value: Gore
+  - name: RECIPIENT FIRST NAME
+    number: '40'
+    value: Bonnie
+  - name: RECIPIENT MIDDLE NAME
+    number: '41'
+    value: ''
+  - name: RECIPIENT PREFIX
+    number: '42'
+    value: ''
+  - name: RECIPIENT SUFFIX
+    number: '43'
+    value: NO VALUE!
+  expected_count: 43
+  input: '"SB21B","C00395590","IND","","1333 Muscat Circle","","Roseville","CA","957477286","","Fundraising:
+    Event Tickets","","","20050914","251.5","","","","","","","","","","","","","","","","SB21B-444-1438-e","","","","","003","","","Gore","Bonnie","",""'
+  input_count: 42
+  record: <fec.version.v5_2.SB.Records instance at 0x14d0170>
+  result: []
+- attempt:
+  - name: FORM TYPE
+    number: '1'
+    value: SB21B
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: IND
+  - name: RECIPIENT NAME
+    number: '4'
+    value: ''
+  - name: STREET 1
+    number: '5'
+    value: 18505 Sierra Ranch Road
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Colfax
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '957139649'
+  - name: TRANS Purpose CODE
+    number: '10'
+    value: ''
+  - name: TRANS Purpose DESCRIP
+    number: '11'
+    value: 'Inkind: Pocket Constitutions'
+  - name: ITEM ELECT CD
+    number: '12'
+    value: ''
+  - name: ITEM ELECT OTHER
+    number: '13'
+    value: ''
+  - name: DATE OF EXPENDITURE
+    number: '14'
+    value: '20050929'
+  - name: AMOUNT OF EXPENDITURE
+    number: '15'
+    value: '500'
+  - name: FEC COMMITTEE ID NUMBER
+    number: '16'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '17'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '18'
+    value: ''
+  - name: CAN/OFFICE
+    number: '19'
+    value: ''
+  - name: CAN/STATE
+    number: '20'
+    value: ''
+  - name: CAN/DIST
+    number: '21'
+    value: ''
+  - name: CONDUIT NAME
+    number: '22'
+    value: ''
+  - name: CONDUIT STREET 1
+    number: '23'
+    value: ''
+  - name: CONDUIT STREET 2
+    number: '24'
+    value: ''
+  - name: CONDUIT CITY
+    number: '25'
+    value: ''
+  - name: CONDUIT STATE
+    number: '26'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '27'
+    value: ''
+  - name: MEMO CODE
+    number: '28'
+    value: ''
+  - name: MEMO TEXT
+    number: '29'
+    value: ''
+  - name: AMENDED CD
+    number: '30'
+    value: ''
+  - name: TRAN ID
+    number: '31'
+    value: SB21B-692-1451-i
+  - name: BACK REF TRAN ID
+    number: '32'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '33'
+    value: ''
+  - name: Reference to SI or SL system code that identifies the Account
+    number: '34'
+    value: ''
+  - name: REFUND OR DISPOSAL OF EXCESS
+    number: '35'
+    value: ''
+  - name: CATEGORY CODE
+    number: '36'
+    value: '-99'
+  - name: COMMUNICATION DATE
+    number: '37'
+    value: ''
+  - name: RECIPIENT ORGANIZATION NAME
+    number: '38'
+    value: ''
+  - name: RECIPIENT LAST NAME
+    number: '39'
+    value: Forman
+  - name: RECIPIENT FIRST NAME
+    number: '40'
+    value: Dean
+  - name: RECIPIENT MIDDLE NAME
+    number: '41'
+    value: ''
+  - name: RECIPIENT PREFIX
+    number: '42'
+    value: ''
+  - name: RECIPIENT SUFFIX
+    number: '43'
+    value: NO VALUE!
+  expected_count: 43
+  input: '"SB21B","C00395590","IND","","18505 Sierra Ranch Road","","Colfax","CA","957139649","","Inkind:
+    Pocket Constitutions","","","20050929","500","","","","","","","","","","","","","","","","SB21B-692-1451-i","","","","","-99","","","Forman","Dean","",""'
+  input_count: 42
+  record: <fec.version.v5_2.SB.Records instance at 0x14d0908>
+  result: []
+- input: '"SB21B","C00395590","ORG","","400 Ball Park Drive","","West Sacramento","CA","956912824","","Fundraising:
+    Event Tickets","","","20050914","251.5","","","","","","","Gore^Bonnie^^","1333
+    Muscat Circle","","Roseville","CA","957477286","X","Subitemization of Bonnie Gore","","SB21B-831-58-V","","","","","003","","Sacramento
+    River Cats Baseball Club, LLC","","","",""'
+  record: <fec.version.v5_2.SB.Records instance at 0x14d0b00>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: SB21B
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: ORG
+  - name: RECIPIENT NAME
+    number: '4'
+    value: ''
+  - name: STREET 1
+    number: '5'
+    value: 400 Ball Park Drive
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: West Sacramento
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '956912824'
+  - name: TRANS Purpose CODE
+    number: '10'
+    value: ''
+  - name: TRANS Purpose DESCRIP
+    number: '11'
+    value: 'Fundraising: Event Tickets'
+  - name: ITEM ELECT CD
+    number: '12'
+    value: ''
+  - name: ITEM ELECT OTHER
+    number: '13'
+    value: ''
+  - name: DATE OF EXPENDITURE
+    number: '14'
+    value: '20050914'
+  - name: AMOUNT OF EXPENDITURE
+    number: '15'
+    value: '251.5'
+  - name: FEC COMMITTEE ID NUMBER
+    number: '16'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '17'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '18'
+    value: ''
+  - name: CAN/OFFICE
+    number: '19'
+    value: ''
+  - name: CAN/STATE
+    number: '20'
+    value: ''
+  - name: CAN/DIST
+    number: '21'
+    value: ''
+  - name: CONDUIT NAME
+    number: '22'
+    value: Gore^Bonnie^^
+  - name: CONDUIT STREET 1
+    number: '23'
+    value: 1333 Muscat Circle
+  - name: CONDUIT STREET 2
+    number: '24'
+    value: ''
+  - name: CONDUIT CITY
+    number: '25'
+    value: Roseville
+  - name: CONDUIT STATE
+    number: '26'
+    value: CA
+  - name: CONDUIT ZIP
+    number: '27'
+    value: '957477286'
+  - name: MEMO CODE
+    number: '28'
+    value: X
+  - name: MEMO TEXT
+    number: '29'
+    value: Subitemization of Bonnie Gore
+  - name: AMENDED CD
+    number: '30'
+    value: ''
+  - name: TRAN ID
+    number: '31'
+    value: SB21B-831-58-V
+  - name: BACK REF TRAN ID
+    number: '32'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '33'
+    value: ''
+  - name: Reference to SI or SL system code that identifies the Account
+    number: '34'
+    value: ''
+  - name: REFUND OR DISPOSAL OF EXCESS
+    number: '35'
+    value: ''
+  - name: CATEGORY CODE
+    number: '36'
+    value: '003'
+  - name: COMMUNICATION DATE
+    number: '37'
+    value: ''
+  - name: RECIPIENT ORGANIZATION NAME
+    number: '38'
+    value: Sacramento River Cats Baseball Club
+  - name: RECIPIENT LAST NAME
+    number: '39'
+    value: ' LLC'
+  - name: RECIPIENT FIRST NAME
+    number: '40'
+    value: ''
+  - name: RECIPIENT MIDDLE NAME
+    number: '41'
+    value: ''
+  - name: RECIPIENT PREFIX
+    number: '42'
+    value: ''
+  - name: RECIPIENT SUFFIX
+    number: '43'
+    value: ''
+- input: '"H2","C00395590","2005 Summer Picnic","X","","","S",".9000",".1000","","H2-A-2"'
+  record: <fec.version.v5_2.SH2.Records instance at 0x14d0a28>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: H2
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: Activity/Event
+    number: 3-
+    value: 2005 Summer Picnic
+  - name: Activity Is Direct Fundraising
+    number: 4-
+    value: X
+  - name: SPACE HOLDER
+    number: '5'
+    value: ''
+  - name: Act. Direct Candidate Support
+    number: 6-
+    value: ''
+  - name: RATIO CODE
+    number: '7'
+    value: S
+  - name: FEDERAL PERCENTAGE
+    number: '8'
+    value: '.9000'
+  - name: NON-FEDERAL PERCENTAGE
+    number: '9'
+    value: '.1000'
+  - name: INTERNAL USE ONLY
+    number: '10'
+    value: ''
+  - name: TRAN ID
+    number: '11'
+    value: H2-A-2
+- input: '"H4","C00395590","IND","Campbell^Kenneth W^^","3636 Mccourtney Road","","Lincoln","CA","956489716","Postage","20050906","37","7.77","29.23","","","","","10528.8","","","","","","","","","","","","","","","H4-17-1429-e","","","","","X","","","",""'
+  record: <fec.version.v5_2.SH4.Records instance at 0x14d0b00>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: H4
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: IND
+  - name: NAME (Payee)
+    number: '4'
+    value: Campbell^Kenneth W^^
+  - name: STREET 1
+    number: '5'
+    value: 3636 Mccourtney Road
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Lincoln
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '956489716'
+  - name: TRANS Purpose DESCRIP
+    number: '10'
+    value: Postage
+  - name: DATE
+    number: '11'
+    value: '20050906'
+  - name: TOTAL AMOUNT
+    number: '12'
+    value: '37'
+  - name: FEDERAL SHARE
+    number: '13'
+    value: '7.77'
+  - name: NON FEDERAL SHARE
+    number: '14'
+    value: '29.23'
+  - name: SPACE HOLDER
+    number: '15'
+    value: ''
+  - name: Activity is Direct Fundrainsig
+    number: 16-
+    value: ''
+  - name: Activity is an Exempt Activity
+    number: 17-
+    value: ''
+  - name: Act. Direct Candidate Support
+    number: 18-
+    value: ''
+  - name: EVENT YEAR-TO-DATE
+    number: '19'
+    value: '10528.8'
+  - name: ADDITIONAL DESCRIPTION
+    number: '20'
+    value: ''
+  - name: FEC COMMITTEE ID NUMBER
+    number: '21'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '22'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '23'
+    value: ''
+  - name: CAN/OFFICE
+    number: '24'
+    value: ''
+  - name: CAN/STATE
+    number: '25'
+    value: ''
+  - name: CAN/DIST
+    number: '26'
+    value: ''
+  - name: CONDUIT NAME
+    number: '27'
+    value: ''
+  - name: CONDUIT STREET 1
+    number: '28'
+    value: ''
+  - name: CONDUIT STREET 2
+    number: '29'
+    value: ''
+  - name: CONDUIT CITY
+    number: '30'
+    value: ''
+  - name: CONDUIT STATE
+    number: '31'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '32'
+    value: ''
+  - name: INTERNAL USE ONLY
+    number: '33'
+    value: ''
+  - name: TRAN ID
+    number: '34'
+    value: H4-17-1429-e
+  - name: MEMO CODE
+    number: '35'
+    value: ''
+  - name: MEMO TEXT
+    number: '36'
+    value: ''
+  - name: BACK REF TRAN ID
+    number: '37'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '38'
+    value: ''
+  - name: Activity is Administrative - Only
+    number: 39-
+    value: X
+  - name: Activity is Generic Voter Drive - Only
+    number: 40-
+    value: ''
+  - name: CATEGORY CODE
+    number: '41'
+    value: ''
+  - name: TRANS CODE
+    number: '42'
+    value: ''
+  - name: Activity is PAC Public Communications Referring Only to Party
+    number: 43-
+    value: ''
+- input: '"H4","C00395590","ORG","Visteva","4055 Grass Valley Highway","Suite 104","Auburn","CA","956029156","Fundraising
+    Fee","20050912","1.8","1.62","0.18","","X","","","7738.16","2005 Summer Picnic","","","","","","","","","","","","","","H4-240-1442-e","","","","","","","","",""'
+  record: <fec.version.v5_2.SH4.Records instance at 0x14d0908>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: H4
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: ORG
+  - name: NAME (Payee)
+    number: '4'
+    value: Visteva
+  - name: STREET 1
+    number: '5'
+    value: 4055 Grass Valley Highway
+  - name: STREET 2
+    number: '6'
+    value: Suite 104
+  - name: CITY
+    number: '7'
+    value: Auburn
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '956029156'
+  - name: TRANS Purpose DESCRIP
+    number: '10'
+    value: Fundraising Fee
+  - name: DATE
+    number: '11'
+    value: '20050912'
+  - name: TOTAL AMOUNT
+    number: '12'
+    value: '1.8'
+  - name: FEDERAL SHARE
+    number: '13'
+    value: '1.62'
+  - name: NON FEDERAL SHARE
+    number: '14'
+    value: '0.18'
+  - name: SPACE HOLDER
+    number: '15'
+    value: ''
+  - name: Activity is Direct Fundrainsig
+    number: 16-
+    value: X
+  - name: Activity is an Exempt Activity
+    number: 17-
+    value: ''
+  - name: Act. Direct Candidate Support
+    number: 18-
+    value: ''
+  - name: EVENT YEAR-TO-DATE
+    number: '19'
+    value: '7738.16'
+  - name: ADDITIONAL DESCRIPTION
+    number: '20'
+    value: 2005 Summer Picnic
+  - name: FEC COMMITTEE ID NUMBER
+    number: '21'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '22'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '23'
+    value: ''
+  - name: CAN/OFFICE
+    number: '24'
+    value: ''
+  - name: CAN/STATE
+    number: '25'
+    value: ''
+  - name: CAN/DIST
+    number: '26'
+    value: ''
+  - name: CONDUIT NAME
+    number: '27'
+    value: ''
+  - name: CONDUIT STREET 1
+    number: '28'
+    value: ''
+  - name: CONDUIT STREET 2
+    number: '29'
+    value: ''
+  - name: CONDUIT CITY
+    number: '30'
+    value: ''
+  - name: CONDUIT STATE
+    number: '31'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '32'
+    value: ''
+  - name: INTERNAL USE ONLY
+    number: '33'
+    value: ''
+  - name: TRAN ID
+    number: '34'
+    value: H4-240-1442-e
+  - name: MEMO CODE
+    number: '35'
+    value: ''
+  - name: MEMO TEXT
+    number: '36'
+    value: ''
+  - name: BACK REF TRAN ID
+    number: '37'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '38'
+    value: ''
+  - name: Activity is Administrative - Only
+    number: 39-
+    value: ''
+  - name: Activity is Generic Voter Drive - Only
+    number: 40-
+    value: ''
+  - name: CATEGORY CODE
+    number: '41'
+    value: ''
+  - name: TRANS CODE
+    number: '42'
+    value: ''
+  - name: Activity is PAC Public Communications Referring Only to Party
+    number: 43-
+    value: ''
+- input: '"H4","C00395590","ORG","The KAL Group","976 Pacific Avenue","","Willows","CA","959889788","Reporting
+    & Bookkeeping Services","20050907","449.81","94.46","355.35","","","","","10528.8","","","","","","","","","","","","","","","H4-283-1430-e","","","","","X","","","",""'
+  record: <fec.version.v5_2.SH4.Records instance at 0x14d0b00>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: H4
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: ORG
+  - name: NAME (Payee)
+    number: '4'
+    value: The KAL Group
+  - name: STREET 1
+    number: '5'
+    value: 976 Pacific Avenue
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Willows
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '959889788'
+  - name: TRANS Purpose DESCRIP
+    number: '10'
+    value: Reporting & Bookkeeping Services
+  - name: DATE
+    number: '11'
+    value: '20050907'
+  - name: TOTAL AMOUNT
+    number: '12'
+    value: '449.81'
+  - name: FEDERAL SHARE
+    number: '13'
+    value: '94.46'
+  - name: NON FEDERAL SHARE
+    number: '14'
+    value: '355.35'
+  - name: SPACE HOLDER
+    number: '15'
+    value: ''
+  - name: Activity is Direct Fundrainsig
+    number: 16-
+    value: ''
+  - name: Activity is an Exempt Activity
+    number: 17-
+    value: ''
+  - name: Act. Direct Candidate Support
+    number: 18-
+    value: ''
+  - name: EVENT YEAR-TO-DATE
+    number: '19'
+    value: '10528.8'
+  - name: ADDITIONAL DESCRIPTION
+    number: '20'
+    value: ''
+  - name: FEC COMMITTEE ID NUMBER
+    number: '21'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '22'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '23'
+    value: ''
+  - name: CAN/OFFICE
+    number: '24'
+    value: ''
+  - name: CAN/STATE
+    number: '25'
+    value: ''
+  - name: CAN/DIST
+    number: '26'
+    value: ''
+  - name: CONDUIT NAME
+    number: '27'
+    value: ''
+  - name: CONDUIT STREET 1
+    number: '28'
+    value: ''
+  - name: CONDUIT STREET 2
+    number: '29'
+    value: ''
+  - name: CONDUIT CITY
+    number: '30'
+    value: ''
+  - name: CONDUIT STATE
+    number: '31'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '32'
+    value: ''
+  - name: INTERNAL USE ONLY
+    number: '33'
+    value: ''
+  - name: TRAN ID
+    number: '34'
+    value: H4-283-1430-e
+  - name: MEMO CODE
+    number: '35'
+    value: ''
+  - name: MEMO TEXT
+    number: '36'
+    value: ''
+  - name: BACK REF TRAN ID
+    number: '37'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '38'
+    value: ''
+  - name: Activity is Administrative - Only
+    number: 39-
+    value: X
+  - name: Activity is Generic Voter Drive - Only
+    number: 40-
+    value: ''
+  - name: CATEGORY CODE
+    number: '41'
+    value: ''
+  - name: TRANS CODE
+    number: '42'
+    value: ''
+  - name: Activity is PAC Public Communications Referring Only to Party
+    number: 43-
+    value: ''
+- input: '"H4","C00395590","ORG","SBC California","Payment Center","","Sacramento","CA","95887","Telephone","20050921","23.9","5.02","18.88","","","","","10528.8","","","","","","","","","","","","","","","H4-447-1440-e","","","","","X","","","",""'
+  record: <fec.version.v5_2.SH4.Records instance at 0x14d0908>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: H4
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: ENTITY TYPE
+    number: '3'
+    value: ORG
+  - name: NAME (Payee)
+    number: '4'
+    value: SBC California
+  - name: STREET 1
+    number: '5'
+    value: Payment Center
+  - name: STREET 2
+    number: '6'
+    value: ''
+  - name: CITY
+    number: '7'
+    value: Sacramento
+  - name: STATE
+    number: '8'
+    value: CA
+  - name: ZIP
+    number: '9'
+    value: '95887'
+  - name: TRANS Purpose DESCRIP
+    number: '10'
+    value: Telephone
+  - name: DATE
+    number: '11'
+    value: '20050921'
+  - name: TOTAL AMOUNT
+    number: '12'
+    value: '23.9'
+  - name: FEDERAL SHARE
+    number: '13'
+    value: '5.02'
+  - name: NON FEDERAL SHARE
+    number: '14'
+    value: '18.88'
+  - name: SPACE HOLDER
+    number: '15'
+    value: ''
+  - name: Activity is Direct Fundrainsig
+    number: 16-
+    value: ''
+  - name: Activity is an Exempt Activity
+    number: 17-
+    value: ''
+  - name: Act. Direct Candidate Support
+    number: 18-
+    value: ''
+  - name: EVENT YEAR-TO-DATE
+    number: '19'
+    value: '10528.8'
+  - name: ADDITIONAL DESCRIPTION
+    number: '20'
+    value: ''
+  - name: FEC COMMITTEE ID NUMBER
+    number: '21'
+    value: ''
+  - name: FEC CANDIDATE ID NUMBER
+    number: '22'
+    value: ''
+  - name: CANDIDATE NAME
+    number: '23'
+    value: ''
+  - name: CAN/OFFICE
+    number: '24'
+    value: ''
+  - name: CAN/STATE
+    number: '25'
+    value: ''
+  - name: CAN/DIST
+    number: '26'
+    value: ''
+  - name: CONDUIT NAME
+    number: '27'
+    value: ''
+  - name: CONDUIT STREET 1
+    number: '28'
+    value: ''
+  - name: CONDUIT STREET 2
+    number: '29'
+    value: ''
+  - name: CONDUIT CITY
+    number: '30'
+    value: ''
+  - name: CONDUIT STATE
+    number: '31'
+    value: ''
+  - name: CONDUIT ZIP
+    number: '32'
+    value: ''
+  - name: INTERNAL USE ONLY
+    number: '33'
+    value: ''
+  - name: TRAN ID
+    number: '34'
+    value: H4-447-1440-e
+  - name: MEMO CODE
+    number: '35'
+    value: ''
+  - name: MEMO TEXT
+    number: '36'
+    value: ''
+  - name: BACK REF TRAN ID
+    number: '37'
+    value: ''
+  - name: BACK REF SCHED NAME
+    number: '38'
+    value: ''
+  - name: Activity is Administrative - Only
+    number: 39-
+    value: X
+  - name: Activity is Generic Voter Drive - Only
+    number: 40-
+    value: ''
+  - name: CATEGORY CODE
+    number: '41'
+    value: ''
+  - name: TRANS CODE
+    number: '42'
+    value: ''
+  - name: Activity is PAC Public Communications Referring Only to Party
+    number: 43-
+    value: ''
+- input: '"SL","C00395590","Levin","1","20050830","20050928","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","","Levin-1"'
+  record: <fec.version.v5_2.SL.Records instance at 0x14d0b00>
+  result:
+  - name: FORM TYPE
+    number: '1'
+    value: SL
+  - name: FILER FEC CMTE ID
+    number: '2'
+    value: C00395590
+  - name: NAME OF ACCOUNT
+    number: '3'
+    value: Levin
+  - name: 'System code for account named in Field #3'
+    number: '4'
+    value: '1'
+  - name: Coverage From
+    number: 5-
+    value: '20050830'
+  - name: Coverage To
+    number: 6-
+    value: '20050928'
+  - name: Itemized Receipts From Persons
+    number: 7-1a.
+    value: '0'
+  - name: Unitemized Receipts From Persons
+    number: 8-1b.
+    value: '0'
+  - name: Total Receipts From Persons
+    number: 9-1c.
+    value: '0'
+  - name: Other Receipts
+    number: 10-2.
+    value: '0'
+  - name: Total Receipts
+    number: 11-3.
+    value: '0'
+  - name: Voter Registration DISBURSEMENTS
+    number: 12-4(a).
+    value: '0'
+  - name: Voter ID DISBURSEMENTS
+    number: 13-4(b).
+    value: '0'
+  - name: GOTV DISBURSEMENTS
+    number: 14-4(c).
+    value: '0'
+  - name: Generic Campaign DISBURSEMENTS
+    number: 15-4(d).
+    value: '0'
+  - name: Line 4 Total
+    number: 16-4(e)
+    value: '0'
+  - name: Other Disbursements
+    number: 17-5.
+    value: '0'
+  - name: Total Disbursements
+    number: 18-6.
+    value: '0'
+  - name: Cash on Hand beginning
+    number: 19-7.
+    value: '0'
+  - name: Receipts
+    number: 20-8.
+    value: '0'
+  - name: Subtotal
+    number: 21-9.
+    value: '0'
+  - name: Disbursements
+    number: 22-10.
+    value: '0'
+  - name: Itemized Receipts From Persons
+    number: 23-1a.
+    value: '0'
+  - name: Unitemized Receipts From Persons
+    number: 24-1b.
+    value: '0'
+  - name: Total Receipts From Persons
+    number: 25-1c.
+    value: '0'
+  - name: Other Receipts
+    number: 26-2.
+    value: '0'
+  - name: Total Receipts
+    number: 27-3.
+    value: '0'
+  - name: Voter Registration DISBURSEMENTS
+    number: 28-4(a).
+    value: '0'
+  - name: Voter ID DISBURSEMENTS
+    number: 29-4(b).
+    value: '0'
+  - name: GOTV DISBURSEMENTS
+    number: 30-4(c).
+    value: '0'
+  - name: Generic Campaign DISBURSEMENTS
+    number: 31-4(d).
+    value: '0'
+  - name: Line 4 Total
+    number: 32-4(e)
+    value: '0'
+  - name: Other Disbursements
+    number: 33-5.
+    value: '0'
+  - name: Total Disbursements
+    number: 34-6.
+    value: '0'
+  - name: Cash on Hand Jan 1, 19
+    number: 35-7.
+    value: '0'
+  - name: Receipts
+    number: 36-8.
+    value: '0'
+  - name: Subtotal
+    number: 37-9.
+    value: '0'
+  - name: Disbursements
+    number: 38-10.
+    value: '0'
+  - name: ENDING CASH ON HAND
+    number: 39-11.
+    value: '0'
+  - name: AMENDED CODE
+    number: '40'
+    value: ''
+  - name: TRAN ID
+    number: '41'
+    value: Levin-1
+sourceurl: !!python/unicode 20060102
+type: single
