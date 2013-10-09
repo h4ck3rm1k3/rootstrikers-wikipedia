@@ -1,6 +1,6 @@
 
 fecelectronic:
-	PYTHONPATH=./FECFieldDocumentation python fech.py '200[456789].*'
+	PYTHONPATH=./FECFieldDocumentation python fech.py '200[6789].*'
 
 lint :
 	~/.local/bin/pylint --output-format=parseable fec_electronic.py fec_electronic_contrib.py fecdetails.py fec.py fech_rendered_maps.py zipcsv.py fech.py fecfields.py cache.py fec_reports.py
