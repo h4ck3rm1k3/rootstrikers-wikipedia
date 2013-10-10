@@ -84,6 +84,14 @@ def listing(year):
 
 class ZipCSV:
 
+    def chunks(self):
+        """ Yield successive n-sized chunks from l.
+        http://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks-in-python
+        """
+        n=CHUNKSIZE
+        for i in xrange(0, len(self._rows), n):
+            yield self._rows[i:i+n]
+
     def process_generate (self, baseurl, urlfile, filename, classname, parser, out):
 
         zfile = zipfile.ZipFile(filename)
@@ -100,6 +108,7 @@ class ZipCSV:
                     print "after parsing filename %s from zip %s" %  (ifilename, filename)
                     out_file.close()
                     print "after closing filename %s from zip %s" %  (ifilename, filename)
+                    d= None
                 #else:
                 #    print "skipping filename %s from zip %s" %  (ifilename, filename)
                 out_file = None
