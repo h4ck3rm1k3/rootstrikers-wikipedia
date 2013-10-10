@@ -177,6 +177,14 @@ class VersionBase:
                 raise SkipException("skip mail file")
                 #return {}
 
+            if record_type == "": 
+                raise SkipException("skip empty")
+
+
+            if record_type == " ": 
+                raise SkipException("skip empty")
+                #return {}
+
 
             if record_type in self.records:                  
                   return self.parse_record(fields,record_type,line)
