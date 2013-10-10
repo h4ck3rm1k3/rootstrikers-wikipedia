@@ -4,3 +4,6 @@
 [submodule "maplight-convert"]
 	path = maplight-convert
 	url = git@github.com:h4ck3rm1k3/rootstriker-fec-maplight-wiki.git
+[submodule "FECFieldDocumentation"]
+	path = FECFieldDocumentation
+	url = git@github.com:h4ck3rm1k3/FEC-Field-Documentation.git
