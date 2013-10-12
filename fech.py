@@ -115,6 +115,14 @@ class ZipCSV:
 
             except SkipException, e:
                 print "Parsing Failed filename %s source %s" % (ifilename, filename)
+            except Exception, e:
+                print "error ifilename: %s zip %s  outfile:%s" %  (ifilename, filename,  out_file)
+                parser.parse_file_data(ifilename, filename, d, out_file)
+
+                #traceback.print_stack()
+                traceback.print_exc()
+                print (e)
+                raise e
 
 
 def dbg (x):
@@ -342,7 +350,7 @@ class Parser:
                     self.header_version= fec.version.v8_0.Version()
                     self.header_version.set_attr_hash(self.current.attributes)
                 else:
-                    raise Exception()
+                    raise Exception("Bad Version %s" % version)
         else:
             if self.header_version is not None:
                 self.header_version.set_attr_hash(self.current.attributes)
@@ -391,6 +399,7 @@ class Parser:
                 raise Exception("no header")
 
         except Exception, e:
+            traceback.print_exc()
             print "Parsing Failed filename %s source %s e %s" % (filename, sourcefile, e)
             #traceback.print_exc()
             raise e

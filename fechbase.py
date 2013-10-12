@@ -243,7 +243,7 @@ class VersionsBase:
     def __init__(self):
         pass 
     def lookup(self,version):
-        orginal_version=version
+        orginal_version=version.strip().rstrip()
 
         if version == "5.00":
             return self.versions["v5.0"]()
@@ -259,11 +259,11 @@ class VersionsBase:
             return self.versions["v3"]()
         else:
             version  = version.replace(".00","")
-            version = "v" + version
+            version = "v" + version.strip().rstrip()
             version  = version.replace("\"","")
             if version in  self.versions:
                 factory =self.versions[version]
                 return factory()
             else:
-                raise Exception("version '%s'/'%s' not in %s " % (orginal_version,version,sorted(self.versions.keys)))
+                raise Exception("version '%s'/'%s' not in %s " % (orginal_version,version,sorted(self.versions.keys())))
         
