@@ -7,6 +7,7 @@ def checkin(path,filename):
     print "going to process %s" % path
     os.system("bash ./checkin.sh %s %s" % (path,filename))
 
+CHUNKSIZE=100
 
 class FechoutFile ():
     u"""
@@ -65,14 +66,14 @@ class FechoutFile ():
         """ Yield successive n-sized chunks from l.
         http://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks-in-python
         """
-        n=2000
+        n=CHUNKSIZE
         for i in xrange(0, len(self._rows), n):
             yield self._rows[i:i+n]
 
     def create_yaml(self):
 
         total = len(self._rows)
-        if (total > 2000):
+        if (total > CHUNKSIZE):
             count = 0
             for chunk in self.chunks():
                 count = count + 1
