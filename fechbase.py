@@ -25,7 +25,8 @@ class RecordsBase:
         #copy of fields
         fields2=fields
 
-        result["record"]=str(self)
+        result["record"]=self.__module__
+        #print result["record"]
 
         if not input_count == expected_count :
             #print ("%s != %s" % (expected_count,    input_count))
