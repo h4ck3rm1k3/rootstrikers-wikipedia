@@ -204,6 +204,8 @@ class Parser:
 
         if l.find('HDRFEC') > -1 :
             self.sep=''
+        elif l.find('"HDR""FEC"') > -1 :
+            self.sep=''
         else:
             self.sep=','
 
@@ -238,6 +240,8 @@ class Parser:
     def filing_url(self):
         return "http://query.nictusa.com/dcdev/posted/#{filing_id}.fec"
 
+
+        # example : "HDR""FEC""6.1""Trail Blazer""5.0.2945.29436""""F3N Generated on 1/24/2008 6:26:16 PM"
     def parse_line(self, l):
         dbg ( "check '%s' '%d'" % (l, self.state))
 
