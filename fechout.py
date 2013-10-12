@@ -7,7 +7,7 @@ def checkin(path,filename):
     print "going to process %s" % path
     os.system("bash ./checkin.sh %s %s" % (path,filename))
 
-CHUNKSIZE=100
+CHUNKSIZE=1000
 
 class FechoutFile ():
     u"""
