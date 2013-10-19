@@ -11,7 +11,7 @@ STATE_END = 3
 
 
 from fechbase import SkipException
-
+import tempfile # import a temp file to unpack a zip file entry into.
 import zipfile
 import os
 import cache
@@ -93,7 +93,8 @@ class ZipCSV:
             yield self._rows[i:i+n]
 
     def process_generate (self, baseurl, urlfile, filename, classname, parser, out):
-
+        
+        
         zfile = zipfile.ZipFile(filename)
         for name in zfile.namelist():
             try :
@@ -103,10 +104,18 @@ class ZipCSV:
                 if (not out_file.exists()):
                     print "before reading filename %s from zip %s" %  (ifilename, filename)
                     d = zfile.read(name)
+                    (fd,fname)= tempfile.mkstemp()
+                    tmpfile = open(fname, 'w')
+                    tmpfile.write(d)
+                    d=None # discard the data
+                    tmpfile.close()
+                    tmpfile=None
+                    
                     print "after reading filename %s from zip %s" %  (ifilename, filename)
-                    parser.parse_file_data(ifilename, filename, d, out_file)
+                    parser.parse_file_data(ifilename, filename, fname , out_file)
                     print "after parsing filename %s from zip %s" %  (ifilename, filename)
-                    out_file.close()
+                    #out_file.close()
+                    os.close(fd)
                     print "after closing filename %s from zip %s" %  (ifilename, filename)
                     d= None
                 #else:
@@ -117,7 +126,7 @@ class ZipCSV:
                 print "Parsing Failed filename %s source %s" % (ifilename, filename)
             except Exception, e:
                 print "error ifilename: %s zip %s  outfile:%s" %  (ifilename, filename,  out_file)
-                parser.parse_file_data(ifilename, filename, d, out_file)
+                #parser.parse_file_data(ifilename, filename, d, out_file)
 
                 #traceback.print_stack()
                 traceback.print_exc()
@@ -379,36 +388,46 @@ class Parser:
             raise Exception("no version")
        
 
+    def write_parts(self, out_file,rows,count):
+        out_file.file_attributes(self.current.attributes)
+        if self.header_version is not None:
+            try:
+                out_file.create_yaml(rows,count)
+            except Exception, e:
+                traceback.print_exc()
+                print (e)
+                print (self.header_version)
+        else:
+            raise Exception("no header")
+
     # entry point into input, called from zipcsv.py
-    def parse_file_data(self, filename, sourcefile, d, out_file):
-        self.current = FileObject()
+    def parse_file_data(self, filename, sourcefile, tmpfilename, out_file):
 
-        try :
-            for l in d.split("\n"):                
-#                print ("Raw input:%s" % l)
-                out_file.raw_line(l)
-                result = self.parse_line(l)
-#                print (result)
+        with open(tmpfilename, "r") as f:
+            self.current = FileObject()
+            count = 1
+            try :
+                rows=[]
+                for line in f:
+                    out_file.raw_line(line)
+                    result = self.parse_line(line)
+                    rows.append(result)
+                    if (len(rows)>400):
+                        self.write_parts(out_file,rows,count)
+                        rows=[]
+                        count = count +1 
+                #final
+                if (len(rows)>0):
+                    self.write_parts(self, out_file,rows, count)
+            except SkipException, e:
+                pass
 
-            #out_file.dir_name(dirname)
-            out_file.file_attributes(self.current.attributes)
-            if self.header_version is not None:
-                try:
-                    out_file.rows(self.header_version.record_list)
-                except Exception, e:
-                    traceback.print_exc()
-                    print (e)
-                    print (self.header_version)
-            else:
-                raise Exception("no header")
-
-        except Exception, e:
-            traceback.print_exc()
-            print "Parsing Failed filename %s source %s e %s" % (filename, sourcefile, e)
-            #traceback.print_exc()
-            raise e
-
-        self.current = None
+            except Exception, e:
+                traceback.print_exc()
+                print "Parsing Failed filename %s source %s e %s" % (filename, sourcefile, e)
+                raise e
+            self.current = None
+            os.unlink(tmpfilename)
 
     def generate(self, v, name):
         c = 0

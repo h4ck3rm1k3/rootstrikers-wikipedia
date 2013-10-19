@@ -123,7 +123,7 @@ class VersionBase:
             self.sep=sep
 
       def do_init(self):
-            self.record_list=[]
+ #           self.record_list=[]
             self.sep=","
 
       def parse(self,x):
@@ -142,14 +142,16 @@ class VersionBase:
             if result is None:
                 raise Exception("failed type:%s line:%s fields:%s " % (record_type,line, str(fields)))
 
-            self.record_list.append(result)            
+            #self.record_list.append(result)            
             return result
 
       def parse_body(self,line):
+          
+            if line.find( "[BEGINTEXT]\n" ) > -1:
+                raise SkipException("skip mail file")
 
             if line.find( "[BEGINTEXT" ) > -1:
                 raise SkipException("skip mail file")
-
 
             if line == "": 
                 return { "Empty" : "" }
@@ -162,11 +164,24 @@ class VersionBase:
             record_type=fields[0].upper()
             original_record_type=record_type
 
+            if record_type == "[BEGINTEXT]": 
+                raise SkipException("skip mail file")
+                #return {}
+
+            if record_type == "[BEGINTEXT]\n": 
+                raise SkipException("skip mail file")
+                #return {}
+
+            if record_type == "\n": 
+                raise SkipException("skip mail file")
+                #return {}
+
             if record_type == "": 
                   raise Exception("record type none")
                   #return None 
 
-            if record_type == "[BEGINTEXT]": 
+
+            if record_type == "[B": 
                 raise SkipException("skip mail file")
                 #return {}
 
@@ -220,7 +235,7 @@ class VersionBase:
                         if record_type in self.records:                  
                             return self.parse_record(fields,record_type,line)
                         else:
-                            raise Exception("recordtype '%s' original_record_type %s not known %s record %s on line %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields), line ))
+                            raise Exception("recordtype '%s' original_record_type '%s' not known '%s' record '%s' on line '%s'" % (record_type, original_record_type, sorted(self.records.keys()), str(fields), line ))
 
 
                         raise Exception("recordtype '%s' original_record_type %s not known %s record %s" % (record_type, original_record_type, sorted(self.records.keys()), str(fields) ))
