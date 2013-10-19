@@ -418,7 +418,7 @@ class Parser:
                         count = count +1 
                 #final
                 if (len(rows)>0):
-                    self.write_parts(self, out_file,rows, count)
+                    self.write_parts(out_file,rows, count)
             except SkipException, e:
                 pass
 
